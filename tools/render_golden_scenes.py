@@ -59,7 +59,9 @@ SCENES = GOLDEN_SCENES + MVD1_SCENES + MVD2_SCENES
 
 
 def image_signature(image) -> dict[str, object]:
-    # Stable coarse signature: 16x9 luminance buckets + histogram bounds.
+    # Stable coarse signature: legacy 16x9 luma remains untouched for the
+    # inherited golden gate. MVD-2 separately measures authored scene pixels
+    # so translucent full-scene washes cannot masquerade as material light.
     from PySide6.QtCore import QSize
 
     small = image.scaled(QSize(16, 9))
@@ -78,11 +80,33 @@ def image_signature(image) -> dict[str, object]:
                     3,
                 )
             )
+
+    subject = image.scaled(QSize(64, 36))
+    subject_values = []
+    for y in range(subject.height()):
+        for x in range(subject.width()):
+            color = subject.pixelColor(x, y)
+            if color.alpha() < 96:
+                continue
+            subject_values.append(
+                (
+                    color.red() * 0.2126
+                    + color.green() * 0.7152
+                    + color.blue() * 0.0722
+                )
+                / 255
+            )
+
     raw = json.dumps(values, separators=(",", ":")).encode()
     return {
         "width": image.width(),
         "height": image.height(),
         "luma": values,
+        "subject_luma": round(
+            sum(subject_values) / max(1, len(subject_values)),
+            4,
+        ),
+        "subject_samples": len(subject_values),
         "hash": hashlib.sha256(raw).hexdigest(),
     }
 
@@ -97,6 +121,14 @@ def mean_luma(signature: dict[str, object]) -> float:
     values = signature["luma"]
     assert isinstance(values, list)
     return sum(float(value) for value in values) / max(1, len(values))
+
+
+def subject_luma(signature: dict[str, object]) -> float:
+    value = signature.get("subject_luma")
+    assert isinstance(value, (float, int))
+    samples = signature.get("subject_samples")
+    assert isinstance(samples, int) and samples >= 12
+    return float(value)
 
 
 def validate_mvd1_silhouette_separation(
@@ -129,17 +161,20 @@ def validate_mvd2_material_light_response(
     for space_id in MVD1_SPACES:
         day_key = f"mvd2_{space_id}_day_clear"
         night_key = f"mvd2_{space_id}_night_rain"
-        day_luma = mean_luma(signatures[day_key])
-        night_luma = mean_luma(signatures[night_key])
+        day_luma = subject_luma(signatures[day_key])
+        night_luma = subject_luma(signatures[night_key])
         delta = day_luma - night_luma
         if delta < 0.035:
             failures.append(
-                f"{space_id}:day={day_luma:.4f}:night_rain={night_luma:.4f}:delta={delta:.4f}"
+                f"{space_id}:day_subject={day_luma:.4f}:"
+                f"night_rain_subject={night_luma:.4f}:delta={delta:.4f}"
             )
         if not 0.12 <= day_luma <= 0.92:
-            failures.append(f"{space_id}:day_luma_out_of_range={day_luma:.4f}")
+            failures.append(f"{space_id}:day_subject_luma_out_of_range={day_luma:.4f}")
         if not 0.08 <= night_luma <= 0.78:
-            failures.append(f"{space_id}:night_luma_out_of_range={night_luma:.4f}")
+            failures.append(
+                f"{space_id}:night_subject_luma_out_of_range={night_luma:.4f}"
+            )
     return failures
 
 
