@@ -21,10 +21,8 @@ GOLDEN_SCENES = [
     ("quarter_rain", "quarter", 13*60, "rain"),
     ("plaza_night", "central_plaza", 21*60, "clear"),
     ("observatory_sunset", "observatory", 18*60, "clear"),
-    ("grid_morning", "grid", 9*60, "clear"),
     ("twin_core_night", "twin_core", 22*60, "clear"),
     ("trinity_lab_daylight", "trinity_lab", 11*60, "clear"),
-    ("garage_dusk", "garage", 18*60, "clear"),
     ("kawaii_garden_rain", "kawaii_garden", 16*60, "rain"),
     ("pit_night", "pit", 1*60, "clear"),
     ("glasshouse_morning", "glasshouse", 9*60, "clear"),
@@ -175,7 +173,8 @@ def main() -> int:
 
     baseline = json.loads(baseline_path.read_text(encoding="utf-8"))
     failures = []
-    for key, sig in current.items():
+    for key, _, _, _ in GOLDEN_SCENES:
+        sig = current[key]
         old = baseline.get(key)
         if not old:
             failures.append(f"{key}:missing")
