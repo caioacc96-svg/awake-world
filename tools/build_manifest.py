@@ -24,6 +24,8 @@ def included(path: Path) -> bool:
         return False
     if path.suffix in EXCLUDED_SUFFIXES:
         return False
+    if relative.parts[:3] == ("awake_world", "assets", "audio") and path.suffix.lower() == ".wav":
+        return False
     return path.name != "BUILD_MANIFEST.json"
 
 
