@@ -440,8 +440,8 @@
     },
     {
       "path": "tools/core_test.py",
-      "size": 3779,
-      "sha256": "69ea672cadfbafc95bc101b74091258aba69d2a4b63ffcebac4564d056eb0374"
+      "size": 3769,
+      "sha256": "cad3dcf62a9ddc4af88f7c80af71df4714f40a746b4f4cec246cd9cb7d61b794"
     },
     {
       "path": "tools/deterministic_replay_test.py",
