@@ -235,8 +235,8 @@
     },
     {
       "path": "awake_world/world/district.py",
-      "size": 19862,
-      "sha256": "8f3d0020366caef5040c2ded5235120cc3d83a6322a5fdd3e457579092cd75c2"
+      "size": 19942,
+      "sha256": "c87a6a3e97a755041d53e03707c615b1a42d10ab1b75bd120f9222d28e235fb6"
     },
     {
       "path": "awake_world/world/environment.py",
