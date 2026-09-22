@@ -73,10 +73,12 @@ def main() -> int:
         painter=QPainter(image); room.render(painter,QRectF(0,0,1280,720),rect); painter.end()
         image.save(str(out/f"{key}.png"))
         current[key]=image_signature(image)
+    candidate_path=out/"signatures.json"
+    candidate_path.write_text(json.dumps(current,indent=2,sort_keys=True),encoding="utf-8")
     if args.update:
         baseline_path.parent.mkdir(parents=True,exist_ok=True)
         baseline_path.write_text(json.dumps(current,indent=2,sort_keys=True),encoding="utf-8")
-        print("AWAKE_VISUAL_BASELINE_UPDATED")
+        print(f"AWAKE_VISUAL_BASELINE_UPDATED {baseline_path}")
         return 0
     if not baseline_path.exists():
         print("AWAKE_VISUAL_BASELINE_MISSING")
