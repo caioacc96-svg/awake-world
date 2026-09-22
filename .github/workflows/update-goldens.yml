@@ -2,13 +2,6 @@ name: Generate Awake Visual Baseline Candidate
 
 on:
   workflow_dispatch:
-  push:
-    branches: ['feat/0.5-global']
-    paths:
-      - '.github/workflows/update-goldens.yml'
-
-permissions:
-  contents: write
 
 jobs:
   windows-goldens:
@@ -27,19 +20,6 @@ jobs:
           $env:QT_QPA_PLATFORM='offscreen'
           $env:QT_LOGGING_RULES='qt.multimedia.*=false'
           python tools/render_golden_scenes.py --update --output visual_output
-      - name: Refresh source manifest
-        run: python tools/build_manifest.py
-      - name: Commit reviewed initial baseline
-        shell: pwsh
-        run: |
-          git config user.name "awake-world-ci"
-          git config user.email "awake-world-ci@users.noreply.github.com"
-          git add visual_baselines/signatures.json BUILD_MANIFEST.json
-          git diff --cached --quiet
-          if ($LASTEXITCODE -ne 0) {
-            git commit -m "test: establish deterministic Windows visual baseline"
-            git push origin HEAD:feat/0.5-global
-          }
       - uses: actions/upload-artifact@v4
         with:
           name: awake-05-golden-baseline-candidate
