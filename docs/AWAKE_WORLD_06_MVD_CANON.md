@@ -124,6 +124,20 @@ MVD-2 is not considered human-accepted merely because palette/light automation p
 
 **Acceptance:** a static screenshot must read as an authored premium diorama before NPC motion, ambient animation or MVD-3 life is used to create interest.
 
+### MVD-2.2 — Spatial depth acceptance pass
+
+MVD-2.1 establishes the authored visual foundation. MVD-2.2 adds architectural depth before life/animation:
+
+- stairs are stepped geometry tied to a real raised plane;
+- civic platforms, decks and terraces introduce multiple visible elevations;
+- tall structures gain lower/upper mass separation and setback while staying inside the MVD-1 footprint;
+- floor reveals, parapets, roof layers and support piers create readable vertical hierarchy;
+- elevated elements cast their own isometric overlap/shadow relationships;
+- every space receives a distinct vertical composition rather than the same extrusion recipe;
+- navigation remains on the canonical MVD-1 plane until a later explicit traversal phase; MVD-2.2 must not silently change collision or pathfinding.
+
+**Acceptance:** static renders must communicate at least three depth cues — elevation change, overlap/setback and structural support — before MVD-3 ambient life is allowed to carry the scene.
+
 ### MVD-3 — Subtle life
 
 Across all environments simultaneously:
