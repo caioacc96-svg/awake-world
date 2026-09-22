@@ -143,6 +143,66 @@ class IsoBlock(QGraphicsItemGroup):
         self.setZValue(p.project(x + w, y + d, z).y() + 2)
 
 
+class IsoArchitecturalBlock(QGraphicsItemGroup):
+    """Premium low-cost isometric volume with directional material response."""
+
+    def __init__(
+        self,
+        projector: IsoProjector,
+        x: float,
+        y: float,
+        w: float,
+        d: float,
+        h: float,
+        top: QColor,
+        left: QColor,
+        right: QColor,
+        z: float = 0.0,
+        opacity: float = 1.0,
+        glass: bool = False,
+    ) -> None:
+        super().__init__()
+        p = projector
+        a = p.project(x, y, z + h)
+        b = p.project(x + w, y, z + h)
+        c = p.project(x + w, y + d, z + h)
+        d0 = p.project(x, y + d, z + h)
+        a0 = p.project(x, y, z)
+        b0 = p.project(x + w, y, z)
+        c0 = p.project(x + w, y + d, z)
+        d1 = p.project(x, y + d, z)
+
+        def add_face(
+            points: list[QPointF],
+            base: QColor,
+            start: QPointF,
+            end: QPointF,
+            light: int,
+            shade: int,
+        ) -> None:
+            item = QGraphicsPolygonItem(QPolygonF(points))
+            gradient = QLinearGradient(start, end)
+            first = QColor(base).lighter(light)
+            second = QColor(base).darker(shade)
+            if glass:
+                first.setAlpha(220)
+                second.setAlpha(178)
+            gradient.setColorAt(0.0, first)
+            gradient.setColorAt(1.0, second)
+            item.setBrush(QBrush(gradient))
+            edge = QColor(base).darker(120)
+            edge.setAlpha(62 if glass else 46)
+            item.setPen(QPen(edge, .58))
+            item.setOpacity(opacity)
+            self.addToGroup(item)
+
+        add_face([a, b, b0, a0], right.darker(103), a, b0, 105, 111)
+        add_face([d0, c, c0, d1], left, d0, c0, 104, 110)
+        add_face([b, c, c0, b0], right, b, c0, 103, 114)
+        add_face([a, b, c, d0], top, a, c, 110, 103)
+        self.setZValue(p.project(x + w, y + d, z).y() + 2)
+
+
 class SoftShadow(QGraphicsEllipseItem):
     def __init__(self, p: QPointF, width: float, height: float, opacity: float = 0.16) -> None:
         super().__init__(-width / 2, -height / 2, width, height)
@@ -198,6 +258,89 @@ class PortalDoor(QGraphicsItemGroup):
         self.phase += dt * 2.0
         pulse = 0.58 + 0.18 * (0.5 + 0.5 * sin(self.phase))
         self.glow.setOpacity(pulse)
+
+
+class ArchitecturalPortalDoor(QGraphicsItemGroup):
+    """Quiet architectural threshold for authored 0.6 spaces."""
+
+    def __init__(self, projector: IsoProjector, x: float, y: float, accent: QColor) -> None:
+        super().__init__()
+        p = projector.project(x, y, 0)
+        self.accent = QColor(accent)
+        self.phase = 0.0
+
+        shadow = QGraphicsEllipseItem(-31, -7, 62, 13)
+        shadow.setBrush(QColor(18, 22, 24, 34))
+        shadow.setPen(Qt.PenStyle.NoPen)
+
+        glow_gradient = QRadialGradient(0, -43, 46)
+        glow_gradient.setColorAt(
+            0.0,
+            QColor(accent.red(), accent.green(), accent.blue(), 48),
+        )
+        glow_gradient.setColorAt(
+            1.0,
+            QColor(accent.red(), accent.green(), accent.blue(), 0),
+        )
+        self.glow = QGraphicsEllipseItem(-46, -91, 92, 88)
+        self.glow.setBrush(QBrush(glow_gradient))
+        self.glow.setPen(Qt.PenStyle.NoPen)
+        self.glow.setOpacity(.28)
+
+        structure = QColor("#666D72")
+        structure_dark = QColor("#4D555A")
+        left_post = QGraphicsRectItem(-27, -77, 6, 69)
+        right_post = QGraphicsRectItem(21, -77, 6, 69)
+        lintel = QGraphicsRectItem(-27, -82, 54, 7)
+        threshold = QGraphicsRectItem(-24, -8, 48, 5)
+        for item, fill in (
+            (left_post, structure),
+            (right_post, structure_dark),
+            (lintel, structure.lighter(108)),
+            (threshold, structure_dark.darker(108)),
+        ):
+            item.setBrush(fill)
+            item.setPen(Qt.PenStyle.NoPen)
+
+        field = QGraphicsRectItem(-20, -73, 40, 61)
+        field_fill = QColor(accent)
+        field_fill.setAlpha(24)
+        field.setBrush(field_fill)
+        field_edge = QColor(accent)
+        field_edge.setAlpha(46)
+        field.setPen(QPen(field_edge, .75))
+
+        self.line = QGraphicsRectItem(-17, -67, 3, 37)
+        line_color = QColor(accent).lighter(108)
+        line_color.setAlpha(210)
+        self.line.setBrush(line_color)
+        self.line.setPen(Qt.PenStyle.NoPen)
+
+        marker = QGraphicsEllipseItem(13, -69, 5, 5)
+        marker.setBrush(QColor(accent).lighter(126))
+        marker.setPen(Qt.PenStyle.NoPen)
+
+        for item in (
+            self.glow,
+            shadow,
+            field,
+            left_post,
+            right_post,
+            lintel,
+            threshold,
+            self.line,
+            marker,
+        ):
+            self.addToGroup(item)
+
+        self.setPos(p)
+        self.setZValue(p.y() + 190)
+
+    def advance_animation(self, dt: float) -> None:
+        self.phase += dt * 1.35
+        wave = .5 + .5 * sin(self.phase)
+        self.glow.setOpacity(.18 + .12 * wave)
+        self.line.setOpacity(.72 + .18 * wave)
 
 
 class PlantItem(QGraphicsItemGroup):
