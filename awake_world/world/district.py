@@ -335,6 +335,34 @@ def _add_architectural_volume(
         )
     )
 
+    if (
+        volume.role in {"primary", "landmark"}
+        and volume.w >= 2.4
+        and volume.d >= .85
+        and volume.h >= 1.2
+    ):
+        lightbox_w = min(1.25, volume.w * .28)
+        lightbox_d = min(.38, volume.d * .30)
+        lightbox_x = volume.x + volume.w * .66 - lightbox_w / 2.0
+        lightbox_y = volume.y + volume.d * .48 - lightbox_d / 2.0
+        roof_glass = _q(appearance.glass)
+        scene.addItem(
+            IsoArchitecturalBlock(
+                p,
+                lightbox_x,
+                lightbox_y,
+                lightbox_w,
+                lightbox_d,
+                .075,
+                roof_glass.lighter(116),
+                roof_glass.lighter(105),
+                _q(appearance.structure),
+                z=volume.h + .015,
+                opacity=min(.90, appearance.glass_opacity + .10),
+                glass=True,
+            )
+        )
+
     if foundation.accent_inlay and volume.role in {"primary", "landmark"} and volume.h > .55:
         band = _q(appearance.accent).darker(122)
         scene.addItem(
@@ -415,6 +443,111 @@ def _add_landscape(
             )
 
 
+def _add_signature_details(
+    scene: BaseRoomScene,
+    appearance: ResolvedSpaceAppearance,
+) -> None:
+    """Space-specific microarchitecture using one shared low-cost kit."""
+
+    p = scene.projector
+    structure = _q(appearance.structure)
+    surface = _q(appearance.surface)
+    material = _q(appearance.material)
+    glass = _q(appearance.glass)
+
+    def beam(
+        x: float,
+        y: float,
+        w: float,
+        d: float,
+        z: float,
+        h: float = .08,
+        use_glass: bool = False,
+    ) -> None:
+        scene.addItem(
+            IsoArchitecturalBlock(
+                p,
+                x,
+                y,
+                w,
+                d,
+                h,
+                (glass.lighter(112) if use_glass else surface.lighter(108)),
+                (glass if use_glass else material),
+                structure,
+                z=z,
+                opacity=(min(.88, appearance.glass_opacity + .08) if use_glass else .96),
+                glass=use_glass,
+            )
+        )
+
+    if scene.room_id == "central_plaza":
+        for index in range(5):
+            beam(7.56, 5.48 + index * .58, 2.72, .085, 2.34, .075)
+        beam(8.17, 5.30, .10, 2.82, 2.28, .09)
+        beam(9.55, 5.30, .10, 2.82, 2.28, .09)
+
+    elif scene.room_id == "observatory":
+        for index in range(5):
+            beam(6.56, 1.02 + index * .45, 3.82, .075, 3.02, .07)
+        beam(7.16, .82, .085, 2.10, 2.94, .09)
+        beam(9.72, .82, .085, 2.10, 2.94, .09)
+
+    elif scene.room_id == "grid":
+        for index in range(6):
+            beam(4.78 + index * .70, 5.23, .045, .16, .58, 2.22)
+        beam(4.62, 5.20, 4.25, .08, 2.78, .08, use_glass=True)
+
+    elif scene.room_id == "twin_core":
+        beam(1.72, 1.18, 1.45, .55, 3.26, .10, use_glass=True)
+        beam(13.02, 1.18, 1.45, .55, 3.26, .10, use_glass=True)
+        beam(7.10, 3.96, 3.82, .14, 1.00, .075, use_glass=True)
+
+    elif scene.room_id == "trinity_lab":
+        beam(7.48, 1.10, 2.90, .36, 3.05, .09, use_glass=True)
+        for index in range(3):
+            beam(7.05 + index * 1.35, 8.16, .82, .45, 1.00, .07, use_glass=True)
+
+    elif scene.room_id == "garage":
+        for index in range(6):
+            beam(5.48 + index * .86, 1.05, .055, .12, .46, 2.72)
+        beam(5.34, 1.03, 5.32, .08, 3.18, .08)
+
+    elif scene.room_id == "kawaii_garden":
+        for index in range(6):
+            beam(6.36, 4.48 + index * .46, 3.38, .075, 2.24, .07)
+        beam(6.72, 4.35, .08, 2.62, 2.18, .08)
+        beam(9.30, 4.35, .08, 2.62, 2.18, .08)
+
+    elif scene.room_id == "pit":
+        beam(5.04, 4.13, 5.92, .09, .61, .055)
+        beam(5.70, 4.93, 4.60, .09, .44, .050)
+        beam(6.38, 6.05, 3.24, .09, .28, .045)
+
+    elif scene.room_id == "glasshouse":
+        for index in range(6):
+            beam(5.90, 1.22 + index * .96, 5.18, .075, 2.72, .065, use_glass=True)
+        beam(6.54, .94, .08, 6.10, 2.64, .08)
+        beam(10.36, .94, .08, 6.10, 2.64, .08)
+
+    elif scene.room_id == "quarter":
+        # Repeated awnings make the district read as one urban system without
+        # turning the civic spine into clutter.
+        for volume in get_space_massing_profile("quarter").volumes:
+            if volume.role != "primary" or volume.d < 1.2:
+                continue
+            awning_w = min(1.35, volume.w * .32)
+            beam(
+                volume.x + volume.w * .50 - awning_w / 2.0,
+                volume.y + volume.d - .06,
+                awning_w,
+                .16,
+                min(volume.h * .58, 1.48),
+                .065,
+                use_glass=True,
+            )
+
+
 class QuarterScene(BaseRoomScene):
     room_id = "quarter"
     room_label = "awake/quarter · living district"
@@ -436,6 +569,7 @@ class QuarterScene(BaseRoomScene):
         _add_architectural_ground(self, appearance, foundation)
         _add_circulation(self, appearance, .82)
         _add_massing(self, appearance)
+        _add_signature_details(self, appearance)
         _add_landscape(self, appearance)
         p = self.projector
 
