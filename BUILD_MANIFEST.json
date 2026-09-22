@@ -35,8 +35,8 @@
     },
     {
       "path": ".github/workflows/update-goldens.yml",
-      "size": 841,
-      "sha256": "6a327442e3b8f1b3729d5281270af8ab826d64d6134d3a831cfaf6329422ef00"
+      "size": 942,
+      "sha256": "df508b02486edfc1ea588159c50076929d6bfbd6f63d0bbebcdf5ec9b7ede825"
     },
     {
       "path": ".gitignore",
@@ -87,56 +87,6 @@
       "path": "awake_world/app.py",
       "size": 1045,
       "sha256": "2dbb472da0cdb42952d47a8c8d50514500cb3457f7df622340a894a74d8278ee"
-    },
-    {
-      "path": "awake_world/assets/audio/discover.wav",
-      "size": 52964,
-      "sha256": "dd4521cd59cacab09a645eab780f5b7bb0b4069fbd1c1838b98cebf11d636de5"
-    },
-    {
-      "path": "awake_world/assets/audio/home_day.wav",
-      "size": 352844,
-      "sha256": "7a5dd3300eb44dfddc41aff286c9c8429a62e75568cfd560b2b38a55b7005648"
-    },
-    {
-      "path": "awake_world/assets/audio/home_night.wav",
-      "size": 352844,
-      "sha256": "864e1e1cf22e77b5ba7065f76464f55cc358e5be560e67c51151504bcc81ba76"
-    },
-    {
-      "path": "awake_world/assets/audio/hq_day.wav",
-      "size": 352844,
-      "sha256": "08a2f94f1d1f400fc5dffa86b8733db3f4b1465734340e8043b78d10f626a004"
-    },
-    {
-      "path": "awake_world/assets/audio/hq_night.wav",
-      "size": 352844,
-      "sha256": "f7c0145f575dc4424e0f296c254359fa226f4ac5e14ed5637ee348697624f869"
-    },
-    {
-      "path": "awake_world/assets/audio/interact.wav",
-      "size": 35324,
-      "sha256": "ffa3cb02ce882dd34b476eff1a83fbffc3aa2362e5c5e9f2dc1c66fb7070c927"
-    },
-    {
-      "path": "awake_world/assets/audio/plaza_day.wav",
-      "size": 352844,
-      "sha256": "0360f95b365a6b0acb8e1953259785cf5059a23f25beb6df8d67204ee1da6820"
-    },
-    {
-      "path": "awake_world/assets/audio/plaza_night.wav",
-      "size": 352844,
-      "sha256": "ec9772788108b2a4ace7d4bd2b3f099e4d5e2110c242400a3aaf5a501b80ad5d"
-    },
-    {
-      "path": "awake_world/assets/audio/rooftop_day.wav",
-      "size": 352844,
-      "sha256": "0d2ec799ee5a82ef3a845a0add3347355b6951c4ffbcb43c58b6a5388584f030"
-    },
-    {
-      "path": "awake_world/assets/audio/rooftop_night.wav",
-      "size": 352844,
-      "sha256": "cadeb4ebc74fb4b5b29a708c79f9ed649c2627cc354a7f6928fb57ab9d57ad81"
     },
     {
       "path": "awake_world/design/__init__.py",
@@ -475,8 +425,8 @@
     },
     {
       "path": "tools/build_manifest.py",
-      "size": 2806,
-      "sha256": "8c311e617fc625e809c17df42a2afdc9b522e368a677bc8b7e2c370736587a26"
+      "size": 2926,
+      "sha256": "34b686f970ddf5324c586f3ef3ae650c3477e4afd065d615106548e4d1ba10de"
     },
     {
       "path": "tools/core_test.py",
@@ -505,8 +455,8 @@
     },
     {
       "path": "tools/render_golden_scenes.py",
-      "size": 4197,
-      "sha256": "25c02e547a79288f6313aa8a3302f521692e0fd5640f870fcf05eee2c3be58ea"
+      "size": 4347,
+      "sha256": "acc39dc7d965da813845d669c1795b7bcf1919bf4de9674ac6521e989b895569"
     },
     {
       "path": "tools/smoke_test.py",
