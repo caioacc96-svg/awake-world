@@ -2,6 +2,10 @@ from awake_world.design.massing import (
     HUMAN_SCALE_UNITS,
     SPACE_MASSING_PROFILES,
 )
+from awake_world.design.material_light import (
+    SPACE_MATERIAL_LIGHT_PROFILES,
+    resolve_space_appearance,
+)
 from awake_world.design.world_visuals import SPACE_VISUAL_PROFILES
 from awake_world.world.systems.spaces import SPACE_CATALOG
 
@@ -98,3 +102,71 @@ def test_mvd1_circulation_stays_inside_space_bounds() -> None:
             assert band.x >= 0 and band.y >= 0, space_id
             assert band.x + band.w <= profile.width_tiles, space_id
             assert band.y + band.d <= profile.depth_tiles, space_id
+
+
+
+def _mean_rgb(hex_color: str) -> float:
+    return sum(int(hex_color[index:index + 2], 16) for index in (1, 3, 5)) / 3.0
+
+
+def test_mvd2_material_light_profiles_cover_every_registered_space() -> None:
+    assert set(SPACE_MATERIAL_LIGHT_PROFILES) == set(SPACE_CATALOG)
+
+
+def test_mvd2_material_hierarchy_and_glass_language_are_bounded() -> None:
+    valid_glass_modes = {"recessed", "framed", "full"}
+    signatures: set[tuple[object, ...]] = set()
+
+    for space_id, profile in SPACE_MATERIAL_LIGHT_PROFILES.items():
+        assert profile.primary_family
+        assert profile.secondary_family
+        assert profile.landmark_family
+        assert profile.glass_mode in valid_glass_modes, space_id
+        assert 0.68 <= profile.glass_opacity <= 0.95, space_id
+        assert -0.25 <= profile.temperature_bias <= 0.25, space_id
+        assert 0.30 <= profile.contrast <= 0.85, space_id
+        assert 0.50 <= profile.weather_response <= 1.0, space_id
+
+        signature = (
+            profile.primary_family,
+            profile.secondary_family,
+            profile.landmark_family,
+            profile.glass_mode,
+        )
+        assert signature not in signatures, space_id
+        signatures.add(signature)
+
+
+def test_mvd2_phase_and_weather_response_is_coherent() -> None:
+    for space_id in SPACE_CATALOG:
+        day = resolve_space_appearance(space_id, "day", "clear")
+        dusk = resolve_space_appearance(space_id, "dusk", "clear")
+        night = resolve_space_appearance(space_id, "night", "clear")
+        rain = resolve_space_appearance(space_id, "day", "rain")
+
+        for appearance in (day, dusk, night, rain):
+            for color in (
+                appearance.floor_a,
+                appearance.floor_b,
+                appearance.floor_edge,
+                appearance.surface,
+                appearance.material,
+                appearance.structure,
+                appearance.circulation,
+                appearance.glass,
+                appearance.vegetation,
+                appearance.ambient,
+                appearance.accent,
+                appearance.label,
+                appearance.phase_wash,
+                appearance.weather_wash,
+            ):
+                assert len(color) == 7, (space_id, color)
+                assert color.startswith("#"), (space_id, color)
+                int(color[1:], 16)
+
+        assert _mean_rgb(day.surface) > _mean_rgb(night.surface), space_id
+        assert _mean_rgb(day.material) > _mean_rgb(night.material), space_id
+        assert dusk.phase_wash_alpha > day.phase_wash_alpha, space_id
+        assert night.phase_wash_alpha > dusk.phase_wash_alpha, space_id
+        assert rain.weather_wash_alpha > day.weather_wash_alpha, space_id
