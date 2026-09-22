@@ -49,6 +49,11 @@
       "sha256": "789dd240f645c94ecfa2aabcb49d1fb260d0c784004067126c7c1412c669b9ef"
     },
     {
+      "path": "BASELINE_0.4.1.md",
+      "size": 554,
+      "sha256": "300ec47a0cfcce4601ee8483a33d632cf3384508aff1c6a50c22f3fb9eae6a37"
+    },
+    {
       "path": "BUILD_NOTES_0.4.1.txt",
       "size": 1317,
       "sha256": "b0d38badaf59860d948e5574e5068991f183bdd2354696d4f81b5a09dc79cf7c"
