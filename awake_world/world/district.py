@@ -660,6 +660,7 @@ class AuthoredSpaceScene(BaseRoomScene):
         _add_architectural_ground(self, appearance, foundation)
         _add_circulation(self, appearance)
         _add_massing(self, appearance)
+        _add_signature_details(self, appearance)
         _add_landscape(self, appearance)
         p = self.projector
         definition = SPACE_CATALOG[self.space_id]
