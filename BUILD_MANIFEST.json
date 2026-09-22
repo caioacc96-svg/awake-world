@@ -235,8 +235,8 @@
     },
     {
       "path": "awake_world/world/district.py",
-      "size": 19942,
-      "sha256": "c87a6a3e97a755041d53e03707c615b1a42d10ab1b75bd120f9222d28e235fb6"
+      "size": 20195,
+      "sha256": "d6f4814d7b9a9e70cf9c7724ea8fb5141074efd078a4a0b688b0038a5ced6182"
     },
     {
       "path": "awake_world/world/environment.py",
@@ -250,8 +250,8 @@
     },
     {
       "path": "awake_world/world/items.py",
-      "size": 24659,
-      "sha256": "0085f7a8c934c2cf4acf79d954627bf15919d569758bd811c5087b5b2363e06b"
+      "size": 29352,
+      "sha256": "bdfb76f66a32b42d6b346660dc6b1a6750f583ae791250d12e51bdfa5fa32630"
     },
     {
       "path": "awake_world/world/lighting.py",
