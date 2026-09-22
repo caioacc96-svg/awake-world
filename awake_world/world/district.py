@@ -14,6 +14,10 @@ from awake_world.design.visual_foundation import (
     framed_scene_rect,
     get_space_visual_foundation_profile,
 )
+from awake_world.design.spatial_depth import (
+    StairFlight,
+    get_space_spatial_depth_profile,
+)
 from awake_world.world.items import (
     ArchitecturalPortalDoor,
     CollisionRect,
@@ -131,6 +135,113 @@ def _add_circulation(
         scene.addItem(path)
 
 
+def _add_stair_flight(
+    scene: BaseRoomScene,
+    stair: StairFlight,
+    appearance: ResolvedSpaceAppearance,
+) -> None:
+    """Render a real stepped volume tied to a raised plane."""
+
+    p = scene.projector
+    step_run = stair.run / stair.steps
+    for index in range(stair.steps):
+        level = index + 1
+        height = stair.rise * level / stair.steps
+        if stair.axis == "y":
+            x = stair.x
+            y = stair.y + stair.direction * step_run * level
+            w = stair.width
+            d = step_run + .018
+        else:
+            x = stair.x + stair.direction * step_run * level
+            y = stair.y
+            w = step_run + .018
+            d = stair.width
+        scene.addItem(
+            IsoArchitecturalBlock(
+                p,
+                x,
+                y,
+                w,
+                d,
+                height,
+                _q(appearance.surface).lighter(110),
+                _q(appearance.material).lighter(103),
+                _q(appearance.structure).darker(105),
+            )
+        )
+
+
+def _add_spatial_depth(
+    scene: BaseRoomScene,
+    appearance: ResolvedSpaceAppearance,
+) -> None:
+    """MVD-2.2: add authored elevation, stairs and structural support."""
+
+    p = scene.projector
+    profile = get_space_spatial_depth_profile(scene.room_id)
+
+    for plane in profile.planes:
+        if plane.kind in {"garden_step", "plant_terrace", "garden_edge"}:
+            top = _q(appearance.floor_a).lighter(106)
+        elif plane.kind in {"sunken_ring", "inner_ring", "social_core"}:
+            top = _q(appearance.material).darker(102)
+        else:
+            top = _q(appearance.surface).lighter(107)
+
+        scene.addItem(
+            IsoArchitecturalBlock(
+                p,
+                plane.x,
+                plane.y,
+                plane.w,
+                plane.d,
+                plane.h,
+                top,
+                _q(appearance.material),
+                _q(appearance.structure).darker(106),
+            )
+        )
+
+        # Thin inset on top prevents a raised plane from reading as a plain box.
+        inset = min(.16, plane.w * .08, plane.d * .12)
+        if plane.w > inset * 2.0 and plane.d > inset * 2.0:
+            scene.addItem(
+                IsoSurfacePatch(
+                    p,
+                    plane.x + inset,
+                    plane.y + inset,
+                    plane.w - inset * 2.0,
+                    plane.d - inset * 2.0,
+                    _q(appearance.circulation).lighter(105),
+                    _q(appearance.floor_edge).lighter(112),
+                    z=plane.h + .006,
+                    opacity=.72,
+                )
+            )
+
+    for stair in profile.stairs:
+        _add_stair_flight(scene, stair, appearance)
+
+    for line in profile.piers:
+        for index in range(line.count):
+            x = line.x + line.dx * index
+            y = line.y + line.dy * index
+            scene.addItem(
+                IsoArchitecturalBlock(
+                    p,
+                    x,
+                    y,
+                    line.w,
+                    line.d,
+                    line.h,
+                    _q(appearance.structure).lighter(112),
+                    _q(appearance.structure),
+                    _q(appearance.structure).darker(112),
+                )
+            )
+
+
 def _volume_colors(
     volume: MassingVolume,
     appearance: ResolvedSpaceAppearance,
@@ -229,6 +340,7 @@ def _add_architectural_volume(
     """Layer a canonical MVD-1 volume into an authored architectural assembly."""
 
     p = scene.projector
+    depth_profile = get_space_spatial_depth_profile(scene.room_id)
 
     # Contact shadow is a real projected footprint, not a global post-process.
     shadow = IsoSurfacePatch(
@@ -274,22 +386,85 @@ def _add_architectural_volume(
     body_y = volume.y + body_inset
     body_w = volume.w - body_inset * 2.0
     body_d = volume.d - body_inset * 2.0
-    scene.addItem(
-        IsoArchitecturalBlock(
-            p,
-            body_x,
-            body_y,
-            body_w,
-            body_d,
-            body_h,
-            top,
-            left,
-            right,
-            z=plinth_h,
-            opacity=opacity,
-            glass=glass_landmark,
-        )
+    split_body = (
+        volume.role in {"primary", "landmark"}
+        and volume.h >= 2.1
+        and body_w >= 1.35
+        and body_d >= .72
     )
+    if split_body:
+        reveal_h = min(depth_profile.floor_reveal, body_h * .12)
+        lower_h = max(.08, body_h * depth_profile.split_ratio)
+        upper_h = max(.06, body_h - lower_h - reveal_h)
+        extra_inset = min(
+            depth_profile.upper_setback,
+            max(.0, min(body_w, body_d) * .13),
+        )
+
+        scene.addItem(
+            IsoArchitecturalBlock(
+                p,
+                body_x,
+                body_y,
+                body_w,
+                body_d,
+                lower_h,
+                top,
+                left,
+                right,
+                z=plinth_h,
+                opacity=opacity,
+                glass=glass_landmark,
+            )
+        )
+        scene.addItem(
+            IsoArchitecturalBlock(
+                p,
+                body_x - .025,
+                body_y - .025,
+                body_w + .05,
+                body_d + .05,
+                reveal_h,
+                _q(appearance.surface).lighter(116),
+                _q(appearance.material).lighter(106),
+                _q(appearance.structure),
+                z=plinth_h + lower_h,
+                opacity=.94,
+            )
+        )
+        scene.addItem(
+            IsoArchitecturalBlock(
+                p,
+                body_x + extra_inset,
+                body_y + extra_inset,
+                max(.08, body_w - extra_inset * 2.0),
+                max(.08, body_d - extra_inset * 2.0),
+                upper_h,
+                top.lighter(104),
+                left.lighter(103),
+                right,
+                z=plinth_h + lower_h + reveal_h,
+                opacity=opacity,
+                glass=glass_landmark,
+            )
+        )
+    else:
+        scene.addItem(
+            IsoArchitecturalBlock(
+                p,
+                body_x,
+                body_y,
+                body_w,
+                body_d,
+                body_h,
+                top,
+                left,
+                right,
+                z=plinth_h,
+                opacity=opacity,
+                glass=glass_landmark,
+            )
+        )
 
     _add_facade_rhythm(
         scene,
@@ -568,6 +743,7 @@ class QuarterScene(BaseRoomScene):
         foundation = get_space_visual_foundation_profile(self.room_id)
         _add_architectural_ground(self, appearance, foundation)
         _add_circulation(self, appearance, .82)
+        _add_spatial_depth(self, appearance)
         _add_massing(self, appearance)
         _add_signature_details(self, appearance)
         _add_landscape(self, appearance)
@@ -659,6 +835,7 @@ class AuthoredSpaceScene(BaseRoomScene):
         foundation = get_space_visual_foundation_profile(self.space_id)
         _add_architectural_ground(self, appearance, foundation)
         _add_circulation(self, appearance)
+        _add_spatial_depth(self, appearance)
         _add_massing(self, appearance)
         _add_signature_details(self, appearance)
         _add_landscape(self, appearance)
