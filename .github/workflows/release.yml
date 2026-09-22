@@ -1,0 +1,97 @@
+name: Awake World 0.5 Release
+
+on:
+  push:
+    tags:
+      - 'v0.5.*'
+
+permissions:
+  contents: write
+
+env:
+  PYTHONUTF8: '1'
+  AWAKE_SAVE_DIR: ${{ github.workspace }}/.ci-save
+
+jobs:
+  validate:
+    name: RELEASE QUALITY GATES
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - run: python -m pip install --disable-pip-version-check -r requirements-dev.txt
+      - run: python tools/generate_audio_assets.py --force
+      - run: python -m compileall -q awake_world tools tests
+      - run: python tools/static_validate.py
+      - run: python tools/build_manifest.py --check
+      - run: python -m ruff check --select F awake_world/simulation awake_world/presentation awake_world/world/systems awake_world/world/save.py tests tools
+      - run: python -m mypy awake_world/simulation awake_world/presentation awake_world/world/save.py
+      - run: python -m pytest -q tests
+      - run: python tools/core_test.py
+      - run: python tools/deterministic_replay_test.py
+      - run: python tools/gameplay_tests.py
+
+  windows-release:
+    name: WINDOWS RELEASE · QT · VISUAL · PACKAGE · SMOKE
+    needs: validate
+    runs-on: windows-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - run: python -m pip install --disable-pip-version-check -r requirements.txt -r requirements-dev.txt
+      - run: python tools/generate_audio_assets.py --force
+      - name: Qt offscreen smoke
+        shell: pwsh
+        run: |
+          $env:QT_QPA_PLATFORM='offscreen'
+          $env:QT_LOGGING_RULES='qt.multimedia.*=false'
+          python tools/smoke_test.py
+      - name: Visual regression
+        shell: pwsh
+        run: |
+          $env:QT_QPA_PLATFORM='offscreen'
+          $env:QT_LOGGING_RULES='qt.multimedia.*=false'
+          python tools/render_golden_scenes.py --output visual_output
+      - name: Write build metadata
+        run: python tools/write_build_metadata.py
+      - name: Build executable
+        run: python -m PyInstaller --noconfirm --clean awake_world.spec
+      - name: Packaged smoke
+        shell: pwsh
+        run: |
+          $env:QT_QPA_PLATFORM='offscreen'
+          $env:QT_LOGGING_RULES='qt.multimedia.*=false'
+          $p = Start-Process -FilePath '.\dist\AWAKE_WORLD.exe' -ArgumentList '--smoke-test' -PassThru -Wait
+          if ($p.ExitCode -ne 0) { throw "Packaged smoke failed with exit code $($p.ExitCode)" }
+      - name: Package + checksums
+        shell: pwsh
+        run: |
+          python tools/package_windows.py
+          $hash = (Get-FileHash '.\release\AwakeWorld_0.5_GLOBAL_Windows.zip' -Algorithm SHA256).Hash.ToLower()
+          "$hash  AwakeWorld_0.5_GLOBAL_Windows.zip" | Set-Content -NoNewline '.\release\AwakeWorld_0.5_GLOBAL_Windows.zip.sha256'
+      - name: Upload release artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: AwakeWorld_0.5_GLOBAL_Windows
+          path: |
+            release/AwakeWorld_0.5_GLOBAL_Windows.zip
+            release/AwakeWorld_0.5_GLOBAL_Windows.zip.sha256
+          if-no-files-found: error
+      - name: Publish GitHub release
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create $env:GITHUB_REF_NAME `
+            '.\release\AwakeWorld_0.5_GLOBAL_Windows.zip' `
+            '.\release\AwakeWorld_0.5_GLOBAL_Windows.zip.sha256' `
+            --title "Awake World 0.5 GLOBAL" `
+            --notes-file CHANGELOG.md

@@ -1,0 +1,5 @@
+awake/world 0.5 GLOBAL
+
+Runtime dependency: PySide6 / Qt for Python.
+PySide6 licensing information is distributed by the Qt for Python project and must be reviewed for the selected distribution model.
+Python standard library components retain their respective Python Software Foundation licensing.

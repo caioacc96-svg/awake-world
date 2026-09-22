@@ -1,0 +1,114 @@
+name: Awake World 0.5 Gates
+
+on:
+  push:
+    branches: [main, 'feat/**']
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: awake-05-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  PYTHONUTF8: '1'
+  AWAKE_SAVE_DIR: ${{ github.workspace }}/.ci-save
+
+jobs:
+  fast-linux:
+    name: STATIC · TYPE · UNIT · SIMULATION · SAVE
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - name: Install test tooling
+        run: python -m pip install --disable-pip-version-check -r requirements-dev.txt
+      - name: Generate deterministic audio assets
+        run: python tools/generate_audio_assets.py --force
+      - name: Syntax + authored invariants
+        run: |
+          python -m compileall -q awake_world tools tests
+          python tools/static_validate.py
+          python tools/build_manifest.py --check
+      - name: Lint critical Python errors
+        run: python -m ruff check --select F awake_world/simulation awake_world/presentation awake_world/world/systems awake_world/world/save.py tests tools/deterministic_replay_test.py tools/gameplay_tests.py tools/render_golden_scenes.py tools/package_windows.py
+      - name: Type pure boundaries
+        run: python -m mypy awake_world/simulation awake_world/presentation awake_world/world/save.py
+      - name: Unit + deterministic simulation
+        run: python -m pytest -q tests
+      - name: Core systems
+        run: python tools/core_test.py
+      - name: Deterministic replay driver
+        run: python tools/deterministic_replay_test.py
+      - name: Automated gameplay drivers
+        run: python tools/gameplay_tests.py
+
+  windows-qt:
+    name: WINDOWS QT · VISUAL · PACKAGE · PACKAGED SMOKE
+    runs-on: windows-latest
+    timeout-minutes: 25
+    needs: fast-linux
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - name: Install runtime + tooling
+        run: python -m pip install --disable-pip-version-check -r requirements.txt -r requirements-dev.txt
+      - name: Generate deterministic audio assets
+        run: python tools/generate_audio_assets.py --force
+      - name: Qt offscreen scene smoke
+        shell: pwsh
+        run: |
+          $env:QT_QPA_PLATFORM='offscreen'
+          $env:QT_LOGGING_RULES='qt.multimedia.*=false'
+          python tools/smoke_test.py
+      - name: Render deterministic golden scenes
+        id: visual
+        continue-on-error: true
+        shell: pwsh
+        run: |
+          $env:QT_QPA_PLATFORM='offscreen'
+          $env:QT_LOGGING_RULES='qt.multimedia.*=false'
+          python tools/render_golden_scenes.py --output visual_output
+      - name: Write build metadata
+        run: python tools/write_build_metadata.py
+      - name: Build Windows executable
+        run: python -m PyInstaller --noconfirm --clean awake_world.spec
+      - name: Packaged executable smoke
+        shell: pwsh
+        run: |
+          $env:QT_QPA_PLATFORM='offscreen'
+          $env:QT_LOGGING_RULES='qt.multimedia.*=false'
+          $p = Start-Process -FilePath '.\dist\AWAKE_WORLD.exe' -ArgumentList '--smoke-test' -PassThru -Wait
+          if ($p.ExitCode -ne 0) { throw "Packaged smoke failed with exit code $($p.ExitCode)" }
+      - name: Package GLOBAL ZIP
+        run: python tools/package_windows.py
+      - name: Artifact integrity
+        shell: pwsh
+        run: |
+          if (!(Test-Path '.\release\AwakeWorld_0.5_GLOBAL_Windows.zip')) { throw 'release ZIP missing' }
+          Get-FileHash '.\release\AwakeWorld_0.5_GLOBAL_Windows.zip' -Algorithm SHA256 | Format-List
+      - name: Enforce visual gate
+        if: steps.visual.outcome != 'success'
+        shell: pwsh
+        run: throw 'VISUAL gate failed; inspect awake-05-visual-output or generate a reviewed baseline candidate.'
+      - name: Upload visual diffs/renders on failure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: awake-05-visual-output
+          path: visual_output
+          if-no-files-found: ignore
+      - name: Upload Windows candidate
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: AwakeWorld_0.5_GLOBAL_Windows
+          path: release/AwakeWorld_0.5_GLOBAL_Windows.zip
+          if-no-files-found: error

@@ -1,0 +1,78 @@
+QMainWindow, QWidget#Root {
+    background: {{night}};
+    color: {{night_text}};
+}
+QWidget#TopBar {
+    background: {{night_surface}};
+    border-bottom: 1px solid {{night_surface_alt}};
+}
+QLabel#BrandLabel {
+    color: {{night_text}};
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.35px;
+}
+QLabel#RoomLabel {
+    color: {{night_text_soft}};
+    font-size: 10px;
+}
+QLabel#StatusPill {
+    color: {{night_text}};
+    background: {{night_surface_alt}};
+    border-radius: 12px;
+    padding: 5px 9px;
+    font-size: 10px;
+}
+QPushButton#TimeButton, QPushButton#HelpButton {
+    background: transparent;
+    color: {{night_text_soft}};
+    border: 1px solid {{night_surface_alt}};
+    border-radius: 9px;
+    padding: 5px 9px;
+    font-size: 10px;
+}
+QPushButton#TimeButton:hover, QPushButton#HelpButton:hover {
+    background: {{night_surface_alt}};
+    color: {{night_text}};
+}
+QFrame#ActionCard {
+    background: {{night_surface}};
+    border: 1px solid {{night_surface_alt}};
+    border-radius: 13px;
+}
+QLabel#ActionEyebrow {
+    color: {{night_text_soft}};
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.7px;
+}
+QLabel#ActionTitle {
+    color: {{night_text}};
+    font-size: 12px;
+    font-weight: 700;
+}
+QLabel#ActionHint, QLabel#BuildLabel {
+    color: {{night_text_soft}};
+    font-size: 9px;
+}
+QWidget#Footer {
+    background: {{night}};
+    border-top: 1px solid {{night_surface_alt}};
+}
+QToolTip {
+    background: {{night_surface}};
+    color: {{night_text}};
+    border: 1px solid {{night_surface_alt}};
+    padding: 5px;
+}
+QFrame#FieldPanel {
+    background: {{night_surface}};
+    border: 1px solid {{night_surface_alt}};
+    border-radius: 16px;
+}
+QLabel#PanelTitle, QLabel#PanelText { color: {{night_text}}; }
+QLabel#PanelMeta, QLabel#PanelHint { color: {{night_text_soft}}; }
+QLabel#PanelSection { color: {{awake_blue_soft}}; font-size: 9px; font-weight: 700; letter-spacing: 0.9px; margin-top: 8px; }
+QPushButton#PanelClose { background: {{night_surface_alt}}; color: {{night_text_soft}}; border: none; border-radius: 14px; font-size: 16px; }
+QPushButton#PanelClose:hover { color: {{night_text}}; }
+QScrollArea#PanelScroll, QWidget#PanelBody { background: transparent; }

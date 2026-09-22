@@ -1,0 +1,11 @@
+{
+  "build_version": "0.5.0-dev",
+  "identity": "awake/world — THE LIVING NETWORK",
+  "save_schema": 6,
+  "simulation_hz": 60,
+  "release_channel": "GLOBAL",
+  "commit": "2a340ad02859cf14c51ced6fff13bfaf62e9517c",
+  "ref": "feat/0.5-global",
+  "built_at_utc": "2026-09-22T18:19:18+00:00",
+  "ci": false
+}
