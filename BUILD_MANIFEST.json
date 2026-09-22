@@ -35,8 +35,8 @@
     },
     {
       "path": ".github/workflows/update-goldens.yml",
-      "size": 1696,
-      "sha256": "03839cc3ea94e6d807109ec69fcb73231bd247aac5a780dfc768845e49e80f77"
+      "size": 942,
+      "sha256": "df508b02486edfc1ea588159c50076929d6bfbd6f63d0bbebcdf5ec9b7ede825"
     },
     {
       "path": ".gitignore",
