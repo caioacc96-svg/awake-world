@@ -32,7 +32,6 @@ SCENES = [
 def image_signature(image) -> dict[str, object]:
     # Stable coarse signature: 16x9 luminance buckets + histogram bounds.
     from PySide6.QtCore import QSize
-    from PySide6.QtGui import QImage
     small = image.scaled(QSize(16, 9))
     values=[]
     for y in range(small.height()):
