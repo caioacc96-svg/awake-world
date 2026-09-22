@@ -10,6 +10,7 @@ from awake_world.design.visual_foundation import (
     SPACE_VISUAL_FOUNDATION_PROFILES,
     framed_scene_rect,
 )
+from awake_world.design.spatial_depth import SPACE_SPATIAL_DEPTH_PROFILES
 from awake_world.design.world_visuals import SPACE_VISUAL_PROFILES
 from awake_world.world.systems.spaces import SPACE_CATALOG
 
@@ -218,3 +219,41 @@ def test_mvd21_framing_tightens_presentation_without_changing_massing() -> None:
         assert framed[3] < massing.scene_rect[3], space_id
         assert framed[2] >= massing.scene_rect[2] * .72, space_id
         assert framed[3] >= massing.scene_rect[3] * .72, space_id
+
+
+# MVD-2.2 — Spatial Depth Pass
+
+def test_mvd22_spatial_depth_profiles_cover_every_registered_space() -> None:
+    assert set(SPACE_SPATIAL_DEPTH_PROFILES) == set(SPACE_CATALOG)
+
+
+def test_mvd22_spatial_depth_is_structured_and_inside_bounds() -> None:
+    for space_id, depth in SPACE_SPATIAL_DEPTH_PROFILES.items():
+        massing = SPACE_MASSING_PROFILES[space_id]
+        assert 0.04 <= depth.upper_setback <= 0.16, space_id
+        assert 0.48 <= depth.split_ratio <= 0.64, space_id
+        assert 0.035 <= depth.floor_reveal <= 0.07, space_id
+        assert depth.planes, space_id
+        assert depth.stairs, space_id
+
+        for plane in depth.planes:
+            assert plane.w > .4 and plane.d > .4 and plane.h > 0, space_id
+            assert 0 <= plane.x <= massing.width_tiles, space_id
+            assert 0 <= plane.y <= massing.depth_tiles, space_id
+            assert plane.x + plane.w <= massing.width_tiles + .01, space_id
+            assert plane.y + plane.d <= massing.depth_tiles + .01, space_id
+            assert plane.h <= .35, space_id
+
+        for stair in depth.stairs:
+            assert stair.axis in {"x", "y"}, space_id
+            assert stair.direction in {-1, 1}, space_id
+            assert 3 <= stair.steps <= 6, space_id
+            assert stair.width >= 1.4, space_id
+            assert .4 <= stair.run <= 1.0, space_id
+            assert .10 <= stair.rise <= .32, space_id
+            assert 0 <= stair.x <= massing.width_tiles, space_id
+            assert 0 <= stair.y <= massing.depth_tiles, space_id
+
+        for line in depth.piers:
+            assert 2 <= line.count <= 6, space_id
+            assert line.w > 0 and line.d > 0 and line.h > .8, space_id
