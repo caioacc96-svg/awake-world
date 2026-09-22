@@ -115,8 +115,8 @@
     },
     {
       "path": "awake_world/design/spatial_depth.py",
-      "size": 5836,
-      "sha256": "ed1673049d44756541686bde6b75ff183ac39c53c569f78ce23b5c29295036b3"
+      "size": 5817,
+      "sha256": "5294da96db25eb8dfa6f43829a72fcf1e562abf9b0510399964977e139fcfcc8"
     },
     {
       "path": "awake_world/design/theme/__init__.py",
@@ -240,8 +240,8 @@
     },
     {
       "path": "awake_world/world/district.py",
-      "size": 30353,
-      "sha256": "3de022d4d7d93868e937bd2f2b90a73c4ec6e5d28ed0fa22067d889504ff683d"
+      "size": 31298,
+      "sha256": "704de52463695c786f4b593574d45e664d80b9e4baad498a0058e910c3440ede"
     },
     {
       "path": "awake_world/world/environment.py",
