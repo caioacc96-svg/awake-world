@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import math
 import os
 from pathlib import Path
 import sys
@@ -97,15 +98,15 @@ def image_signature(image) -> dict[str, object]:
                 / 255
             )
 
+    subject_mean = sum(subject_values) / max(1, len(subject_values))
+    subject_variance = sum((value - subject_mean) ** 2 for value in subject_values) / max(1, len(subject_values))
     raw = json.dumps(values, separators=(",", ":")).encode()
     return {
         "width": image.width(),
         "height": image.height(),
         "luma": values,
-        "subject_luma": round(
-            sum(subject_values) / max(1, len(subject_values)),
-            4,
-        ),
+        "subject_luma": round(subject_mean, 4),
+        "subject_contrast": round(math.sqrt(subject_variance), 4),
         "subject_samples": len(subject_values),
         "hash": hashlib.sha256(raw).hexdigest(),
     }
@@ -178,6 +179,26 @@ def validate_mvd2_material_light_response(
     return failures
 
 
+def validate_mvd21_visual_foundation(
+    signatures: dict[str, dict[str, object]],
+) -> list[str]:
+    """MVD-2.1: authored architecture must dominate the static frame."""
+
+    failures: list[str] = []
+    for space_id in MVD1_SPACES:
+        key = f"mvd2_{space_id}_day_clear"
+        signature = signatures[key]
+        samples = signature.get("subject_samples")
+        contrast = signature.get("subject_contrast")
+        assert isinstance(samples, int)
+        assert isinstance(contrast, (float, int))
+        if samples < 390:
+            failures.append(f"{space_id}:subject_samples={samples}:min=390")
+        if float(contrast) < 0.090:
+            failures.append(f"{space_id}:subject_contrast={float(contrast):.4f}:min=0.090")
+    return failures
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--update", action="store_true")
@@ -236,6 +257,12 @@ def main() -> int:
         print("AWAKE_MVD2_MATERIAL_LIGHT_FAILED", *material_light_failures, sep="\n")
         return 4
     print("AWAKE_MVD2_MATERIAL_LIGHT_OK")
+
+    foundation_failures = validate_mvd21_visual_foundation(current)
+    if foundation_failures:
+        print("AWAKE_MVD21_VISUAL_FOUNDATION_FAILED", *foundation_failures, sep="\\n")
+        return 5
+    print("AWAKE_MVD21_VISUAL_FOUNDATION_OK")
 
     if args.update:
         baseline_path.parent.mkdir(parents=True, exist_ok=True)
