@@ -15,12 +15,13 @@ from awake_world.design.visual_foundation import (
     get_space_visual_foundation_profile,
 )
 from awake_world.world.items import (
+    ArchitecturalPortalDoor,
     CollisionRect,
     InteractionSpec,
+    IsoArchitecturalBlock,
     IsoBlock,
     IsoSurfacePatch,
     PlantItem,
-    PortalDoor,
     ZoneLabel,
 )
 from awake_world.world.room import BaseRoomScene
@@ -183,10 +184,12 @@ def _add_facade_rhythm(
         front_x = volume.x + body_inset + front_margin
         front_y = volume.y + volume.d - body_inset - .045
         scene.addItem(
-            IsoBlock(
+            IsoArchitecturalBlock(
                 p, front_x, front_y, front_w, .085, window_h,
                 glass.lighter(108), glass, frame,
-                z=window_z, opacity=min(.94, appearance.glass_opacity + .06),
+                z=window_z,
+                opacity=min(.94, appearance.glass_opacity + .06),
+                glass=True,
             )
         )
         bays = max(2, min(foundation.facade_bays, round(front_w / .55) + 1))
@@ -206,10 +209,12 @@ def _add_facade_rhythm(
         side_x = volume.x + volume.w - body_inset - .045
         side_y = volume.y + body_inset + side_margin
         scene.addItem(
-            IsoBlock(
+            IsoArchitecturalBlock(
                 p, side_x, side_y, .085, side_d, window_h,
                 glass.lighter(106), glass.darker(102), frame,
-                z=window_z, opacity=min(.93, appearance.glass_opacity + .04),
+                z=window_z,
+                opacity=min(.93, appearance.glass_opacity + .04),
+                glass=True,
             )
         )
 
@@ -252,7 +257,7 @@ def _add_architectural_volume(
 
     # Darker plinth anchors the volume and fixes the previous floating-box read.
     scene.addItem(
-        IsoBlock(
+        IsoArchitecturalBlock(
             p,
             volume.x,
             volume.y,
@@ -270,7 +275,7 @@ def _add_architectural_volume(
     body_w = volume.w - body_inset * 2.0
     body_d = volume.d - body_inset * 2.0
     scene.addItem(
-        IsoBlock(
+        IsoArchitecturalBlock(
             p,
             body_x,
             body_y,
@@ -282,6 +287,7 @@ def _add_architectural_volume(
             right,
             z=plinth_h,
             opacity=opacity,
+            glass=glass_landmark,
         )
     )
 
@@ -315,7 +321,7 @@ def _add_architectural_volume(
 
     overhang = min(foundation.cap_overhang, max(.015, min(volume.w, volume.d) * .14))
     scene.addItem(
-        IsoBlock(
+        IsoArchitecturalBlock(
             p,
             volume.x - overhang,
             volume.y - overhang,
@@ -435,7 +441,7 @@ class QuarterScene(BaseRoomScene):
 
         for space_id, (x, y) in self.PORTALS.items():
             threshold_appearance = resolve_space_appearance(space_id, self.phase, self.weather)
-            door = PortalDoor(p, x, y, _q(threshold_appearance.accent))
+            door = ArchitecturalPortalDoor(p, x, y, _q(threshold_appearance.accent))
             self.addItem(door)
             self.register_animation(door)
             definition = SPACE_CATALOG[space_id]
@@ -551,7 +557,7 @@ class AuthoredSpaceScene(BaseRoomScene):
 
         exit_x = massing.width_tiles / 2.0
         exit_y = massing.depth_tiles - 1.15
-        exit_door = PortalDoor(p, exit_x, exit_y, _q(appearance.accent))
+        exit_door = ArchitecturalPortalDoor(p, exit_x, exit_y, _q(appearance.accent))
         self.addItem(exit_door)
         self.register_animation(exit_door)
         self.interactions.append(
