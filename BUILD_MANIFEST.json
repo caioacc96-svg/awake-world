@@ -490,8 +490,8 @@
     },
     {
       "path": "tools/render_golden_scenes.py",
-      "size": 7836,
-      "sha256": "a5aa4b6b01981b4bd9ff87c38106fd08fc8fe3cddac146e8edbac58c4374bfa8"
+      "size": 9003,
+      "sha256": "6ed97bad0dffcd0de02ddd81ecfbcd5afd7eb51104b5e3763b5b77f2c858d2e5"
     },
     {
       "path": "tools/smoke_test.py",
