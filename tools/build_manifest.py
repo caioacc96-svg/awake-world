@@ -116,14 +116,15 @@ def main() -> int:
         if not target.exists():
             raise SystemExit("BUILD_MANIFEST_MISSING")
         current_text = target.read_text(encoding="utf-8")
-        if current_text != rendered:
-            try:
-                current = json.loads(current_text)
-                delta = manifest_delta(current, manifest)
-                print("BUILD_MANIFEST_DELTA")
-                print(json.dumps(delta, indent=2, ensure_ascii=False))
-            except (json.JSONDecodeError, TypeError, KeyError) as exc:
-                print(f"BUILD_MANIFEST_PARSE_ERROR: {exc}")
+        try:
+            current = json.loads(current_text)
+        except (json.JSONDecodeError, TypeError, KeyError) as exc:
+            print(f"BUILD_MANIFEST_PARSE_ERROR: {exc}")
+            raise SystemExit("BUILD_MANIFEST_OUT_OF_DATE") from exc
+        if current != manifest:
+            delta = manifest_delta(current, manifest)
+            print("BUILD_MANIFEST_DELTA")
+            print(json.dumps(delta, indent=2, ensure_ascii=False))
             raise SystemExit("BUILD_MANIFEST_OUT_OF_DATE")
         print("AWAKE_MANIFEST_OK")
         return 0

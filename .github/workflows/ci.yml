@@ -1,4 +1,4 @@
-name: Awake World 0.5 Gates
+name: Awake World 0.6 Gates
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: awake-05-${{ github.ref }}
+  group: awake-06-${{ github.ref }}
   cancel-in-progress: true
 
 env:
@@ -87,13 +87,14 @@ jobs:
           $env:QT_LOGGING_RULES='qt.multimedia.*=false'
           $p = Start-Process -FilePath '.\dist\AWAKE_WORLD.exe' -ArgumentList '--smoke-test' -PassThru -Wait
           if ($p.ExitCode -ne 0) { throw "Packaged smoke failed with exit code $($p.ExitCode)" }
-      - name: Package GLOBAL ZIP
+      - name: Package Windows candidate
         run: python tools/package_windows.py
       - name: Artifact integrity
         shell: pwsh
         run: |
-          if (!(Test-Path '.\release\AwakeWorld_0.5_GLOBAL_Windows.zip')) { throw 'release ZIP missing' }
-          Get-FileHash '.\release\AwakeWorld_0.5_GLOBAL_Windows.zip' -Algorithm SHA256 | Format-List
+          $zip = Get-ChildItem '.\release\AwakeWorld_*_Windows.zip' | Select-Object -First 1
+          if ($null -eq $zip) { throw 'Windows candidate ZIP missing' }
+          Get-FileHash $zip.FullName -Algorithm SHA256 | Format-List
       - name: Enforce visual gate
         if: steps.visual.outcome != 'success'
         shell: pwsh
@@ -102,13 +103,13 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: awake-05-visual-output
+          name: awake-06-visual-output
           path: visual_output
           if-no-files-found: ignore
       - name: Upload Windows candidate
         if: success()
         uses: actions/upload-artifact@v4
         with:
-          name: AwakeWorld_0.5_GLOBAL_Windows
-          path: release/AwakeWorld_0.5_GLOBAL_Windows.zip
+          name: AwakeWorld_0.6_DEV_Windows
+          path: release/AwakeWorld_*_Windows.zip
           if-no-files-found: error

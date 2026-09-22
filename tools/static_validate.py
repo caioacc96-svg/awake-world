@@ -84,7 +84,7 @@ for name in required_audio:
     except wave.Error as exc:
         fail(f"invalid WAV {name}: {exc}")
 
-# Build 0.5 GLOBAL architecture and canonical experience contract must be present.
+# 0.5 baseline architecture and the canonical experience contract must remain present in 0.6.
 for relative in (
     "awake_world/world/state.py",
     "awake_world/world/district.py",
@@ -128,10 +128,10 @@ for space_id in ("quarter","central_plaza","observatory","grid","twin_core","tri
         fail(f"missing Awake Quarter space definition: {space_id}")
 
 
-# 0.5 invariants that must not regress silently.
+# Frozen 0.5 invariants inherited by the 0.6 development line.
 version = (ROOT / "VERSION").read_text(encoding="utf-8").strip()
-if not version.startswith("0.5."):
-    fail(f"unexpected GLOBAL version: {version}")
+if not re.fullmatch(r"0\.(?:5|6)\.\d+(?:-dev)?", version):
+    fail(f"unexpected Awake World version: {version}")
 
 state_source = (ROOT / "awake_world" / "world" / "state.py").read_text(encoding="utf-8")
 if "schema_version: int = 6" not in state_source:

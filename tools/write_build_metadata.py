@@ -23,7 +23,7 @@ def main() -> int:
         "identity": "awake/world — THE LIVING NETWORK",
         "save_schema": 6,
         "simulation_hz": 60,
-        "release_channel": "GLOBAL",
+        "release_channel": "DEVELOPMENT" if version.endswith("-dev") else "GLOBAL",
         "commit": os.environ.get("GITHUB_SHA", git_value("rev-parse", "HEAD")),
         "ref": os.environ.get("GITHUB_REF_NAME", git_value("branch", "--show-current")),
         "built_at_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),

@@ -30,8 +30,8 @@
     },
     {
       "path": ".github/workflows/ci.yml",
-      "size": 4458,
-      "sha256": "95958628dd0b24adcb153eb5568ada5109dd44c722019015956c17eef2d2ce57"
+      "size": 4480,
+      "sha256": "c43dbfb145080bee034b14ccc6638ab858b170f45e7e0b8f1840c577ceaa0212"
     },
     {
       "path": ".github/workflows/release.yml",
@@ -87,11 +87,6 @@
       "path": "VERSION",
       "size": 10,
       "sha256": "f02880b17e4ef60ef45a1d03a6457c761f1c4e1167246f57fcb4016673cc736b"
-    },
-    {
-      "path": "awake_world.spec",
-      "size": 747,
-      "sha256": "cdeea45c8a7222fe1496cfb733b055e7106c531a90866f8885c526c9a9861df3"
     },
     {
       "path": "awake_world/__init__.py",
@@ -359,6 +354,11 @@
       "sha256": "eb167be8daf4686765abee1127f917a5e2547ce2b8b5c5c88a063f8d575045a5"
     },
     {
+      "path": "awake_world.spec",
+      "size": 747,
+      "sha256": "cdeea45c8a7222fe1496cfb733b055e7106c531a90866f8885c526c9a9861df3"
+    },
+    {
       "path": "data/build.json",
       "size": 244,
       "sha256": "ab3f80217e838fd115d935374fcce93753cbb7c337817cc8c45fc8609e89dcc2"
@@ -450,8 +450,8 @@
     },
     {
       "path": "tools/build_manifest.py",
-      "size": 5114,
-      "sha256": "ac2ee0fce5380e1f5cd390b4e807ef0cb190495672e53544119d68760a085194"
+      "size": 5149,
+      "sha256": "d2e457afc5900818fb97e901230423f6ae561839acb237a1b1d43778e72858c8"
     },
     {
       "path": "tools/core_test.py",
@@ -475,8 +475,8 @@
     },
     {
       "path": "tools/package_windows.py",
-      "size": 1355,
-      "sha256": "3bc0231f5747132aebea68bbf26f3dec628e389241a8bbdbc05f6d5a1352478a"
+      "size": 1788,
+      "sha256": "b2f3537d00580104afad04eb3be714d6e122e8ccb7fe48b9025196bb79ebf9d6"
     },
     {
       "path": "tools/render_golden_scenes.py",
@@ -490,13 +490,13 @@
     },
     {
       "path": "tools/static_validate.py",
-      "size": 7194,
-      "sha256": "4e82beb329eb64bb0bee2db23679c70183d3555db83215a22dea653e0696527a"
+      "size": 7248,
+      "sha256": "4b64054776c5c6cc3c179dfeba8192c0890a827156c82ddf51c38f49904d6995"
     },
     {
       "path": "tools/write_build_metadata.py",
-      "size": 1370,
-      "sha256": "7e78db5865c2ff0729bc2cb96a1f72ec67b05edd0e501e98f8eabdf91c7a9b0d"
+      "size": 1417,
+      "sha256": "a8246c53edaa4ed1489d1b31026738dc265a0299e88bc4f68e91d5e11ca9f33e"
     },
     {
       "path": "verify_awake.cmd",
