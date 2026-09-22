@@ -8,14 +8,22 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 EXCLUDED_DIRS = {".git", ".pytest_cache", ".mypy_cache", ".ruff_cache", "__pycache__", "build", "dist", "release", "diagnostics", "visual_output"}
 EXCLUDED_SUFFIXES = {".pyc", ".pyo"}
+TEXT_SUFFIXES = {
+    ".cfg", ".cmd", ".css", ".html", ".ini", ".js", ".json", ".md", ".ps1",
+    ".py", ".qss", ".spec", ".toml", ".ts", ".txt", ".xml", ".yaml", ".yml",
+}
+TEXT_NAMES = {"VERSION", ".gitignore", ".gitattributes"}
 
 
-def sha256(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as handle:
-        for block in iter(lambda: handle.read(1024 * 1024), b""):
-            digest.update(block)
-    return digest.hexdigest()
+def canonical_bytes(path: Path) -> bytes:
+    payload = path.read_bytes()
+    if path.suffix.lower() in TEXT_SUFFIXES or path.name in TEXT_NAMES:
+        payload = payload.replace(b"\r\n", b"\n").replace(b"\r", b"\n")
+    return payload
+
+
+def sha256_bytes(payload: bytes) -> str:
+    return hashlib.sha256(payload).hexdigest()
 
 
 def included(path: Path) -> bool:
@@ -34,7 +42,8 @@ def build_manifest() -> dict[str, object]:
     files: list[dict[str, object]] = []
     for path in sorted(p for p in ROOT.rglob("*") if p.is_file() and included(p)):
         relative = path.relative_to(ROOT).as_posix()
-        files.append({"path": relative, "size": path.stat().st_size, "sha256": sha256(path)})
+        payload = canonical_bytes(path)
+        files.append({"path": relative, "size": len(payload), "sha256": sha256_bytes(payload)})
     return {
         "build": version,
         "name": "Awake World — 0.5 GLOBAL",
@@ -118,7 +127,7 @@ def main() -> int:
             raise SystemExit("BUILD_MANIFEST_OUT_OF_DATE")
         print("AWAKE_MANIFEST_OK")
         return 0
-    target.write_text(rendered, encoding="utf-8")
+    target.write_text(rendered, encoding="utf-8", newline="\n")
     print(f"AWAKE_MANIFEST_WRITTEN files={len(manifest['files'])}")
     return 0
 
