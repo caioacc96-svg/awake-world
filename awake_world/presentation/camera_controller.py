@@ -23,11 +23,11 @@ class CameraState:
 
 
 CAMERA_PROFILES: dict[str, CameraProfile] = {
-    "outdoor": CameraProfile(damping=10.5, dead_zone=10.0, look_ahead_seconds=0.14, look_ahead_limit=52.0, zoom=0.98),
-    "plaza": CameraProfile(damping=10.0, dead_zone=11.0, look_ahead_seconds=0.16, look_ahead_limit=58.0, zoom=0.96),
-    "indoor": CameraProfile(damping=12.0, dead_zone=6.0, look_ahead_seconds=0.08, look_ahead_limit=30.0, zoom=1.05),
-    "rooftop": CameraProfile(damping=9.0, dead_zone=9.0, look_ahead_seconds=0.12, look_ahead_limit=45.0, zoom=0.94),
-    "social": CameraProfile(damping=11.0, dead_zone=7.0, look_ahead_seconds=0.10, look_ahead_limit=34.0, zoom=1.02),
+    "outdoor": CameraProfile(damping=10.5, dead_zone=10.0, look_ahead_seconds=0.14, look_ahead_limit=52.0, zoom=1.08),
+    "plaza": CameraProfile(damping=10.0, dead_zone=11.0, look_ahead_seconds=0.16, look_ahead_limit=58.0, zoom=1.06),
+    "indoor": CameraProfile(damping=12.0, dead_zone=6.0, look_ahead_seconds=0.08, look_ahead_limit=30.0, zoom=1.15),
+    "rooftop": CameraProfile(damping=9.0, dead_zone=9.0, look_ahead_seconds=0.12, look_ahead_limit=45.0, zoom=1.04),
+    "social": CameraProfile(damping=11.0, dead_zone=7.0, look_ahead_seconds=0.10, look_ahead_limit=34.0, zoom=1.11),
 }
 
 
