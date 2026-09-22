@@ -46,7 +46,7 @@ def build_manifest() -> dict[str, object]:
         files.append({"path": relative, "size": len(payload), "sha256": sha256_bytes(payload)})
     return {
         "build": version,
-        "name": "Awake World — 0.5 GLOBAL",
+        "name": f"Awake World — {version}",
         "identity": "awake/world — THE LIVING NETWORK",
         "canonical_windows_entry": "AWAKE_WORLD.exe",
         "save_schema": 6,

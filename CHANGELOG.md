@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.6.0-dev — THE LIVING QUARTER / MVD
+
+- Started the 0.6 visual-development cycle from the frozen v0.5.0 GLOBAL baseline.
+- Added the canonical MVD contract for cross-world design iterations.
+- Added centralized global/per-space visual profiles so all environments evolve through one authored system.
+- Moved Awake Quarter thresholds and authored-space palettes onto the shared visual profile layer.
+- Normalized technology/gaming architecture language away from cyberpunk/generic-dungeon shortcuts.
+- Preserved the Interaction + Experience Bible v1 as the governing product/UX contract.
+
 ## 0.5.0 — GLOBAL
 
 - Added fixed-step actor runtime with acceleration, deceleration, normalized diagonals, smooth reversal, collision slide, interpolation and walk/run state.

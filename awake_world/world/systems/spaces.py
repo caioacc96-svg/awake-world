@@ -79,7 +79,7 @@ SPACE_CATALOG: dict[str, SpaceDefinition] = {
     ),
     "twin_core": SharedStudio(
         "twin_core", "Twin Core", ("bruno_kuss", "vitor_kuss"), lighting_profile="graphite_tech",
-        architecture_profile="game_technology_lab", audio_profile="servers", camera_profile="indoor",
+        architecture_profile="quiet_technology_lab", audio_profile="servers", camera_profile="indoor",
         transition_profile="laboratory", tags=("dev", "hardware"), ambient_events=("server_issue","server_blink"),
         props=("dual_workstations","build_wall","servers","prototypes"),
     ),
@@ -95,13 +95,13 @@ SPACE_CATALOG: dict[str, SpaceDefinition] = {
     ),
     "kawaii_garden": PersonalSpace(
         "kawaii_garden", "Kawaii Garden", ("theus",), lighting_profile="soft_warm",
-        architecture_profile="japanese_garden_tech", audio_profile="garden", weather_profile="garden_rain",
+        architecture_profile="integrated_garden_tech", audio_profile="garden", weather_profile="garden_rain",
         camera_profile="social", transition_profile="garden", npc_rules=("dogs",), tags=("garden", "water"),
         ambient_events=("water_ripple","leaf_shift"), props=("water","stones","wood","pet_shelter"),
     ),
     "pit": SharedStudio(
         "pit", "The Pit", ("cabessa", "danilo_pilsen"), lighting_profile="low_chaos",
-        architecture_profile="gaming_dungeon_premium", audio_profile="gaming_den", camera_profile="indoor",
+        architecture_profile="social_brutalism", audio_profile="gaming_den", camera_profile="indoor",
         transition_profile="subterranean", tags=("gaming", "chaos"), props=("pc_wall","screens","damaged_sofa","cables"),
     ),
     "glasshouse": PersonalSpace(

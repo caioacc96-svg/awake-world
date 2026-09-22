@@ -1,6 +1,6 @@
 {
-  "build": "0.5.0",
-  "name": "Awake World — 0.5 GLOBAL",
+  "build": "0.6.0-dev",
+  "name": "Awake World — 0.6.0-dev",
   "identity": "awake/world — THE LIVING NETWORK",
   "canonical_windows_entry": "AWAKE_WORLD.exe",
   "save_schema": 6,
@@ -65,13 +65,13 @@
     },
     {
       "path": "CHANGELOG.md",
-      "size": 975,
-      "sha256": "003c0339322af3426e18f0530e6f7585b62556735376aea8c8443ce741bfb7b9"
+      "size": 1568,
+      "sha256": "82134ea792f52e472a008f788063d82e00bfb2e653af4ffc5050285260e58a98"
     },
     {
       "path": "README.md",
-      "size": 4765,
-      "sha256": "ab6d2402b71bfb2f0d1cd607b38e61415a3730d5f0523ec01f72a4b74524a9c8"
+      "size": 5477,
+      "sha256": "d7e67954ebee6c13aa310c7e5195b14b29940bcaa115afc07a559f7bf2145c0e"
     },
     {
       "path": "README_START.txt",
@@ -85,13 +85,18 @@
     },
     {
       "path": "VERSION",
-      "size": 6,
-      "sha256": "a0ad50640139a524f86591157145bf1d4674ea9c065bfea21558f0f7b04430c8"
+      "size": 10,
+      "sha256": "f02880b17e4ef60ef45a1d03a6457c761f1c4e1167246f57fcb4016673cc736b"
+    },
+    {
+      "path": "awake_world.spec",
+      "size": 747,
+      "sha256": "cdeea45c8a7222fe1496cfb733b055e7106c531a90866f8885c526c9a9861df3"
     },
     {
       "path": "awake_world/__init__.py",
-      "size": 22,
-      "sha256": "2c12b8ea17aeb6f9f72a6b02aca218bbc4508a46df9e365a8f6c45ad769e0b34"
+      "size": 26,
+      "sha256": "f5250ec9ca8be36dad4c358cfe95d88c0837cbbe289e81702e55ad61832e248b"
     },
     {
       "path": "awake_world/app.py",
@@ -152,6 +157,11 @@
       "path": "awake_world/design/tokens/typography.json",
       "size": 125,
       "sha256": "b43d0a9c9ef6fbaaae694831163d1b2e5932b05ae99673e874dac57540e6cab2"
+    },
+    {
+      "path": "awake_world/design/world_visuals.py",
+      "size": 2187,
+      "sha256": "cffc07678542e047bd06fb539e06b0f91cd598c3dd84b36bb316c68c47da2185"
     },
     {
       "path": "awake_world/presentation/__init__.py",
@@ -215,8 +225,8 @@
     },
     {
       "path": "awake_world/world/district.py",
-      "size": 7522,
-      "sha256": "3bf85e7577c1b7d798c00efc3bf5b37cd1109ae550f8c74a344cda54f5db3273"
+      "size": 7289,
+      "sha256": "12fd717e3cf317484b4fc275ca6e64360fea803680587f6e6b1a16cb265d3108"
     },
     {
       "path": "awake_world/world/environment.py",
@@ -330,8 +340,8 @@
     },
     {
       "path": "awake_world/world/systems/spaces.py",
-      "size": 6221,
-      "sha256": "59c941217ea0cace89c2418707a66f66221023dc0cf3ecc1fcb1d3318e472d2c"
+      "size": 6218,
+      "sha256": "c9035f35d76aca5af7cb8a1ddb5e30c35d05949ce669534ee112a6772b13decc"
     },
     {
       "path": "awake_world/world/systems/time_system.py",
@@ -349,14 +359,14 @@
       "sha256": "eb167be8daf4686765abee1127f917a5e2547ce2b8b5c5c88a063f8d575045a5"
     },
     {
-      "path": "awake_world.spec",
-      "size": 747,
-      "sha256": "cdeea45c8a7222fe1496cfb733b055e7106c531a90866f8885c526c9a9861df3"
+      "path": "data/build.json",
+      "size": 244,
+      "sha256": "ab3f80217e838fd115d935374fcce93753cbb7c337817cc8c45fc8609e89dcc2"
     },
     {
-      "path": "data/build.json",
-      "size": 235,
-      "sha256": "7dd369ec4af1ef7d211322862d38b1921fc32d29a5dfa8b3216196f64f8fb2d3"
+      "path": "docs/AWAKE_WORLD_06_MVD_CANON.md",
+      "size": 5926,
+      "sha256": "658558cd44ea37d3c8efeace823115078b276bfb4c1293d422a052582d8ffed3"
     },
     {
       "path": "docs/AWAKE_WORLD_INTERACTION_EXPERIENCE_BIBLE_v1.md",
@@ -434,9 +444,14 @@
       "sha256": "cd96723b4c2b40e62c2c7cce48b76792de12254ce031ba25cefc8e03bd356f47"
     },
     {
+      "path": "tests/test_visual_system.py",
+      "size": 1229,
+      "sha256": "279e3412e07cde81b5e3fb803af77995b3e5016aeb7fbd800d051c933ac95e42"
+    },
+    {
       "path": "tools/build_manifest.py",
       "size": 5114,
-      "sha256": "fdeadb4253e0cde274c9af46ffa5b41d012ca3a0727e38c17345acadf1d689ee"
+      "sha256": "ac2ee0fce5380e1f5cd390b4e807ef0cb190495672e53544119d68760a085194"
     },
     {
       "path": "tools/core_test.py",

@@ -1,9 +1,9 @@
 {
-  "build_version": "0.5.0",
+  "build_version": "0.6.0-dev",
   "identity": "awake/world — THE LIVING NETWORK",
   "save_schema": 6,
   "simulation_hz": 60,
-  "release_channel": "GLOBAL",
+  "release_channel": "DEVELOPMENT",
   "commit": "source",
   "ref": "main",
   "built_at_utc": null,
