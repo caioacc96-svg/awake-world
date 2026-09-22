@@ -2,8 +2,11 @@ name: Awake World 0.5 Release
 
 on:
   push:
+    branches:
+      - 'release/**'
     tags:
       - 'v0.5.*'
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -13,12 +16,58 @@ env:
   AWAKE_SAVE_DIR: ${{ github.workspace }}/.ci-save
 
 jobs:
+  prepare:
+    name: PREPARE CANONICAL RELEASE SOURCE
+    runs-on: ubuntu-latest
+    outputs:
+      source_sha: ${{ steps.source.outputs.sha }}
+      release_tag: ${{ steps.source.outputs.tag }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Canonicalize version + manifest
+        id: source
+        shell: bash
+        run: |
+          set -euo pipefail
+          version="$(tr -d '\r\n' < VERSION)"
+          if [[ -z "$version" || "$version" == *-dev* ]]; then
+            echo "RELEASE_VERSION_NOT_FINAL: $version"
+            exit 1
+          fi
+
+          if [[ "$GITHUB_REF_TYPE" == "branch" ]]; then
+            python tools/build_manifest.py
+            git config user.name "awake-world-ci"
+            git config user.email "awake-world-ci@users.noreply.github.com"
+            git add BUILD_MANIFEST.json
+            if ! git diff --cached --quiet; then
+              git commit -m "build: canonicalize manifest for v$version"
+              git push origin "HEAD:$GITHUB_REF_NAME"
+            fi
+          else
+            python tools/build_manifest.py --check
+          fi
+
+          source_sha="$(git rev-parse HEAD)"
+          echo "sha=$source_sha" >> "$GITHUB_OUTPUT"
+          echo "tag=v$version" >> "$GITHUB_OUTPUT"
+          echo "AWAKE_RELEASE_SOURCE=$source_sha"
+          echo "AWAKE_RELEASE_TAG=v$version"
+
   validate:
     name: RELEASE QUALITY GATES
+    needs: prepare
     runs-on: ubuntu-latest
     timeout-minutes: 12
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.prepare.outputs.source_sha }}
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -37,11 +86,13 @@ jobs:
 
   windows-release:
     name: WINDOWS RELEASE · QT · VISUAL · PACKAGE · SMOKE
-    needs: validate
+    needs: [prepare, validate]
     runs-on: windows-latest
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.prepare.outputs.source_sha }}
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -60,7 +111,10 @@ jobs:
           $env:QT_QPA_PLATFORM='offscreen'
           $env:QT_LOGGING_RULES='qt.multimedia.*=false'
           python tools/render_golden_scenes.py --output visual_output
-      - name: Write build metadata
+      - name: Write release build metadata
+        env:
+          GITHUB_SHA: ${{ needs.prepare.outputs.source_sha }}
+          GITHUB_REF_NAME: ${{ needs.prepare.outputs.release_tag }}
         run: python tools/write_build_metadata.py
       - name: Build executable
         run: python -m PyInstaller --noconfirm --clean awake_world.spec
@@ -89,9 +143,11 @@ jobs:
         shell: pwsh
         env:
           GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ needs.prepare.outputs.release_tag }}
+          SOURCE_SHA: ${{ needs.prepare.outputs.source_sha }}
         run: |
-          gh release create $env:GITHUB_REF_NAME `
-            '.\release\AwakeWorld_0.5_GLOBAL_Windows.zip' `
-            '.\release\AwakeWorld_0.5_GLOBAL_Windows.zip.sha256' `
-            --title "Awake World 0.5 GLOBAL" `
-            --notes-file CHANGELOG.md
+          gh release view $env:RELEASE_TAG --repo $env:GITHUB_REPOSITORY *> $null
+          if ($LASTEXITCODE -eq 0) {
+            throw "Release $env:RELEASE_TAG already exists; refusing to overwrite a published release."
+          }
+          gh release create $env:RELEASE_TAG '.\release\AwakeWorld_0.5_GLOBAL_Windows.zip' '.\release\AwakeWorld_0.5_GLOBAL_Windows.zip.sha256' --repo $env:GITHUB_REPOSITORY --target $env:SOURCE_SHA --title "Awake World 0.5 GLOBAL" --notes-file CHANGELOG.md
