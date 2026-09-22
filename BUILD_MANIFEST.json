@@ -54,39 +54,9 @@
       "sha256": "789dd240f645c94ecfa2aabcb49d1fb260d0c784004067126c7c1412c669b9ef"
     },
     {
-      "path": "BASELINE_0.4.1.md",
-      "size": 554,
-      "sha256": "300ec47a0cfcce4601ee8483a33d632cf3384508aff1c6a50c22f3fb9eae6a37"
-    },
-    {
-      "path": "BUILD_NOTES_0.4.1.txt",
-      "size": 1317,
-      "sha256": "b0d38badaf59860d948e5574e5068991f183bdd2354696d4f81b5a09dc79cf7c"
-    },
-    {
-      "path": "CHANGELOG.md",
-      "size": 1568,
-      "sha256": "82134ea792f52e472a008f788063d82e00bfb2e653af4ffc5050285260e58a98"
-    },
-    {
-      "path": "README.md",
-      "size": 5477,
-      "sha256": "d7e67954ebee6c13aa310c7e5195b14b29940bcaa115afc07a559f7bf2145c0e"
-    },
-    {
-      "path": "README_START.txt",
-      "size": 337,
-      "sha256": "c85aea672c482cdd69b85519f069e4e2a36e08214648840f1edc671d25650040"
-    },
-    {
-      "path": "RUN_AWAKE_WORLD.cmd",
-      "size": 817,
-      "sha256": "7817a2b72431cebf82dd56c020ab598025e443a1f3ebb30822c23bed6d46809d"
-    },
-    {
-      "path": "VERSION",
-      "size": 10,
-      "sha256": "f02880b17e4ef60ef45a1d03a6457c761f1c4e1167246f57fcb4016673cc736b"
+      "path": "awake_world.spec",
+      "size": 747,
+      "sha256": "cdeea45c8a7222fe1496cfb733b055e7106c531a90866f8885c526c9a9861df3"
     },
     {
       "path": "awake_world/__init__.py",
@@ -102,6 +72,11 @@
       "path": "awake_world/design/__init__.py",
       "size": 0,
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "awake_world/design/massing.py",
+      "size": 9604,
+      "sha256": "85729799e6361ad4d369e46cd09349a215c27644ec5c9c25dfa241d5bcc616df"
     },
     {
       "path": "awake_world/design/theme/__init__.py",
@@ -220,8 +195,8 @@
     },
     {
       "path": "awake_world/world/district.py",
-      "size": 7289,
-      "sha256": "12fd717e3cf317484b4fc275ca6e64360fea803680587f6e6b1a16cb265d3108"
+      "size": 10646,
+      "sha256": "4e8d449750b2d0e24288965ba6dd4a9c8efd19d76f4c9bb0d87578cf05273fce"
     },
     {
       "path": "awake_world/world/environment.py",
@@ -354,9 +329,19 @@
       "sha256": "eb167be8daf4686765abee1127f917a5e2547ce2b8b5c5c88a063f8d575045a5"
     },
     {
-      "path": "awake_world.spec",
-      "size": 747,
-      "sha256": "cdeea45c8a7222fe1496cfb733b055e7106c531a90866f8885c526c9a9861df3"
+      "path": "BASELINE_0.4.1.md",
+      "size": 554,
+      "sha256": "300ec47a0cfcce4601ee8483a33d632cf3384508aff1c6a50c22f3fb9eae6a37"
+    },
+    {
+      "path": "BUILD_NOTES_0.4.1.txt",
+      "size": 1317,
+      "sha256": "b0d38badaf59860d948e5574e5068991f183bdd2354696d4f81b5a09dc79cf7c"
+    },
+    {
+      "path": "CHANGELOG.md",
+      "size": 1568,
+      "sha256": "82134ea792f52e472a008f788063d82e00bfb2e653af4ffc5050285260e58a98"
     },
     {
       "path": "data/build.json",
@@ -389,6 +374,16 @@
       "sha256": "f59b44e7a808876355af46270502f72e1c180f0f2e7d504cab5c57579b9cc425"
     },
     {
+      "path": "README_START.txt",
+      "size": 337,
+      "sha256": "c85aea672c482cdd69b85519f069e4e2a36e08214648840f1edc671d25650040"
+    },
+    {
+      "path": "README.md",
+      "size": 5477,
+      "sha256": "d7e67954ebee6c13aa310c7e5195b14b29940bcaa115afc07a559f7bf2145c0e"
+    },
+    {
       "path": "requirements-dev.txt",
       "size": 63,
       "sha256": "a5259f42fbda30737e0db72fade4a78785e77c902ad4c4c3fcdf935c5a324a85"
@@ -397,6 +392,11 @@
       "path": "requirements.txt",
       "size": 16,
       "sha256": "385e039f43c455549f3e79039a7b68169284eac3f18a35e0db4fa5ebdec01e44"
+    },
+    {
+      "path": "RUN_AWAKE_WORLD.cmd",
+      "size": 817,
+      "sha256": "7817a2b72431cebf82dd56c020ab598025e443a1f3ebb30822c23bed6d46809d"
     },
     {
       "path": "run.py",
@@ -445,8 +445,8 @@
     },
     {
       "path": "tests/test_visual_system.py",
-      "size": 1229,
-      "sha256": "279e3412e07cde81b5e3fb803af77995b3e5016aeb7fbd800d051c933ac95e42"
+      "size": 4063,
+      "sha256": "35d7cdcc600a1847ce9f21caf0c9e2d695637f40405fb86dd373cbc76ea13622"
     },
     {
       "path": "tools/build_manifest.py",
@@ -480,8 +480,8 @@
     },
     {
       "path": "tools/render_golden_scenes.py",
-      "size": 4310,
-      "sha256": "08551340ff116dde34df68c1d380a6f69f330c7c3953a6d4764941767aa22a86"
+      "size": 6299,
+      "sha256": "3807d7daaf39f71caf06ba2c2b37651e51cfd704ac90195432ae3c24b5c171a0"
     },
     {
       "path": "tools/smoke_test.py",
@@ -502,6 +502,11 @@
       "path": "verify_awake.cmd",
       "size": 479,
       "sha256": "a59564f921ae69656fdf5092fd7d68ad646865b8e9c1aed42dde4e8918ed5177"
+    },
+    {
+      "path": "VERSION",
+      "size": 10,
+      "sha256": "f02880b17e4ef60ef45a1d03a6457c761f1c4e1167246f57fcb4016673cc736b"
     },
     {
       "path": "visual_baselines/signatures.json",
