@@ -1,5 +1,5 @@
 {
-  "build": "0.5.0-dev",
+  "build": "0.5.0",
   "name": "Awake World — 0.5 GLOBAL",
   "identity": "awake/world — THE LIVING NETWORK",
   "canonical_windows_entry": "AWAKE_WORLD.exe",
@@ -35,8 +35,8 @@
     },
     {
       "path": ".github/workflows/release.yml",
-      "size": 3687,
-      "sha256": "ee9e3496dffd5658f24e8146c02c6fcbffbb1a420644aed13f4a1b58213dfc3c"
+      "size": 4810,
+      "sha256": "8e21f7af856279c75ba85805436e07dedf89ccabc5af844fd3b9bc49cd8bba3f"
     },
     {
       "path": ".github/workflows/update-goldens.yml",
@@ -70,8 +70,8 @@
     },
     {
       "path": "README.md",
-      "size": 5522,
-      "sha256": "7318a5408f4935fba2bf464b39743e5ce6671f1dc1e59465b0559f3ec8606860"
+      "size": 4765,
+      "sha256": "ab6d2402b71bfb2f0d1cd607b38e61415a3730d5f0523ec01f72a4b74524a9c8"
     },
     {
       "path": "README_START.txt",
@@ -85,13 +85,13 @@
     },
     {
       "path": "VERSION",
-      "size": 10,
-      "sha256": "90c55baf2f7a40eaba6a4502e42e39285710734266feb653b68cff2122ae777d"
+      "size": 6,
+      "sha256": "a0ad50640139a524f86591157145bf1d4674ea9c065bfea21558f0f7b04430c8"
     },
     {
       "path": "awake_world/__init__.py",
-      "size": 26,
-      "sha256": "ff45db3b171b9a93dd841a34c402bd244ad76ca11441a8ba9e9b46ce490fcc5f"
+      "size": 22,
+      "sha256": "2c12b8ea17aeb6f9f72a6b02aca218bbc4508a46df9e365a8f6c45ad769e0b34"
     },
     {
       "path": "awake_world/app.py",
@@ -355,8 +355,8 @@
     },
     {
       "path": "data/build.json",
-      "size": 307,
-      "sha256": "71e9bb4dad21e0b61c0958986e57cc150820e55b59719c7b0942ab448ad32089"
+      "size": 235,
+      "sha256": "7dd369ec4af1ef7d211322862d38b1921fc32d29a5dfa8b3216196f64f8fb2d3"
     },
     {
       "path": "docs/AWAKE_WORLD_INTERACTION_EXPERIENCE_BIBLE_v1.md",
