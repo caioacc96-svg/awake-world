@@ -70,8 +70,8 @@
     },
     {
       "path": "README.md",
-      "size": 5522,
-      "sha256": "7318a5408f4935fba2bf464b39743e5ce6671f1dc1e59465b0559f3ec8606860"
+      "size": 4765,
+      "sha256": "ab6d2402b71bfb2f0d1cd607b38e61415a3730d5f0523ec01f72a4b74524a9c8"
     },
     {
       "path": "README_START.txt",
@@ -90,8 +90,8 @@
     },
     {
       "path": "awake_world/__init__.py",
-      "size": 26,
-      "sha256": "ff45db3b171b9a93dd841a34c402bd244ad76ca11441a8ba9e9b46ce490fcc5f"
+      "size": 22,
+      "sha256": "2c12b8ea17aeb6f9f72a6b02aca218bbc4508a46df9e365a8f6c45ad769e0b34"
     },
     {
       "path": "awake_world/app.py",
@@ -355,8 +355,8 @@
     },
     {
       "path": "data/build.json",
-      "size": 307,
-      "sha256": "71e9bb4dad21e0b61c0958986e57cc150820e55b59719c7b0942ab448ad32089"
+      "size": 235,
+      "sha256": "7dd369ec4af1ef7d211322862d38b1921fc32d29a5dfa8b3216196f64f8fb2d3"
     },
     {
       "path": "docs/AWAKE_WORLD_INTERACTION_EXPERIENCE_BIBLE_v1.md",
