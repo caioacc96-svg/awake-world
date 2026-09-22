@@ -31,7 +31,7 @@
     {
       "path": ".github/workflows/ci.yml",
       "size": 4480,
-      "sha256": "c43dbfb145080bee034b14ccc6638ab858b170f45e7e0b8f1840c577ceaa0212"
+      "sha256": "ffc464f9d1e96d1eab4461c0d694f1e9abd2bfecbe382fc1de4019e24203b574"
     },
     {
       "path": ".github/workflows/release.yml",
@@ -485,8 +485,8 @@
     },
     {
       "path": "tools/render_golden_scenes.py",
-      "size": 6299,
-      "sha256": "3807d7daaf39f71caf06ba2c2b37651e51cfd704ac90195432ae3c24b5c171a0"
+      "size": 6236,
+      "sha256": "c0fcbc9b37de0bf0dfa115fca8ddf3862820f0ca1cf0feb5d8bdb260684eed8a"
     },
     {
       "path": "tools/smoke_test.py",
