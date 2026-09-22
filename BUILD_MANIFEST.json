@@ -31,7 +31,7 @@
     {
       "path": ".github/workflows/ci.yml",
       "size": 4480,
-      "sha256": "c43dbfb145080bee034b14ccc6638ab858b170f45e7e0b8f1840c577ceaa0212"
+      "sha256": "ffc464f9d1e96d1eab4461c0d694f1e9abd2bfecbe382fc1de4019e24203b574"
     },
     {
       "path": ".github/workflows/release.yml",
@@ -102,6 +102,11 @@
       "path": "awake_world/design/__init__.py",
       "size": 0,
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "awake_world/design/massing.py",
+      "size": 9604,
+      "sha256": "85729799e6361ad4d369e46cd09349a215c27644ec5c9c25dfa241d5bcc616df"
     },
     {
       "path": "awake_world/design/theme/__init__.py",
@@ -220,8 +225,8 @@
     },
     {
       "path": "awake_world/world/district.py",
-      "size": 7289,
-      "sha256": "12fd717e3cf317484b4fc275ca6e64360fea803680587f6e6b1a16cb265d3108"
+      "size": 10646,
+      "sha256": "4e8d449750b2d0e24288965ba6dd4a9c8efd19d76f4c9bb0d87578cf05273fce"
     },
     {
       "path": "awake_world/world/environment.py",
@@ -445,8 +450,8 @@
     },
     {
       "path": "tests/test_visual_system.py",
-      "size": 1229,
-      "sha256": "279e3412e07cde81b5e3fb803af77995b3e5016aeb7fbd800d051c933ac95e42"
+      "size": 4063,
+      "sha256": "35d7cdcc600a1847ce9f21caf0c9e2d695637f40405fb86dd373cbc76ea13622"
     },
     {
       "path": "tools/build_manifest.py",
@@ -480,8 +485,8 @@
     },
     {
       "path": "tools/render_golden_scenes.py",
-      "size": 4310,
-      "sha256": "08551340ff116dde34df68c1d380a6f69f330c7c3953a6d4764941767aa22a86"
+      "size": 6236,
+      "sha256": "c0fcbc9b37de0bf0dfa115fca8ddf3862820f0ca1cf0feb5d8bdb260684eed8a"
     },
     {
       "path": "tools/smoke_test.py",

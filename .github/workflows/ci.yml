@@ -98,7 +98,7 @@ jobs:
       - name: Enforce visual gate
         if: steps.visual.outcome != 'success'
         shell: pwsh
-        run: throw 'VISUAL gate failed; inspect awake-05-visual-output or generate a reviewed baseline candidate.'
+        run: throw 'VISUAL gate failed; inspect awake-06-visual-output or generate a reviewed baseline candidate.'
       - name: Upload visual diffs/renders on failure
         if: always()
         uses: actions/upload-artifact@v4
