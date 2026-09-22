@@ -6,6 +6,8 @@ from PySide6.QtCore import QRectF, Qt
 from PySide6.QtGui import QColor
 from PySide6.QtWidgets import QGraphicsRectItem
 
+from awake_world.design.material_light import resolve_space_appearance
+
 
 PHASE_ORDER = ("dawn", "day", "dusk", "night")
 PHASE_STARTS = {
@@ -70,12 +72,23 @@ class SceneLightWash(QGraphicsRectItem):
         "night": QColor(29, 37, 68, 78),
     }
 
-    def __init__(self, rect: QRectF, phase: str) -> None:
+    def __init__(self, rect: QRectF, phase: str, room_id: str | None = None) -> None:
         super().__init__(rect)
+        self.room_id = room_id
         self.setPen(Qt.PenStyle.NoPen)
         self.setZValue(100000.0)
         self.setAcceptedMouseButtons(Qt.MouseButton.NoButton)
         self.set_phase(phase)
 
     def set_phase(self, phase: str) -> None:
+        if self.room_id is not None:
+            try:
+                appearance = resolve_space_appearance(self.room_id, phase, "clear")
+            except KeyError:
+                appearance = None
+            if appearance is not None:
+                color = QColor(appearance.phase_wash)
+                color.setAlpha(appearance.phase_wash_alpha)
+                self.setBrush(color)
+                return
         self.setBrush(self.COLORS.get(phase, self.COLORS["day"]))

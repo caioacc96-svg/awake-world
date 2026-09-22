@@ -158,7 +158,7 @@ class BaseRoomScene(QGraphicsScene):
         self.setSceneRect(scene_rect)
         self.apply_world_state()
         self.apply_phase_lighting()
-        self.light_wash = SceneLightWash(scene_rect, self.phase)
+        self.light_wash = SceneLightWash(scene_rect, self.phase, self.room_id)
         self.addItem(self.light_wash)
         self.apply_weather(self.weather, scene_rect)
 
@@ -178,7 +178,7 @@ class BaseRoomScene(QGraphicsScene):
         rect = scene_rect or self.sceneRect()
         if rect.isNull():
             return
-        self.weather_wash = WeatherWash(rect, weather)
+        self.weather_wash = WeatherWash(rect, weather, self.room_id, self.phase)
         self.addItem(self.weather_wash)
         if weather == "rain":
             for index in range(46):

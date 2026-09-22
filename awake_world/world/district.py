@@ -4,11 +4,16 @@ from PySide6.QtCore import QRectF
 from PySide6.QtGui import QColor
 
 from awake_world.design.massing import get_space_massing_profile
-from awake_world.design.world_visuals import get_space_visual_profile
+from awake_world.design.material_light import (
+    ResolvedSpaceAppearance,
+    get_space_material_light_profile,
+    resolve_space_appearance,
+)
 from awake_world.world.items import (
     CollisionRect,
     InteractionSpec,
     IsoBlock,
+    IsoFloorTile,
     IsoSurfacePatch,
     PlantItem,
     PortalDoor,
@@ -16,6 +21,24 @@ from awake_world.world.items import (
 )
 from awake_world.world.room import BaseRoomScene
 from awake_world.world.systems.spaces import SPACE_CATALOG
+
+
+def _add_material_floor(scene: BaseRoomScene, appearance: ResolvedSpaceAppearance) -> None:
+    """MVD-2 floor response shared by every Living Quarter environment."""
+
+    for y in range(scene.depth_tiles):
+        for x in range(scene.width_tiles):
+            point = scene.projector.project(x, y)
+            fill = QColor(appearance.floor_a if (x + y) % 2 == 0 else appearance.floor_b)
+            scene.addItem(
+                IsoFloorTile(
+                    point,
+                    scene.projector.m.tile_width,
+                    scene.projector.m.tile_height,
+                    fill,
+                    QColor(appearance.floor_edge),
+                )
+            )
 
 
 class QuarterScene(BaseRoomScene):
@@ -33,13 +56,14 @@ class QuarterScene(BaseRoomScene):
 
     def build_world(self) -> None:
         self.reset_scene()
-        profile = get_space_visual_profile(self.room_id)
         massing = get_space_massing_profile(self.room_id)
-        self.add_floor(profile.floor_family)
+        appearance = resolve_space_appearance(self.room_id, self.phase, self.weather)
+        material_profile = get_space_material_light_profile(self.room_id)
+        _add_material_floor(self, appearance)
         p = self.projector
 
-        path_fill = QColor(profile.structure).lighter(126)
-        path_edge = QColor(profile.structure).lighter(110)
+        path_fill = QColor(appearance.circulation)
+        path_edge = QColor(appearance.floor_edge).lighter(108)
         for band in massing.circulation:
             self.addItem(
                 IsoSurfacePatch(
@@ -48,35 +72,44 @@ class QuarterScene(BaseRoomScene):
                 )
             )
 
-        # MVD-1: the district skyline is hierarchical and readable in grayscale.
+        # MVD-2: hierarchy remains spatial, while surfaces now react to phase/weather.
         for volume in massing.volumes:
-            if volume.role == "landmark":
-                top = QColor(profile.surface).lighter(132)
-                side = QColor(profile.structure).lighter(106)
+            opacity = 1.0
+            if volume.role == "landmark" and material_profile.glass_mode in {"framed", "full"}:
+                top = QColor(appearance.glass).lighter(106)
+                side = QColor(appearance.glass).darker(106)
+                right = QColor(appearance.structure)
+                opacity = appearance.glass_opacity
+            elif volume.role == "landmark":
+                top = QColor(appearance.surface).lighter(116)
+                side = QColor(appearance.material).lighter(106)
+                right = QColor(appearance.structure)
             elif volume.role == "primary":
-                top = QColor(profile.surface).lighter(116)
-                side = QColor(profile.material)
+                top = QColor(appearance.surface).lighter(108)
+                side = QColor(appearance.material)
+                right = QColor(appearance.structure).darker(102)
             else:
-                top = QColor(profile.surface).lighter(108)
-                side = QColor(profile.material).darker(103)
+                top = QColor(appearance.surface).lighter(103)
+                side = QColor(appearance.material).darker(102)
+                right = QColor(appearance.structure).lighter(103)
             self.addItem(
                 IsoBlock(
                     p, volume.x, volume.y, volume.w, volume.d, volume.h,
-                    top, side, QColor(profile.structure),
+                    top, side, right, opacity=opacity,
                 )
             )
             self.collisions.append(
                 CollisionRect(volume.x, volume.y, volume.w, volume.d, .08)
             )
 
-        green = QColor(profile.vegetation)
+        green = QColor(appearance.vegetation)
         for x, y, scale in massing.vegetation_points:
             self.addItem(PlantItem(p, x, y, green, scale))
 
         # Destination color is reserved for thresholds; massing does the recognition work.
         for space_id, (x, y) in self.PORTALS.items():
-            threshold_profile = get_space_visual_profile(space_id)
-            door = PortalDoor(p, x, y, QColor(threshold_profile.accent))
+            threshold_appearance = resolve_space_appearance(space_id, self.phase, self.weather)
+            door = PortalDoor(p, x, y, QColor(threshold_appearance.accent))
             self.addItem(door)
             self.register_animation(door)
             definition = SPACE_CATALOG[space_id]
@@ -93,13 +126,13 @@ class QuarterScene(BaseRoomScene):
         self.add_npc("maintenance", [(12.1, 4.6), (13.0, 8.0), (12.2, 12.8)], .38)
         self.add_motes(
             [(2.0, 2.0, 1.1), (20.0, 3.0, 1.2), (4.0, 15.0, 1.0), (18.0, 14.5, 1.2)],
-            QColor(profile.ambient),
+            QColor(appearance.ambient),
         )
         self.addItem(
             ZoneLabel(
                 "awake quarter · the living network",
                 p.project(11.8, 16.8),
-                QColor(profile.label),
+                QColor(appearance.label),
             )
         )
         self.finish_build(QRectF(*massing.scene_rect), spawn=massing.spawn)
@@ -131,57 +164,64 @@ class AuthoredSpaceScene(BaseRoomScene):
         return get_space_massing_profile(self.space_id).spawn
 
     def palette(self) -> tuple[QColor, QColor, QColor, QColor]:
-        profile = get_space_visual_profile(self.space_id)
+        appearance = resolve_space_appearance(self.space_id, self.phase, self.weather)
         return tuple(
             QColor(color)
             for color in (
-                profile.surface,
-                profile.material,
-                profile.structure,
-                profile.accent,
+                appearance.surface,
+                appearance.material,
+                appearance.structure,
+                appearance.accent,
             )
         )  # type: ignore[return-value]
 
     def _add_circulation(self) -> None:
-        profile = get_space_visual_profile(self.space_id)
         massing = get_space_massing_profile(self.space_id)
+        appearance = resolve_space_appearance(self.space_id, self.phase, self.weather)
         p = self.projector
         for index, band in enumerate(massing.circulation):
-            light = 126 if index == 0 else 118
+            fill = QColor(appearance.circulation).lighter(104 if index == 0 else 100)
             self.addItem(
                 IsoSurfacePatch(
                     p, band.x, band.y, band.w, band.d,
-                    QColor(profile.surface).lighter(light),
-                    QColor(profile.structure).lighter(126),
-                    opacity=.62 if index else .76,
+                    fill,
+                    QColor(appearance.floor_edge).lighter(108),
+                    opacity=.64 if index else .80,
                 )
             )
 
     def _add_massing(self) -> None:
-        profile = get_space_visual_profile(self.space_id)
         massing = get_space_massing_profile(self.space_id)
+        appearance = resolve_space_appearance(self.space_id, self.phase, self.weather)
+        material_profile = get_space_material_light_profile(self.space_id)
         p = self.projector
-        surface = QColor(profile.surface)
-        material = QColor(profile.material)
-        structure = QColor(profile.structure)
+        surface = QColor(appearance.surface)
+        material = QColor(appearance.material)
+        structure = QColor(appearance.structure)
 
         for volume in massing.volumes:
-            if volume.role == "landmark":
-                top = surface.lighter(130)
-                left = material.lighter(112)
+            opacity = 1.0
+            if volume.role == "landmark" and material_profile.glass_mode in {"framed", "full"}:
+                top = QColor(appearance.glass).lighter(106)
+                left = QColor(appearance.glass)
+                right = structure
+                opacity = appearance.glass_opacity
+            elif volume.role == "landmark":
+                top = surface.lighter(116)
+                left = material.lighter(108)
                 right = structure
             elif volume.role == "primary":
-                top = surface.lighter(116)
+                top = surface.lighter(108)
                 left = material
                 right = structure.darker(102)
             else:
-                top = surface.lighter(108)
-                left = material.lighter(106)
-                right = structure.lighter(105)
+                top = surface.lighter(103)
+                left = material.lighter(103)
+                right = structure.lighter(103)
             self.addItem(
                 IsoBlock(
                     p, volume.x, volume.y, volume.w, volume.d, volume.h,
-                    top, left, right,
+                    top, left, right, opacity=opacity,
                 )
             )
             self.collisions.append(
@@ -201,9 +241,9 @@ class AuthoredSpaceScene(BaseRoomScene):
 
     def build_world(self) -> None:
         self.reset_scene()
-        profile = get_space_visual_profile(self.space_id)
         massing = get_space_massing_profile(self.space_id)
-        self.add_floor(profile.floor_family)
+        appearance = resolve_space_appearance(self.space_id, self.phase, self.weather)
+        _add_material_floor(self, appearance)
         p = self.projector
         definition = SPACE_CATALOG[self.space_id]
 
@@ -213,7 +253,7 @@ class AuthoredSpaceScene(BaseRoomScene):
 
         for x, y, scale in massing.vegetation_points:
             self.addItem(
-                PlantItem(p, x, y, QColor(profile.vegetation), scale)
+                PlantItem(p, x, y, QColor(appearance.vegetation), scale)
             )
 
         if self.space_id == "kawaii_garden":
@@ -243,7 +283,7 @@ class AuthoredSpaceScene(BaseRoomScene):
 
         exit_x = massing.width_tiles / 2.0
         exit_y = massing.depth_tiles - 1.15
-        exit_door = PortalDoor(p, exit_x, exit_y, QColor(profile.accent))
+        exit_door = PortalDoor(p, exit_x, exit_y, QColor(appearance.accent))
         self.addItem(exit_door)
         self.register_animation(exit_door)
         self.interactions.append(
@@ -261,7 +301,7 @@ class AuthoredSpaceScene(BaseRoomScene):
             ZoneLabel(
                 definition.name,
                 p.project(exit_x, massing.depth_tiles - .35),
-                QColor(profile.label),
+                QColor(appearance.label),
             )
         )
         self.finish_build(QRectF(*massing.scene_rect), spawn=massing.spawn)

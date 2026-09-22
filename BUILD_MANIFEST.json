@@ -109,6 +109,11 @@
       "sha256": "85729799e6361ad4d369e46cd09349a215c27644ec5c9c25dfa241d5bcc616df"
     },
     {
+      "path": "awake_world/design/material_light.py",
+      "size": 6938,
+      "sha256": "b2597f5893d813663541b36042b05457eeeeb82375042afcf054b8b7fe5521e8"
+    },
+    {
       "path": "awake_world/design/theme/__init__.py",
       "size": 0,
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -225,13 +230,13 @@
     },
     {
       "path": "awake_world/world/district.py",
-      "size": 10646,
-      "sha256": "4e8d449750b2d0e24288965ba6dd4a9c8efd19d76f4c9bb0d87578cf05273fce"
+      "size": 12685,
+      "sha256": "dddb66839d32496241d9bc5992bc21918221a051bece6923439255a68f63f729"
     },
     {
       "path": "awake_world/world/environment.py",
-      "size": 1794,
-      "sha256": "80c1eb5474b80b83fba842f0a9caa87db8024bbdf387348fc9d6b910250b12e2"
+      "size": 2442,
+      "sha256": "766ef486f9cde5de24dca0ed8d29e5336c99f4721795e5b60afa63a3bc1c9feb"
     },
     {
       "path": "awake_world/world/iso.py",
@@ -245,8 +250,8 @@
     },
     {
       "path": "awake_world/world/lighting.py",
-      "size": 2357,
-      "sha256": "1aabfd77f3f73ae6d2e4836e157ece9178717f2a290a86e4c47b91ffd92d7600"
+      "size": 2902,
+      "sha256": "c581fbe95ed0073096944cd560aa99658422a251fbcdd13239aee3a3d6bb9a7d"
     },
     {
       "path": "awake_world/world/npc.py",
@@ -260,8 +265,8 @@
     },
     {
       "path": "awake_world/world/room.py",
-      "size": 42883,
-      "sha256": "37e162c62d165bbe61b9ba6391d8eec84e5f5536fc80746d035d69307776c67c"
+      "size": 42923,
+      "sha256": "4dc4520b9e7cb6d33055ab7f7977201b05e7ce026010cb361f9199f026a67a69"
     },
     {
       "path": "awake_world/world/save.py",
@@ -450,8 +455,8 @@
     },
     {
       "path": "tests/test_visual_system.py",
-      "size": 4063,
-      "sha256": "35d7cdcc600a1847ce9f21caf0c9e2d695637f40405fb86dd373cbc76ea13622"
+      "size": 6905,
+      "sha256": "ed6d297542ebe4f16a1e2fbddbb2ac2c5d239710035c7c46d021e769c462935d"
     },
     {
       "path": "tools/build_manifest.py",
@@ -485,8 +490,8 @@
     },
     {
       "path": "tools/render_golden_scenes.py",
-      "size": 6236,
-      "sha256": "c0fcbc9b37de0bf0dfa115fca8ddf3862820f0ca1cf0feb5d8bdb260684eed8a"
+      "size": 9681,
+      "sha256": "3af4472064db7e1590edfe63966398050e9319ab134a5348ca42788da2d2e30d"
     },
     {
       "path": "tools/smoke_test.py",

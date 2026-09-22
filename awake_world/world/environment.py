@@ -5,6 +5,8 @@ from PySide6.QtCore import QRectF, Qt
 from PySide6.QtGui import QColor, QPen
 from PySide6.QtWidgets import QGraphicsLineItem, QGraphicsRectItem
 
+from awake_world.design.material_light import resolve_space_appearance
+
 
 class WeatherWash(QGraphicsRectItem):
     COLORS = {
@@ -13,14 +15,32 @@ class WeatherWash(QGraphicsRectItem):
         "rain": QColor(53, 69, 92, 58),
     }
 
-    def __init__(self, rect: QRectF, weather: str = "clear") -> None:
+    def __init__(
+        self,
+        rect: QRectF,
+        weather: str = "clear",
+        room_id: str | None = None,
+        phase: str = "day",
+    ) -> None:
         super().__init__(rect)
+        self.room_id = room_id
+        self.phase = phase
         self.setPen(Qt.PenStyle.NoPen)
         self.setZValue(99990)
         self.setAcceptedMouseButtons(Qt.MouseButton.NoButton)
         self.set_weather(weather)
 
     def set_weather(self, weather: str) -> None:
+        if self.room_id is not None:
+            try:
+                appearance = resolve_space_appearance(self.room_id, self.phase, weather)
+            except KeyError:
+                appearance = None
+            if appearance is not None:
+                color = QColor(appearance.weather_wash)
+                color.setAlpha(appearance.weather_wash_alpha)
+                self.setBrush(color)
+                return
         self.setBrush(self.COLORS.get(weather, self.COLORS["clear"]))
 
 
