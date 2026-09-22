@@ -2,8 +2,8 @@ name: Awake World 0.5 Release
 
 on:
   push:
-    tags:
-      - 'v0.5.*'
+    branches:
+      - 'release/v0.5.0'
 
 permissions:
   contents: write
@@ -11,6 +11,8 @@ permissions:
 env:
   PYTHONUTF8: '1'
   AWAKE_SAVE_DIR: ${{ github.workspace }}/.ci-save
+  RELEASE_TAG: 'v0.5.0'
+  RELEASE_TARGET: 'de4a0d55b3eb042e80a3a4c6520e79235f9b2efd'
 
 jobs:
   validate:
@@ -19,6 +21,8 @@ jobs:
     timeout-minutes: 12
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.RELEASE_TARGET }}
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -42,6 +46,8 @@ jobs:
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.RELEASE_TARGET }}
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -69,14 +75,14 @@ jobs:
         run: |
           $env:QT_QPA_PLATFORM='offscreen'
           $env:QT_LOGGING_RULES='qt.multimedia.*=false'
-          $p = Start-Process -FilePath '.\dist\AWAKE_WORLD.exe' -ArgumentList '--smoke-test' -PassThru -Wait
+          $p = Start-Process -FilePath '.\\dist\\AWAKE_WORLD.exe' -ArgumentList '--smoke-test' -PassThru -Wait
           if ($p.ExitCode -ne 0) { throw "Packaged smoke failed with exit code $($p.ExitCode)" }
       - name: Package + checksums
         shell: pwsh
         run: |
           python tools/package_windows.py
-          $hash = (Get-FileHash '.\release\AwakeWorld_0.5_GLOBAL_Windows.zip' -Algorithm SHA256).Hash.ToLower()
-          "$hash  AwakeWorld_0.5_GLOBAL_Windows.zip" | Set-Content -NoNewline '.\release\AwakeWorld_0.5_GLOBAL_Windows.zip.sha256'
+          $hash = (Get-FileHash '.\\release\\AwakeWorld_0.5_GLOBAL_Windows.zip' -Algorithm SHA256).Hash.ToLower()
+          "$hash  AwakeWorld_0.5_GLOBAL_Windows.zip" | Set-Content -NoNewline '.\\release\\AwakeWorld_0.5_GLOBAL_Windows.zip.sha256'
       - name: Upload release artifact
         uses: actions/upload-artifact@v4
         with:
@@ -90,8 +96,9 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release create $env:GITHUB_REF_NAME `
-            '.\release\AwakeWorld_0.5_GLOBAL_Windows.zip' `
-            '.\release\AwakeWorld_0.5_GLOBAL_Windows.zip.sha256' `
+          gh release create $env:RELEASE_TAG `
+            '.\\release\\AwakeWorld_0.5_GLOBAL_Windows.zip' `
+            '.\\release\\AwakeWorld_0.5_GLOBAL_Windows.zip.sha256' `
+            --target $env:RELEASE_TARGET `
             --title "Awake World 0.5 GLOBAL" `
             --notes-file CHANGELOG.md
