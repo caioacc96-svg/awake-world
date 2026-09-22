@@ -1,10 +1,12 @@
-# awake/world — v0.5.0 GLOBAL
+# awake/world — 0.6.0-dev · THE LIVING QUARTER
 
 **Canonical identity:** `awake/world — THE LIVING NETWORK`
 
-Awake World 0.5 GLOBAL is the first release governed by the **Awake World Interaction + Experience Bible v1**. The product remains **single-player first / multiplayer-ready**: the world is the interface, simulation is authoritative, and presentation stays behind a clean adapter boundary.
+Awake World is now in the **0.6 MVD development cycle**, built on the frozen **v0.5.0 GLOBAL** release. The Interaction + Experience Bible v1 remains normative. 0.6 evolves the entire world as one coherent visual and spatial system: one language, multiple local dialects.
 
 ## Windows release
+
+The stable public baseline remains **v0.5.0 GLOBAL** while 0.6 is under development.
 
 1. Download `AwakeWorld_0.5_GLOBAL_Windows.zip` from the GitHub release.
 2. Extract the full ZIP.
@@ -21,7 +23,22 @@ Python 3.11+ is required when running from source.
 - `verify_awake.cmd` — validates the source build without opening the world.
 - `python run.py` — direct Python entry point in a prepared environment.
 
-## 0.5 GLOBAL
+## 0.6 MVD — THE LIVING QUARTER
+
+0.6 shifts the center of effort from infrastructure to world quality. The method is transversal: every MVD cycle improves all applicable environments through shared systems rather than polishing one room at a time.
+
+Current sequence:
+
+- **MVD-0:** visual grammar foundation;
+- **MVD-1:** massing + scale;
+- **MVD-2:** materials + light;
+- **MVD-3:** subtle life;
+- **MVD-4:** spatial interaction integration;
+- **MVD-5:** human acceptance + golden freeze.
+
+See `docs/AWAKE_WORLD_06_MVD_CANON.md`.
+
+## 0.5 GLOBAL — frozen baseline
 
 The release promotes Awake World from a Living City foundation into a deterministic interaction/runtime architecture.
 
@@ -107,7 +124,7 @@ The earlier Headquarters, Plaza, Rooftop and Home spaces remain available for co
 
 ## Validation and release gates
 
-Every 0.5 GLOBAL release must pass:
+Every development or release candidate must pass:
 
 - Python syntax and authored invariants;
 - Ruff critical-error gate;
@@ -141,10 +158,11 @@ Default local save path:
 C:\Users\<you>\.awake_world\single_player_save.json
 ```
 
-## Canonical release identifiers
+## Canonical identifiers
 
-- version: **0.5.0**
-- channel: **GLOBAL**
+- development version: **0.6.0-dev**
+- frozen release baseline: **v0.5.0 GLOBAL**
+- channel: **DEVELOPMENT**
 - save schema: **6**
 - simulation: **60 Hz fixed-step**
 - Windows entry: **AWAKE_WORLD.exe**

@@ -5,7 +5,7 @@
   "simulation_hz": 60,
   "release_channel": "DEVELOPMENT",
   "commit": "source",
-  "ref": "feat/0.6-mvd-foundation",
+  "ref": "main",
   "built_at_utc": null,
   "ci": false
 }
