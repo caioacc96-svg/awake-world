@@ -109,6 +109,21 @@ Across all environments simultaneously:
 
 **Acceptance:** any random screenshot belongs unmistakably to Awake World while major spaces remain distinguishable.
 
+### MVD-2.1 — Visual foundation acceptance pass
+
+MVD-2 is not considered human-accepted merely because palette/light automation passes. Before MVD-3, the authored world must also clear a visual foundation pass across every space:
+
+- continuous architectural ground instead of debug-like tile checkerboarding;
+- layered architectural assemblies instead of raw cuboids;
+- contact shadow and facade depth;
+- glass framed as architecture, not transparent color fill;
+- restrained large-format joints and perimeter detailing;
+- vegetation integrated as architectural landscape clusters;
+- tighter composition so the authored environment dominates the frame;
+- MVD-1 footprints, collisions, circulation and landmarks remain unchanged.
+
+**Acceptance:** a static screenshot must read as an authored premium diorama before NPC motion, ambient animation or MVD-3 life is used to create interest.
+
 ### MVD-3 — Subtle life
 
 Across all environments simultaneously:
