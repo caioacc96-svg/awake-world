@@ -1,0 +1,29 @@
+name: Generate Awake Visual Baseline Candidate
+
+on:
+  workflow_dispatch:
+
+jobs:
+  windows-goldens:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - run: python -m pip install --disable-pip-version-check -r requirements.txt -r requirements-dev.txt
+      - run: python tools/generate_audio_assets.py --force
+      - name: Generate baseline candidate
+        shell: pwsh
+        run: |
+          $env:QT_QPA_PLATFORM='offscreen'
+          $env:QT_LOGGING_RULES='qt.multimedia.*=false'
+          python tools/render_golden_scenes.py --update --output visual_output
+      - uses: actions/upload-artifact@v4
+        with:
+          name: awake-05-golden-baseline-candidate
+          path: |
+            visual_baselines/signatures.json
+            visual_output/signatures.json
+            visual_output/*.png
