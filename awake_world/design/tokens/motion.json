@@ -1,0 +1,11 @@
+{
+  "motion_fast_ms": 110,
+  "motion_normal_ms": 175,
+  "motion_slow_ms": 280,
+  "avatar_speed_tiles_s": 3.35,
+  "idle_amplitude_px": 2.2,
+  "idle_period_s": 3.1,
+  "avatar_sprint_multiplier": 1.45,
+  "world_minutes_per_real_second": 0.5,
+  "camera_follow_strength": 0.18
+}

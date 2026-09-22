@@ -1,0 +1,532 @@
+{
+  "build": "0.5.0-dev",
+  "name": "Awake World — 0.5 GLOBAL",
+  "identity": "awake/world — THE LIVING NETWORK",
+  "canonical_windows_entry": "AWAKE_WORLD.exe",
+  "save_schema": 6,
+  "simulation_hz": 60,
+  "python_min": "3.11",
+  "pyside6": "6.11.2",
+  "validation": {
+    "static": "CI_REQUIRED",
+    "type": "CI_REQUIRED",
+    "unit": "CI_REQUIRED",
+    "simulation": "CI_REQUIRED",
+    "save": "CI_REQUIRED",
+    "npc": "CI_REQUIRED",
+    "interaction": "CI_REQUIRED",
+    "space": "CI_REQUIRED",
+    "weather": "CI_REQUIRED",
+    "visual": "WINDOWS_CI_REQUIRED",
+    "windows_qt": "WINDOWS_CI_REQUIRED",
+    "package": "WINDOWS_CI_REQUIRED",
+    "packaged_smoke": "WINDOWS_CI_REQUIRED"
+  },
+  "files": [
+    {
+      "path": ".github/workflows/ci.yml",
+      "size": 4409,
+      "sha256": "cb6c968c2d3c6ed78f88de1f36bd8328c3d9d819680f8f55f4412f8a9fe41bf9"
+    },
+    {
+      "path": ".github/workflows/release.yml",
+      "size": 3687,
+      "sha256": "ee9e3496dffd5658f24e8146c02c6fcbffbb1a420644aed13f4a1b58213dfc3c"
+    },
+    {
+      "path": ".github/workflows/update-goldens.yml",
+      "size": 841,
+      "sha256": "6a327442e3b8f1b3729d5281270af8ab826d64d6134d3a831cfaf6329422ef00"
+    },
+    {
+      "path": ".gitignore",
+      "size": 154,
+      "sha256": "a556da4138243ff0426e511b6b918cfc3ebfc81d5e561208b75fb52c2be3bba2"
+    },
+    {
+      "path": "ARCHITECTURE_BUILD_04_LIVING_CITY.md",
+      "size": 3477,
+      "sha256": "789dd240f645c94ecfa2aabcb49d1fb260d0c784004067126c7c1412c669b9ef"
+    },
+    {
+      "path": "BUILD_NOTES_0.4.1.txt",
+      "size": 1317,
+      "sha256": "b0d38badaf59860d948e5574e5068991f183bdd2354696d4f81b5a09dc79cf7c"
+    },
+    {
+      "path": "CHANGELOG.md",
+      "size": 975,
+      "sha256": "003c0339322af3426e18f0530e6f7585b62556735376aea8c8443ce741bfb7b9"
+    },
+    {
+      "path": "README.md",
+      "size": 5522,
+      "sha256": "7318a5408f4935fba2bf464b39743e5ce6671f1dc1e59465b0559f3ec8606860"
+    },
+    {
+      "path": "README_START.txt",
+      "size": 337,
+      "sha256": "c85aea672c482cdd69b85519f069e4e2a36e08214648840f1edc671d25650040"
+    },
+    {
+      "path": "RUN_AWAKE_WORLD.cmd",
+      "size": 817,
+      "sha256": "7817a2b72431cebf82dd56c020ab598025e443a1f3ebb30822c23bed6d46809d"
+    },
+    {
+      "path": "VERSION",
+      "size": 10,
+      "sha256": "90c55baf2f7a40eaba6a4502e42e39285710734266feb653b68cff2122ae777d"
+    },
+    {
+      "path": "awake_world/__init__.py",
+      "size": 26,
+      "sha256": "ff45db3b171b9a93dd841a34c402bd244ad76ca11441a8ba9e9b46ce490fcc5f"
+    },
+    {
+      "path": "awake_world/app.py",
+      "size": 1045,
+      "sha256": "2dbb472da0cdb42952d47a8c8d50514500cb3457f7df622340a894a74d8278ee"
+    },
+    {
+      "path": "awake_world/assets/audio/discover.wav",
+      "size": 52964,
+      "sha256": "dd4521cd59cacab09a645eab780f5b7bb0b4069fbd1c1838b98cebf11d636de5"
+    },
+    {
+      "path": "awake_world/assets/audio/home_day.wav",
+      "size": 352844,
+      "sha256": "7a5dd3300eb44dfddc41aff286c9c8429a62e75568cfd560b2b38a55b7005648"
+    },
+    {
+      "path": "awake_world/assets/audio/home_night.wav",
+      "size": 352844,
+      "sha256": "864e1e1cf22e77b5ba7065f76464f55cc358e5be560e67c51151504bcc81ba76"
+    },
+    {
+      "path": "awake_world/assets/audio/hq_day.wav",
+      "size": 352844,
+      "sha256": "08a2f94f1d1f400fc5dffa86b8733db3f4b1465734340e8043b78d10f626a004"
+    },
+    {
+      "path": "awake_world/assets/audio/hq_night.wav",
+      "size": 352844,
+      "sha256": "f7c0145f575dc4424e0f296c254359fa226f4ac5e14ed5637ee348697624f869"
+    },
+    {
+      "path": "awake_world/assets/audio/interact.wav",
+      "size": 35324,
+      "sha256": "ffa3cb02ce882dd34b476eff1a83fbffc3aa2362e5c5e9f2dc1c66fb7070c927"
+    },
+    {
+      "path": "awake_world/assets/audio/plaza_day.wav",
+      "size": 352844,
+      "sha256": "0360f95b365a6b0acb8e1953259785cf5059a23f25beb6df8d67204ee1da6820"
+    },
+    {
+      "path": "awake_world/assets/audio/plaza_night.wav",
+      "size": 352844,
+      "sha256": "ec9772788108b2a4ace7d4bd2b3f099e4d5e2110c242400a3aaf5a501b80ad5d"
+    },
+    {
+      "path": "awake_world/assets/audio/rooftop_day.wav",
+      "size": 352844,
+      "sha256": "0d2ec799ee5a82ef3a845a0add3347355b6951c4ffbcb43c58b6a5388584f030"
+    },
+    {
+      "path": "awake_world/assets/audio/rooftop_night.wav",
+      "size": 352844,
+      "sha256": "cadeb4ebc74fb4b5b29a708c79f9ed649c2627cc354a7f6928fb57ab9d57ad81"
+    },
+    {
+      "path": "awake_world/design/__init__.py",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "awake_world/design/theme/__init__.py",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "awake_world/design/theme/engine.py",
+      "size": 1604,
+      "sha256": "9e0ab67df29e6a117569437a2f9a9dfd33f61f66ae47b9b23ffa44dfc34f3ea6"
+    },
+    {
+      "path": "awake_world/design/theme/light.qss",
+      "size": 2173,
+      "sha256": "2da2336fb8e5f8ba3e939bc4a0c67f2e700e7daef06d83a383dd19204438f6ab"
+    },
+    {
+      "path": "awake_world/design/theme/night.qss",
+      "size": 2218,
+      "sha256": "b8e13ba5379171204062f4301be7971fa57e318e7f80baf63a09cd610d9d3a2f"
+    },
+    {
+      "path": "awake_world/design/tokens/colors.json",
+      "size": 816,
+      "sha256": "31ea8a49d7a13565a55376f9bc6080a236047ebcfbf368722c4aeb2f42aa1866"
+    },
+    {
+      "path": "awake_world/design/tokens/elevation.json",
+      "size": 91,
+      "sha256": "91224bd0ec64916aa0e9f212090e66b43adb748addead35f4f1a3d0519a5d0ef"
+    },
+    {
+      "path": "awake_world/design/tokens/motion.json",
+      "size": 274,
+      "sha256": "7beca7888e191db8872e50060d69aacc0717810b11e42bafc6d11edc37688c86"
+    },
+    {
+      "path": "awake_world/design/tokens/radius.json",
+      "size": 81,
+      "sha256": "469e91320d75c6273ba03a6ffbf058df77e251504dbe499cc48ceec6220076ae"
+    },
+    {
+      "path": "awake_world/design/tokens/spacing.json",
+      "size": 110,
+      "sha256": "0be0b7a6766184eb8f6b26a7cd9ac27d1ef6ae85d3c426179f6efa67dbebb8e2"
+    },
+    {
+      "path": "awake_world/design/tokens/typography.json",
+      "size": 125,
+      "sha256": "b43d0a9c9ef6fbaaae694831163d1b2e5932b05ae99673e874dac57540e6cab2"
+    },
+    {
+      "path": "awake_world/presentation/__init__.py",
+      "size": 359,
+      "sha256": "ec1d874d333f909d7b13e4c31c95bcdc0d584e925b73e5257e6b2cf66ebfb037"
+    },
+    {
+      "path": "awake_world/presentation/camera_controller.py",
+      "size": 2728,
+      "sha256": "b64981ca780a833fb1b085c3294d061b5e8c84a788d7ae95baa742158228f3c9"
+    },
+    {
+      "path": "awake_world/presentation/transition_orchestrator.py",
+      "size": 3289,
+      "sha256": "ee0a88c9bd99582ae08e529b2bed1dad16fef7b264150c64fe70370bc2664ff4"
+    },
+    {
+      "path": "awake_world/simulation/__init__.py",
+      "size": 288,
+      "sha256": "d68b81c10058aba061e199ebe56e8a91dd910b508012fe8128752f39468957cb"
+    },
+    {
+      "path": "awake_world/simulation/actor_runtime.py",
+      "size": 6923,
+      "sha256": "69d9630ab84dc9934ceeb565b556da37706ff8d6d22c963431e44edffa222920"
+    },
+    {
+      "path": "awake_world/simulation/replay.py",
+      "size": 2514,
+      "sha256": "42ce59e78cef09f047e1b1eb25e922af88a40dcbb7eaa8200d46190e5624cdeb"
+    },
+    {
+      "path": "awake_world/ui/__init__.py",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "awake_world/ui/main_window.py",
+      "size": 16641,
+      "sha256": "f82d0acccb2f67dd0f2f9923fce08fb2ae92a1c2116aeab4e9ca4b425435b691"
+    },
+    {
+      "path": "awake_world/ui/portal_mark.py",
+      "size": 1012,
+      "sha256": "a2d5c47b87dcda58adec3c830c79943f1cf7bcd4cc6b0d7816bb15b515a87d98"
+    },
+    {
+      "path": "awake_world/world/__init__.py",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "awake_world/world/audio.py",
+      "size": 4359,
+      "sha256": "68241a70d54b7ef1e4e0d7559ed507d41d0bf5a26364bb1922f6aaff2a845303"
+    },
+    {
+      "path": "awake_world/world/avatar.py",
+      "size": 6749,
+      "sha256": "0b8d9bf8f0243495295c24bebda0a25c4ffb681f11e162f07f2fe095c9fa8f97"
+    },
+    {
+      "path": "awake_world/world/district.py",
+      "size": 7522,
+      "sha256": "3bf85e7577c1b7d798c00efc3bf5b37cd1109ae550f8c74a344cda54f5db3273"
+    },
+    {
+      "path": "awake_world/world/environment.py",
+      "size": 1794,
+      "sha256": "80c1eb5474b80b83fba842f0a9caa87db8024bbdf387348fc9d6b910250b12e2"
+    },
+    {
+      "path": "awake_world/world/iso.py",
+      "size": 597,
+      "sha256": "67376f39742d4d1d890687f1b9a7401917880084c50fb1b84aea105d61d47235"
+    },
+    {
+      "path": "awake_world/world/items.py",
+      "size": 24659,
+      "sha256": "0085f7a8c934c2cf4acf79d954627bf15919d569758bd811c5087b5b2363e06b"
+    },
+    {
+      "path": "awake_world/world/lighting.py",
+      "size": 2357,
+      "sha256": "1aabfd77f3f73ae6d2e4836e157ece9178717f2a290a86e4c47b91ffd92d7600"
+    },
+    {
+      "path": "awake_world/world/npc.py",
+      "size": 5743,
+      "sha256": "3cd6a66044e66359619baeae06970f36c593ce37d04cf9d7f26df7275c800f01"
+    },
+    {
+      "path": "awake_world/world/progression.py",
+      "size": 4150,
+      "sha256": "c867d47d49b90b5f5fd54fec6ddd5c3a1677b225c873dcc5e0919a7dbdd57191"
+    },
+    {
+      "path": "awake_world/world/room.py",
+      "size": 42883,
+      "sha256": "37e162c62d165bbe61b9ba6391d8eec84e5f5536fc80746d035d69307776c67c"
+    },
+    {
+      "path": "awake_world/world/save.py",
+      "size": 6500,
+      "sha256": "fe6c1595e9bd1102cdf2d1cfbfc9a07f92928f0b8a5114e02186a85762aee401"
+    },
+    {
+      "path": "awake_world/world/state.py",
+      "size": 1454,
+      "sha256": "359860d44094b19bce639c1f4d6a27331e93672570ebeb5feade981f78342509"
+    },
+    {
+      "path": "awake_world/world/systems/__init__.py",
+      "size": 327,
+      "sha256": "cfeb4506d03c83ee73eeddc615bed2ffb3f0c2993215ca7d32ce201bc0aff3b6"
+    },
+    {
+      "path": "awake_world/world/systems/ambient_life.py",
+      "size": 1645,
+      "sha256": "99f218d42b5fd446df3858a36bdf80dea90a70b874966fbdc1f7a73be403f812"
+    },
+    {
+      "path": "awake_world/world/systems/audio_zones.py",
+      "size": 1700,
+      "sha256": "6e1e07a12111965124275ecd1714acc690b52332c9602e4cad2998fc5e133313"
+    },
+    {
+      "path": "awake_world/world/systems/diagnostics.py",
+      "size": 2386,
+      "sha256": "ccd311d4b6c4a907f568f7a977aa12541470a4a5344c90179d8e97f3095b961e"
+    },
+    {
+      "path": "awake_world/world/systems/events.py",
+      "size": 1832,
+      "sha256": "1818d06d32b9bf076a338d16c06d26d768bd3e42b37933cc83c1b0d63440ef99"
+    },
+    {
+      "path": "awake_world/world/systems/interactions.py",
+      "size": 2396,
+      "sha256": "14f0edd7339b30e4095f425750cff7d8ca8dd2f271d64a66af63b5df51185ca0"
+    },
+    {
+      "path": "awake_world/world/systems/lighting_system.py",
+      "size": 762,
+      "sha256": "f9a22c3ab1d5ae1dcea05cfadb710e265cb496594384f4c35d32a72b26c3cc75"
+    },
+    {
+      "path": "awake_world/world/systems/microevents.py",
+      "size": 2406,
+      "sha256": "b04bcb914598d2b4a21bda1517b080c1c47c408e09aa9e0d8d989569dd85b0a4"
+    },
+    {
+      "path": "awake_world/world/systems/npc_system.py",
+      "size": 3883,
+      "sha256": "ecc68862bac86531ccf1e8fba0eed7fad711e0efac85bae5d3fd77b16c300029"
+    },
+    {
+      "path": "awake_world/world/systems/performance.py",
+      "size": 861,
+      "sha256": "7a770a17d2e628f614eeb2a1c60b088d0038820db9cf991c26a75d934f4c33b0"
+    },
+    {
+      "path": "awake_world/world/systems/pets.py",
+      "size": 2173,
+      "sha256": "7b844fe9d77afef7746b536ee10b933e995c9f7dca0d20ca9458c047c4051762"
+    },
+    {
+      "path": "awake_world/world/systems/presence.py",
+      "size": 2281,
+      "sha256": "87a8ee9506c3c9123bf21db6fa88552864b0547efaf51e53f77821106e190cb2"
+    },
+    {
+      "path": "awake_world/world/systems/runtime.py",
+      "size": 7707,
+      "sha256": "823233644c6ec206f17e24b6ae3347df3b3864f3f134481adec395cbbc139ec2"
+    },
+    {
+      "path": "awake_world/world/systems/spaces.py",
+      "size": 6221,
+      "sha256": "59c941217ea0cace89c2418707a66f66221023dc0cf3ecc1fcb1d3318e472d2c"
+    },
+    {
+      "path": "awake_world/world/systems/time_system.py",
+      "size": 2641,
+      "sha256": "1de1bdc2a9d2a3af283640e0e00f47e78eb65d09e154f80327febea5614c9a37"
+    },
+    {
+      "path": "awake_world/world/systems/weather.py",
+      "size": 2050,
+      "sha256": "8054d5bcd2b426b0ad46a27acd649af984f1458d49dcae884f90c5b4ff34acbd"
+    },
+    {
+      "path": "awake_world/world/view.py",
+      "size": 24520,
+      "sha256": "eb167be8daf4686765abee1127f917a5e2547ce2b8b5c5c88a063f8d575045a5"
+    },
+    {
+      "path": "awake_world.spec",
+      "size": 747,
+      "sha256": "cdeea45c8a7222fe1496cfb733b055e7106c531a90866f8885c526c9a9861df3"
+    },
+    {
+      "path": "data/build.json",
+      "size": 307,
+      "sha256": "71e9bb4dad21e0b61c0958986e57cc150820e55b59719c7b0942ab448ad32089"
+    },
+    {
+      "path": "docs/AWAKE_WORLD_INTERACTION_EXPERIENCE_BIBLE_v1.md",
+      "size": 35357,
+      "sha256": "408a9370bcdee619aaca87990bfecea616112a1d9dbf9d1c8a4c42a9d4f5d75d"
+    },
+    {
+      "path": "launch_awake.py",
+      "size": 5668,
+      "sha256": "8ca105d9bc58adb2cfe036ec3e450dfb3117d6faa11a85f99247db9046159d6f"
+    },
+    {
+      "path": "licenses/THIRD_PARTY.txt",
+      "size": 298,
+      "sha256": "6f42e89b8edba507505e40b604c997d023a1f7d7791719651988c5857a7bd9d8"
+    },
+    {
+      "path": "pyproject.toml",
+      "size": 390,
+      "sha256": "f59b44e7a808876355af46270502f72e1c180f0f2e7d504cab5c57579b9cc425"
+    },
+    {
+      "path": "requirements-dev.txt",
+      "size": 63,
+      "sha256": "a5259f42fbda30737e0db72fade4a78785e77c902ad4c4c3fcdf935c5a324a85"
+    },
+    {
+      "path": "requirements.txt",
+      "size": 16,
+      "sha256": "385e039f43c455549f3e79039a7b68169284eac3f18a35e0db4fa5ebdec01e44"
+    },
+    {
+      "path": "run.py",
+      "size": 90,
+      "sha256": "1cf48a460d8b6df0b09b10dba6b9964ffd81a5be6cafdcf177b5267339431144"
+    },
+    {
+      "path": "smoke_test.ps1",
+      "size": 387,
+      "sha256": "02029b94d2170130b8324d3b7168c31f49c6c1faa968f6f45ff7ec2840946acf"
+    },
+    {
+      "path": "start_awake.cmd",
+      "size": 817,
+      "sha256": "7817a2b72431cebf82dd56c020ab598025e443a1f3ebb30822c23bed6d46809d"
+    },
+    {
+      "path": "start_awake.ps1",
+      "size": 422,
+      "sha256": "48a281cc46a6cd9906f01b4c298a5ccaac87c93d71b99c442d520dae4598ae24"
+    },
+    {
+      "path": "tests/test_actor_runtime.py",
+      "size": 1185,
+      "sha256": "5af32c8d512da03686c848437b18660b733e748749750553bb4d25e67a5aa1a0"
+    },
+    {
+      "path": "tests/test_camera_transition.py",
+      "size": 886,
+      "sha256": "e1167940f4d28ed35f265618d9502cd9e4de00966276bb2057d6470de9a66289"
+    },
+    {
+      "path": "tests/test_interactions_npc_pets.py",
+      "size": 1027,
+      "sha256": "a8581107fd889afbc0bf3c5849d5cef71af016c44c2e72f3e8ddb475cb01c6d0"
+    },
+    {
+      "path": "tests/test_replay.py",
+      "size": 398,
+      "sha256": "fa4b93b8f1d104c9ca835aa92bc86d1563bb12900ec8f81b141b0e57b838203b"
+    },
+    {
+      "path": "tests/test_save_migration.py",
+      "size": 1059,
+      "sha256": "cd96723b4c2b40e62c2c7cce48b76792de12254ce031ba25cefc8e03bd356f47"
+    },
+    {
+      "path": "tools/build_manifest.py",
+      "size": 2806,
+      "sha256": "8c311e617fc625e809c17df42a2afdc9b522e368a677bc8b7e2c370736587a26"
+    },
+    {
+      "path": "tools/core_test.py",
+      "size": 3779,
+      "sha256": "69ea672cadfbafc95bc101b74091258aba69d2a4b63ffcebac4564d056eb0374"
+    },
+    {
+      "path": "tools/deterministic_replay_test.py",
+      "size": 2061,
+      "sha256": "2e35b6ead6bc4d6bbf62ed4ec20c595aeeea049c660c54c14ea0f09bd8ec04ed"
+    },
+    {
+      "path": "tools/gameplay_tests.py",
+      "size": 4027,
+      "sha256": "cb2cae26933f7b65d223196682200d7c821085992f44fddcd59c58683b674e6e"
+    },
+    {
+      "path": "tools/generate_audio_assets.py",
+      "size": 4023,
+      "sha256": "099ff39012d5a79a665e3e10972ccab3482f27eacf52c458927c107505de97c9"
+    },
+    {
+      "path": "tools/package_windows.py",
+      "size": 1355,
+      "sha256": "3bc0231f5747132aebea68bbf26f3dec628e389241a8bbdbc05f6d5a1352478a"
+    },
+    {
+      "path": "tools/render_golden_scenes.py",
+      "size": 4197,
+      "sha256": "25c02e547a79288f6313aa8a3302f521692e0fd5640f870fcf05eee2c3be58ea"
+    },
+    {
+      "path": "tools/smoke_test.py",
+      "size": 2093,
+      "sha256": "8bfc72246d7eef838bdd0d47158a6a3be4599e0ca2f3f85201b43ac02981b390"
+    },
+    {
+      "path": "tools/static_validate.py",
+      "size": 7194,
+      "sha256": "4e82beb329eb64bb0bee2db23679c70183d3555db83215a22dea653e0696527a"
+    },
+    {
+      "path": "tools/write_build_metadata.py",
+      "size": 1370,
+      "sha256": "7e78db5865c2ff0729bc2cb96a1f72ec67b05edd0e501e98f8eabdf91c7a9b0d"
+    },
+    {
+      "path": "verify_awake.cmd",
+      "size": 479,
+      "sha256": "a59564f921ae69656fdf5092fd7d68ad646865b8e9c1aed42dde4e8918ed5177"
+    }
+  ]
+}

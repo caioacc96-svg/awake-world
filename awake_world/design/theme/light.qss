@@ -1,0 +1,102 @@
+QMainWindow, QWidget#Root {
+    background: {{canvas}};
+    color: {{ink}};
+}
+QWidget#TopBar {
+    background: {{surface}};
+    border-bottom: 1px solid {{fog}};
+}
+QLabel#BrandLabel {
+    color: {{ink}};
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.35px;
+}
+QLabel#RoomLabel {
+    color: {{ink_soft}};
+    font-size: 10px;
+}
+QLabel#StatusPill {
+    color: {{ink}};
+    background: {{surface_alt}};
+    border-radius: 12px;
+    padding: 5px 9px;
+    font-size: 10px;
+}
+QPushButton#TimeButton, QPushButton#HelpButton {
+    background: transparent;
+    color: {{ink_soft}};
+    border: 1px solid {{fog}};
+    border-radius: 9px;
+    padding: 5px 9px;
+    font-size: 10px;
+}
+QPushButton#TimeButton:hover, QPushButton#HelpButton:hover {
+    background: {{surface_alt}};
+    color: {{ink}};
+}
+QFrame#ActionCard {
+    background: {{surface}};
+    border: 1px solid {{fog}};
+    border-radius: 13px;
+}
+QLabel#ActionEyebrow {
+    color: {{ink_soft}};
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.7px;
+}
+QLabel#ActionTitle {
+    color: {{ink}};
+    font-size: 12px;
+    font-weight: 700;
+}
+QLabel#ActionHint, QLabel#BuildLabel {
+    color: {{ink_soft}};
+    font-size: 9px;
+}
+QWidget#Footer {
+    background: {{canvas}};
+    border-top: 1px solid {{fog}};
+}
+QToolTip {
+    background: {{surface}};
+    color: {{ink}};
+    border: 1px solid {{fog}};
+    padding: 5px;
+}
+QFrame#FieldPanel {
+    background: {{surface}};
+    border: 1px solid {{fog}};
+    border-radius: 16px;
+}
+QLabel#PanelTitle {
+    color: {{ink}};
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1.1px;
+}
+QLabel#PanelMeta, QLabel#PanelHint {
+    color: {{ink_soft}};
+    font-size: 9px;
+}
+QLabel#PanelSection {
+    color: {{awake_blue}};
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.9px;
+    margin-top: 8px;
+}
+QLabel#PanelText {
+    color: {{ink}};
+    font-size: 10px;
+}
+QPushButton#PanelClose {
+    background: {{surface_alt}};
+    color: {{ink_soft}};
+    border: none;
+    border-radius: 14px;
+    font-size: 16px;
+}
+QPushButton#PanelClose:hover { color: {{ink}}; }
+QScrollArea#PanelScroll, QWidget#PanelBody { background: transparent; }

@@ -1,0 +1,31 @@
+AWAKE/WORLD — BUILD 0.4.1 COMPLETE
+THE LIVING NETWORK
+
+Canonical Windows entry point:
+  RUN_AWAKE_WORLD.cmd
+
+This package is self-contained at the project level and does not require any
+previous Awake World build or hotfix. It creates its own .venv on first launch.
+
+Consolidated fixes:
+- no manual PowerShell ExecutionPolicy step required for the recommended launcher
+- PySide6 detection no longer depends on PowerShell stderr behavior
+- project root is always present in PYTHONPATH for validation/smoke subprocesses
+- smoke_test.py pins the project root in sys.path
+- TimeSystem, SpaceSystem, NPCSystem, PresenceSystem, MicroEventSystem,
+  LightingSystem, AudioZoneSystem, InteractionSystem and PerformanceSystem are
+  connected through WorldRuntime
+- active microevents and presence restore from save schema v5
+- NPC logical state is persisted as derived simulation state
+- weather save values are normalized defensively
+- Build 0.4 renderer/authored rooms remain preserved
+
+Validation performed before packaging:
+- Python syntax / compileall: PASS
+- static project validation: PASS
+- pure core systems test: PASS
+- bootstrap non-Qt flow: PASS
+
+The Qt offscreen smoke test requires PySide6. The canonical launcher installs
+PySide6 6.11.2 if needed and runs that smoke test automatically before opening
+the game.
