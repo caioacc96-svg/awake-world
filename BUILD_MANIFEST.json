@@ -24,39 +24,79 @@
   },
   "files": [
     {
+      "path": ".gitattributes",
+      "size": 19,
+      "sha256": "d60f352d0db1404c70afb4bb8b2ca3fd1c610572aa40720e8a0b7baa7885418c"
+    },
+    {
       "path": ".github/workflows/ci.yml",
-      "size": 4572,
-      "sha256": "d508c8abb077ff0815e53ddb7a55796c1f107f83c5b1636d155f588606f99ec7"
+      "size": 4458,
+      "sha256": "95958628dd0b24adcb153eb5568ada5109dd44c722019015956c17eef2d2ce57"
     },
     {
       "path": ".github/workflows/release.yml",
-      "size": 3784,
-      "sha256": "5efc47bcb54a0367eef8bac4f6aeec47039c9e6b977ef3aa2d996ce11aabcb25"
+      "size": 3687,
+      "sha256": "ee9e3496dffd5658f24e8146c02c6fcbffbb1a420644aed13f4a1b58213dfc3c"
     },
     {
       "path": ".github/workflows/update-goldens.yml",
-      "size": 942,
-      "sha256": "df508b02486edfc1ea588159c50076929d6bfbd6f63d0bbebcdf5ec9b7ede825"
+      "size": 852,
+      "sha256": "1a48e523add82b81aa0d616e4f7a43506e938cc6fb0603b0967e45eb2fe0b207"
     },
     {
       "path": ".gitignore",
-      "size": 167,
-      "sha256": "bb3980d5a44c6881ddfabf024836fe44584638801ca16aa320d05bee3db92d59"
+      "size": 154,
+      "sha256": "a556da4138243ff0426e511b6b918cfc3ebfc81d5e561208b75fb52c2be3bba2"
     },
     {
       "path": "ARCHITECTURE_BUILD_04_LIVING_CITY.md",
-      "size": 3604,
-      "sha256": "9cd5ba52e6e46e9259db555035d3fa04231ee5483a3546120ac5ad8c0334d64d"
+      "size": 3477,
+      "sha256": "789dd240f645c94ecfa2aabcb49d1fb260d0c784004067126c7c1412c669b9ef"
+    },
+    {
+      "path": "BASELINE_0.4.1.md",
+      "size": 554,
+      "sha256": "300ec47a0cfcce4601ee8483a33d632cf3384508aff1c6a50c22f3fb9eae6a37"
+    },
+    {
+      "path": "BUILD_NOTES_0.4.1.txt",
+      "size": 1317,
+      "sha256": "b0d38badaf59860d948e5574e5068991f183bdd2354696d4f81b5a09dc79cf7c"
+    },
+    {
+      "path": "CHANGELOG.md",
+      "size": 975,
+      "sha256": "003c0339322af3426e18f0530e6f7585b62556735376aea8c8443ce741bfb7b9"
+    },
+    {
+      "path": "README.md",
+      "size": 5522,
+      "sha256": "7318a5408f4935fba2bf464b39743e5ce6671f1dc1e59465b0559f3ec8606860"
+    },
+    {
+      "path": "README_START.txt",
+      "size": 337,
+      "sha256": "c85aea672c482cdd69b85519f069e4e2a36e08214648840f1edc671d25650040"
+    },
+    {
+      "path": "RUN_AWAKE_WORLD.cmd",
+      "size": 817,
+      "sha256": "7817a2b72431cebf82dd56c020ab598025e443a1f3ebb30822c23bed6d46809d"
+    },
+    {
+      "path": "VERSION",
+      "size": 10,
+      "sha256": "90c55baf2f7a40eaba6a4502e42e39285710734266feb653b68cff2122ae777d"
     },
     {
       "path": "awake_world/__init__.py",
-      "size": 27,
-      "sha256": "704ef53202f34a8051a1cd7b162b738f355404f59065b0e699d4034101792afc"
+      "size": 26,
+      "sha256": "ff45db3b171b9a93dd841a34c402bd244ad76ca11441a8ba9e9b46ce490fcc5f"
     },
     {
       "path": "awake_world/app.py",
-      "size": 1081,
-      "sha256": "79494fb4dd88edc5514175149ab50f7ceff4723fb67a4506424fbbc973972682"
+      "size": 1045,
+      "sha256": "2dbb472da0cdb42952d47a8c8d50514500cb3457f7df622340a894a74d8278ee"
     },
     {
       "path": "awake_world/design/__init__.py",
@@ -70,78 +110,78 @@
     },
     {
       "path": "awake_world/design/theme/engine.py",
-      "size": 1652,
-      "sha256": "a796aa250a7b7e1705b9edb2d23c72dc33cbb1a59f9aa03ea082114a28cfdaaf"
+      "size": 1604,
+      "sha256": "9e0ab67df29e6a117569437a2f9a9dfd33f61f66ae47b9b23ffa44dfc34f3ea6"
     },
     {
       "path": "awake_world/design/theme/light.qss",
-      "size": 2275,
-      "sha256": "b2af5aeb279348ba931573e4121befabbe13f91ac8d3e9611716fcf1b46d312f"
+      "size": 2173,
+      "sha256": "2da2336fb8e5f8ba3e939bc4a0c67f2e700e7daef06d83a383dd19204438f6ab"
     },
     {
       "path": "awake_world/design/theme/night.qss",
-      "size": 2296,
-      "sha256": "c3ea4c8dbbf181590bc7998311d783c9f3a522b0cb3a6647ccfbf6334ae28d9d"
+      "size": 2218,
+      "sha256": "b8e13ba5379171204062f4301be7971fa57e318e7f80baf63a09cd610d9d3a2f"
     },
     {
       "path": "awake_world/design/tokens/colors.json",
-      "size": 849,
-      "sha256": "21084043e253d2cf88cbfcd7ac870b90756b63da5c03b9bbe42184ac4ea19aab"
+      "size": 816,
+      "sha256": "31ea8a49d7a13565a55376f9bc6080a236047ebcfbf368722c4aeb2f42aa1866"
     },
     {
       "path": "awake_world/design/tokens/elevation.json",
-      "size": 96,
-      "sha256": "c3a6f3f48c859885563e2777e10da06812d6743a52bc49f829d6fac32994042a"
+      "size": 91,
+      "sha256": "91224bd0ec64916aa0e9f212090e66b43adb748addead35f4f1a3d0519a5d0ef"
     },
     {
       "path": "awake_world/design/tokens/motion.json",
-      "size": 285,
-      "sha256": "d71e0f0f4d986b1944b3e9f66a4085e1e5c7c22aca88d73a0706f4058d7af8c9"
+      "size": 274,
+      "sha256": "7beca7888e191db8872e50060d69aacc0717810b11e42bafc6d11edc37688c86"
     },
     {
       "path": "awake_world/design/tokens/radius.json",
-      "size": 87,
-      "sha256": "1d7bb688d7cf0ac010000ef16c7a6d0bc00eb6c6c3e9b84642a512dbf330683f"
+      "size": 81,
+      "sha256": "469e91320d75c6273ba03a6ffbf058df77e251504dbe499cc48ceec6220076ae"
     },
     {
       "path": "awake_world/design/tokens/spacing.json",
-      "size": 118,
-      "sha256": "2557c668ccffc8bfe10f81be5f1675525bb3ead98d9ef77c459c8f9b0ec6fe70"
+      "size": 110,
+      "sha256": "0be0b7a6766184eb8f6b26a7cd9ac27d1ef6ae85d3c426179f6efa67dbebb8e2"
     },
     {
       "path": "awake_world/design/tokens/typography.json",
-      "size": 132,
-      "sha256": "35c94ac9786f97f5ffee243b6228bd56e58b8890f97d3438880e458bed069d1d"
+      "size": 125,
+      "sha256": "b43d0a9c9ef6fbaaae694831163d1b2e5932b05ae99673e874dac57540e6cab2"
     },
     {
       "path": "awake_world/presentation/__init__.py",
-      "size": 366,
-      "sha256": "fa56da42ab37b5d96eb325aec66931d185d907f5a8f66864ec41c3f0cbe09762"
+      "size": 359,
+      "sha256": "ec1d874d333f909d7b13e4c31c95bcdc0d584e925b73e5257e6b2cf66ebfb037"
     },
     {
       "path": "awake_world/presentation/camera_controller.py",
-      "size": 2804,
-      "sha256": "b9ef52e1a9b3bd25e23cc485489606d87310e96a26b172ff5c0bc868682a93ab"
+      "size": 2728,
+      "sha256": "b64981ca780a833fb1b085c3294d061b5e8c84a788d7ae95baa742158228f3c9"
     },
     {
       "path": "awake_world/presentation/transition_orchestrator.py",
-      "size": 3385,
-      "sha256": "2aeb62d5f2a48ef362935cfe4c562f70602e5ccb48712ed535353374e9d1921d"
+      "size": 3289,
+      "sha256": "ee0a88c9bd99582ae08e529b2bed1dad16fef7b264150c64fe70370bc2664ff4"
     },
     {
       "path": "awake_world/simulation/__init__.py",
-      "size": 295,
-      "sha256": "dc69267f5b670f90d3e019e8c16eab5979482120a89029f114e812b5cabd8c80"
+      "size": 288,
+      "sha256": "d68b81c10058aba061e199ebe56e8a91dd910b508012fe8128752f39468957cb"
     },
     {
       "path": "awake_world/simulation/actor_runtime.py",
-      "size": 7118,
-      "sha256": "97d233cbfc28cd64533442c06cb9a7e966ccbbaf676aff74e7b5a6b65ff92cbc"
+      "size": 6923,
+      "sha256": "69d9630ab84dc9934ceeb565b556da37706ff8d6d22c963431e44edffa222920"
     },
     {
       "path": "awake_world/simulation/replay.py",
-      "size": 2591,
-      "sha256": "4d460a17a96b46635545c01b55e950071880bb619a62060261fb351479d779af"
+      "size": 2514,
+      "sha256": "42ce59e78cef09f047e1b1eb25e922af88a40dcbb7eaa8200d46190e5624cdeb"
     },
     {
       "path": "awake_world/ui/__init__.py",
@@ -150,13 +190,13 @@
     },
     {
       "path": "awake_world/ui/main_window.py",
-      "size": 17002,
-      "sha256": "b0dcc28c831b9fefd3ac4fd397b74a81782b2108e067de50a966ee0dd10ac299"
+      "size": 16641,
+      "sha256": "f82d0acccb2f67dd0f2f9923fce08fb2ae92a1c2116aeab4e9ca4b425435b691"
     },
     {
       "path": "awake_world/ui/portal_mark.py",
-      "size": 1045,
-      "sha256": "e965c32f7d4292f9bdcc285cb30d5d07759c676c2e55244ba4fff15133b6bf99"
+      "size": 1012,
+      "sha256": "a2d5c47b87dcda58adec3c830c79943f1cf7bcd4cc6b0d7816bb15b515a87d98"
     },
     {
       "path": "awake_world/world/__init__.py",
@@ -165,328 +205,293 @@
     },
     {
       "path": "awake_world/world/audio.py",
-      "size": 4480,
-      "sha256": "92e18653d9dacb3f582e160caf7c9d0a9821a3b7e0e686ccf89aaae713eb4762"
+      "size": 4359,
+      "sha256": "68241a70d54b7ef1e4e0d7559ed507d41d0bf5a26364bb1922f6aaff2a845303"
     },
     {
       "path": "awake_world/world/avatar.py",
-      "size": 6921,
-      "sha256": "58dc6893989068ab98e973d37229c71b3c2e16d870142f401d151c203dee987c"
+      "size": 6749,
+      "sha256": "0b8d9bf8f0243495295c24bebda0a25c4ffb681f11e162f07f2fe095c9fa8f97"
     },
     {
       "path": "awake_world/world/district.py",
-      "size": 7642,
-      "sha256": "2ff3c1aa288925ca6a16421a06f8c86ffefa28f426736f31f53079f26b4b09d8"
+      "size": 7522,
+      "sha256": "3bf85e7577c1b7d798c00efc3bf5b37cd1109ae550f8c74a344cda54f5db3273"
     },
     {
       "path": "awake_world/world/environment.py",
-      "size": 1844,
-      "sha256": "17b63dd6a23f1ef9d4b68e85a33cb9e165b07aaf94c7aec5240a30034b580f47"
+      "size": 1794,
+      "sha256": "80c1eb5474b80b83fba842f0a9caa87db8024bbdf387348fc9d6b910250b12e2"
     },
     {
       "path": "awake_world/world/iso.py",
-      "size": 619,
-      "sha256": "fa43e04233657fd9b27bf27760297230a02bf56512aa984c4b51d8a3ed5125ee"
+      "size": 597,
+      "sha256": "67376f39742d4d1d890687f1b9a7401917880084c50fb1b84aea105d61d47235"
     },
     {
       "path": "awake_world/world/items.py",
-      "size": 25262,
-      "sha256": "64221336735fb8746f05e64cb60c3d50aecf67c710266f329e2a5d3fa1ae65dd"
+      "size": 24659,
+      "sha256": "0085f7a8c934c2cf4acf79d954627bf15919d569758bd811c5087b5b2363e06b"
     },
     {
       "path": "awake_world/world/lighting.py",
-      "size": 2438,
-      "sha256": "87c393b90980a607881e4fd3503bb02784f9b1d0cd35aea30be0ab1600070255"
+      "size": 2357,
+      "sha256": "1aabfd77f3f73ae6d2e4836e157ece9178717f2a290a86e4c47b91ffd92d7600"
     },
     {
       "path": "awake_world/world/npc.py",
-      "size": 5901,
-      "sha256": "42b04ff9750d9ddbd5a6518b2d9af90efe33fe23fd11917a019c897b304ad678"
+      "size": 5743,
+      "sha256": "3cd6a66044e66359619baeae06970f36c593ce37d04cf9d7f26df7275c800f01"
     },
     {
       "path": "awake_world/world/progression.py",
-      "size": 4253,
-      "sha256": "5ffcade2505099cd719701f93b30f553625864ea027c4545ae2ce95d5431cc1b"
+      "size": 4150,
+      "sha256": "c867d47d49b90b5f5fd54fec6ddd5c3a1677b225c873dcc5e0919a7dbdd57191"
     },
     {
       "path": "awake_world/world/room.py",
-      "size": 43773,
-      "sha256": "765774d8c9602c919d926a63c78171cb324d5fd40f71c6ef971006a0360ea422"
+      "size": 42883,
+      "sha256": "37e162c62d165bbe61b9ba6391d8eec84e5f5536fc80746d035d69307776c67c"
     },
     {
       "path": "awake_world/world/save.py",
-      "size": 6658,
-      "sha256": "b688de71491ff2f14b2f89cc2c3c0c6829cb4b775571061ac1d5df17bad9a123"
+      "size": 6500,
+      "sha256": "fe6c1595e9bd1102cdf2d1cfbfc9a07f92928f0b8a5114e02186a85762aee401"
     },
     {
       "path": "awake_world/world/state.py",
-      "size": 1486,
-      "sha256": "c4ce875961f75e0b0a210e32ba0511f87c8a069d900cf7263c2acc94a3a00f9c"
+      "size": 1454,
+      "sha256": "359860d44094b19bce639c1f4d6a27331e93672570ebeb5feade981f78342509"
     },
     {
       "path": "awake_world/world/systems/__init__.py",
-      "size": 333,
-      "sha256": "470930c9d821ba657585b5487205bd55f162fa5fb633aceeda94f3e8d523db00"
+      "size": 327,
+      "sha256": "cfeb4506d03c83ee73eeddc615bed2ffb3f0c2993215ca7d32ce201bc0aff3b6"
     },
     {
       "path": "awake_world/world/systems/ambient_life.py",
-      "size": 1690,
-      "sha256": "47dbbef65d2f733dfe9a57a3384986db2eff3b02a33ba80e81aa8022ab44e5df"
+      "size": 1645,
+      "sha256": "99f218d42b5fd446df3858a36bdf80dea90a70b874966fbdc1f7a73be403f812"
     },
     {
       "path": "awake_world/world/systems/audio_zones.py",
-      "size": 1743,
-      "sha256": "91ee4e6ee0279d9907a56a2839238725041e7940ccf7188c41976dd429e3106b"
+      "size": 1700,
+      "sha256": "6e1e07a12111965124275ecd1714acc690b52332c9602e4cad2998fc5e133313"
     },
     {
       "path": "awake_world/world/systems/diagnostics.py",
-      "size": 2442,
-      "sha256": "7455b8e4d30d4003f323227e0b1f2f57be11cf52b4750132b2f22ec6234763d3"
+      "size": 2386,
+      "sha256": "ccd311d4b6c4a907f568f7a977aa12541470a4a5344c90179d8e97f3095b961e"
     },
     {
       "path": "awake_world/world/systems/events.py",
-      "size": 1883,
-      "sha256": "c4c8e5f36c1bb922f3e594bb3f2102711d91b1b43b509a3a3c3716ecd39fca12"
+      "size": 1832,
+      "sha256": "1818d06d32b9bf076a338d16c06d26d768bd3e42b37933cc83c1b0d63440ef99"
     },
     {
       "path": "awake_world/world/systems/interactions.py",
-      "size": 2469,
-      "sha256": "48adf5dd96abc90c8092f4f21caaf2d7556040c3d5dd70da78499429a89b466d"
+      "size": 2396,
+      "sha256": "14f0edd7339b30e4095f425750cff7d8ca8dd2f271d64a66af63b5df51185ca0"
     },
     {
       "path": "awake_world/world/systems/lighting_system.py",
-      "size": 784,
-      "sha256": "c04aaea427df05fe40ebdedbce0b4e181e1e5bd08f4c499003a21fc843c4715a"
+      "size": 762,
+      "sha256": "f9a22c3ab1d5ae1dcea05cfadb710e265cb496594384f4c35d32a72b26c3cc75"
     },
     {
       "path": "awake_world/world/systems/microevents.py",
-      "size": 2472,
-      "sha256": "dfc8f4f868910b357c537bff7599e1b1ffad32719b89abfc73b94bccfcc6cbda"
+      "size": 2406,
+      "sha256": "b04bcb914598d2b4a21bda1517b080c1c47c408e09aa9e0d8d989569dd85b0a4"
     },
     {
       "path": "awake_world/world/systems/npc_system.py",
-      "size": 3974,
-      "sha256": "819bb5d3e8839c3ab925b6d04c648a5db62b27ea17fc2c866ec4a9fc6945c0ca"
+      "size": 3883,
+      "sha256": "ecc68862bac86531ccf1e8fba0eed7fad711e0efac85bae5d3fd77b16c300029"
     },
     {
       "path": "awake_world/world/systems/performance.py",
-      "size": 891,
-      "sha256": "b7ce2de0446f089016086d8433fe2cfdfb542d6d3be606c9454bb7183afb3c83"
+      "size": 861,
+      "sha256": "7a770a17d2e628f614eeb2a1c60b088d0038820db9cf991c26a75d934f4c33b0"
     },
     {
       "path": "awake_world/world/systems/pets.py",
-      "size": 2234,
-      "sha256": "a1508ff28aee31c6c68ca0bf2217866b59de6b820a70bde2741ac5a73d2ada20"
+      "size": 2173,
+      "sha256": "7b844fe9d77afef7746b536ee10b933e995c9f7dca0d20ca9458c047c4051762"
     },
     {
       "path": "awake_world/world/systems/presence.py",
-      "size": 2348,
-      "sha256": "3d66f2d272501bfcb21bd039fc684e8f59dd8499836a6e54517afae365fd33b2"
+      "size": 2281,
+      "sha256": "87a8ee9506c3c9123bf21db6fa88552864b0547efaf51e53f77821106e190cb2"
     },
     {
       "path": "awake_world/world/systems/runtime.py",
-      "size": 7868,
-      "sha256": "cbf2230a5d370b5449d484620ad118a6d4dd76714a3cf1305821a83ef228cc5a"
+      "size": 7707,
+      "sha256": "823233644c6ec206f17e24b6ae3347df3b3864f3f134481adec395cbbc139ec2"
     },
     {
       "path": "awake_world/world/systems/spaces.py",
-      "size": 6360,
-      "sha256": "2a8cf1bd4256b3c624c823807179b6b48de7040bfd2ff163a8f60191cec7bdb6"
+      "size": 6221,
+      "sha256": "59c941217ea0cace89c2418707a66f66221023dc0cf3ecc1fcb1d3318e472d2c"
     },
     {
       "path": "awake_world/world/systems/time_system.py",
-      "size": 2715,
-      "sha256": "110d2dff90e933798af3eb2cf8ad50a37e71b94144a80c5b9b4eceb46ab8d730"
+      "size": 2641,
+      "sha256": "1de1bdc2a9d2a3af283640e0e00f47e78eb65d09e154f80327febea5614c9a37"
     },
     {
       "path": "awake_world/world/systems/weather.py",
-      "size": 2103,
-      "sha256": "823e27143ccba201dc5255def8c6596e316d449efad5d0b5ae0c45481d5732e0"
+      "size": 2050,
+      "sha256": "8054d5bcd2b426b0ad46a27acd649af984f1458d49dcae884f90c5b4ff34acbd"
     },
     {
       "path": "awake_world/world/view.py",
-      "size": 25046,
-      "sha256": "d3516f6acf786616e2f5fce9de5473aabd04b4873ca3f2cb45001ac22ce4064f"
+      "size": 24520,
+      "sha256": "eb167be8daf4686765abee1127f917a5e2547ce2b8b5c5c88a063f8d575045a5"
     },
     {
       "path": "awake_world.spec",
-      "size": 784,
-      "sha256": "44dbf7bce2e1f90a8c4d7a92dbfd3e69ba51ccaaeb8af407be5072471f26084e"
-    },
-    {
-      "path": "BASELINE_0.4.1.md",
-      "size": 565,
-      "sha256": "30763507d01e40e0768367f2768c68a7d1566073426a4b7793ff4466058e68f0"
-    },
-    {
-      "path": "BUILD_NOTES_0.4.1.txt",
-      "size": 1348,
-      "sha256": "4b6f8c318d8aafc230d03e5030c6ab7a3a6b4f0e56b783dead2eef3e5a200431"
-    },
-    {
-      "path": "CHANGELOG.md",
-      "size": 988,
-      "sha256": "e4dab188dcd0cdcf72db2df482d5b0320689eca45d5afc99fc2dbcf866ec6269"
+      "size": 747,
+      "sha256": "cdeea45c8a7222fe1496cfb733b055e7106c531a90866f8885c526c9a9861df3"
     },
     {
       "path": "data/build.json",
-      "size": 318,
-      "sha256": "4e64da4a052d2ddb583c7a2a27258174ac2b7431479c738c49c2cc7843c3b87c"
+      "size": 307,
+      "sha256": "71e9bb4dad21e0b61c0958986e57cc150820e55b59719c7b0942ab448ad32089"
     },
     {
       "path": "docs/AWAKE_WORLD_INTERACTION_EXPERIENCE_BIBLE_v1.md",
-      "size": 37666,
-      "sha256": "4088067d053874c854a29b647c8ad66dd59133332670f38a6c4f927c460ef0c5"
+      "size": 35357,
+      "sha256": "408a9370bcdee619aaca87990bfecea616112a1d9dbf9d1c8a4c42a9d4f5d75d"
     },
     {
       "path": "launch_awake.py",
-      "size": 5840,
-      "sha256": "8a6b114616c13b8dab0664f3c340a128e34499b4052beec4d45920d241fb99c5"
+      "size": 5668,
+      "sha256": "8ca105d9bc58adb2cfe036ec3e450dfb3117d6faa11a85f99247db9046159d6f"
     },
     {
       "path": "licenses/THIRD_PARTY.txt",
-      "size": 303,
-      "sha256": "fc5269f9b2cd5386aa921b55a1ac1372e47546744ca3efab2cd1c5a69428d684"
+      "size": 298,
+      "sha256": "6f42e89b8edba507505e40b604c997d023a1f7d7791719651988c5857a7bd9d8"
     },
     {
       "path": "pyproject.toml",
-      "size": 409,
-      "sha256": "8307060dd3e7f540c1581a1cbb5dc6d7cddf2a1887d786a14c9a9ad00314f0af"
-    },
-    {
-      "path": "README.md",
-      "size": 5707,
-      "sha256": "207706a6baa0aada88a0c03eeab5bd69bea21f9e3b858fdae96a91c985881955"
-    },
-    {
-      "path": "README_START.txt",
-      "size": 345,
-      "sha256": "6c5f7cd8151aeb9b1724157fd3294aac1f70e1de14fa6dbb5e3e375d66fdd34f"
+      "size": 390,
+      "sha256": "f59b44e7a808876355af46270502f72e1c180f0f2e7d504cab5c57579b9cc425"
     },
     {
       "path": "requirements-dev.txt",
-      "size": 67,
-      "sha256": "20cd7f4dbf8a52548589d36c1d3a9e781ff17ab301d8f2f84b4dd33aae451172"
+      "size": 63,
+      "sha256": "a5259f42fbda30737e0db72fade4a78785e77c902ad4c4c3fcdf935c5a324a85"
     },
     {
       "path": "requirements.txt",
-      "size": 17,
-      "sha256": "eefad810b920f107846a79e2b79c314409bb8ec787166db6847d74a9453a4a17"
+      "size": 16,
+      "sha256": "385e039f43c455549f3e79039a7b68169284eac3f18a35e0db4fa5ebdec01e44"
     },
     {
       "path": "run.py",
-      "size": 94,
-      "sha256": "3b71857c14c50cd5bfbc9dee525ae93fd93fc3298c1e3e2f1202436cb61d513a"
-    },
-    {
-      "path": "RUN_AWAKE_WORLD.cmd",
-      "size": 852,
-      "sha256": "07a40e570f0be0cf93762d6454ea1721733e3d4fe396efe54f58c40963c8eb32"
+      "size": 90,
+      "sha256": "1cf48a460d8b6df0b09b10dba6b9964ffd81a5be6cafdcf177b5267339431144"
     },
     {
       "path": "smoke_test.ps1",
-      "size": 400,
-      "sha256": "00d1e53cbaee6cbe1e511c45f86a7da4da4d6774d042b3457c32677be9aecc37"
+      "size": 387,
+      "sha256": "02029b94d2170130b8324d3b7168c31f49c6c1faa968f6f45ff7ec2840946acf"
     },
     {
       "path": "start_awake.cmd",
-      "size": 852,
-      "sha256": "07a40e570f0be0cf93762d6454ea1721733e3d4fe396efe54f58c40963c8eb32"
+      "size": 817,
+      "sha256": "7817a2b72431cebf82dd56c020ab598025e443a1f3ebb30822c23bed6d46809d"
     },
     {
       "path": "start_awake.ps1",
-      "size": 438,
-      "sha256": "827c06c4f83131c99b3e88011c8402cf0affd37596fb4371a6ae3502e6b41ef6"
+      "size": 422,
+      "sha256": "48a281cc46a6cd9906f01b4c298a5ccaac87c93d71b99c442d520dae4598ae24"
     },
     {
       "path": "tests/test_actor_runtime.py",
-      "size": 1219,
-      "sha256": "fa1aadc02ee45a4f7fb4a329234c75a354fa0e2ad287357b0ef068158785740e"
+      "size": 1185,
+      "sha256": "5af32c8d512da03686c848437b18660b733e748749750553bb4d25e67a5aa1a0"
     },
     {
       "path": "tests/test_camera_transition.py",
-      "size": 911,
-      "sha256": "ed4e68ce55f874428fbdd1d82c2675728536329e969bd8603ccdd282d3ba70cd"
+      "size": 886,
+      "sha256": "e1167940f4d28ed35f265618d9502cd9e4de00966276bb2057d6470de9a66289"
     },
     {
       "path": "tests/test_interactions_npc_pets.py",
-      "size": 1059,
-      "sha256": "d033ba7ce79569d3ba09b2724a966d87b157a511c566d486354aed05df7f2eec"
+      "size": 1027,
+      "sha256": "a8581107fd889afbc0bf3c5849d5cef71af016c44c2e72f3e8ddb475cb01c6d0"
     },
     {
       "path": "tests/test_replay.py",
-      "size": 409,
-      "sha256": "2ba9d233350bab2346a19f745fe226af826c764189aaac90b2ca733590b85c5d"
+      "size": 398,
+      "sha256": "fa4b93b8f1d104c9ca835aa92bc86d1563bb12900ec8f81b141b0e57b838203b"
     },
     {
       "path": "tests/test_save_migration.py",
-      "size": 1084,
-      "sha256": "60f3bbdefcf409397529c8d332776dd76eb48415a814989121500c4a90a63bb6"
+      "size": 1059,
+      "sha256": "cd96723b4c2b40e62c2c7cce48b76792de12254ce031ba25cefc8e03bd356f47"
     },
     {
       "path": "tools/build_manifest.py",
-      "size": 4854,
-      "sha256": "75dcf23dbdc3676ca21b35f2abc543dbd29d63f65c20ede6f451e687e5375a4b"
+      "size": 5114,
+      "sha256": "fdeadb4253e0cde274c9af46ffa5b41d012ca3a0727e38c17345acadf1d689ee"
     },
     {
       "path": "tools/core_test.py",
-      "size": 3878,
-      "sha256": "bf62ac71bd93d9d3a6c38e8c0ed83b73d8872761823716c130de459ea6d3c389"
+      "size": 3779,
+      "sha256": "69ea672cadfbafc95bc101b74091258aba69d2a4b63ffcebac4564d056eb0374"
     },
     {
       "path": "tools/deterministic_replay_test.py",
-      "size": 2112,
-      "sha256": "c8c472f99a7f5fe7009da4a7e4128c5c8f35703451e1504c6a96f20f91d06c7d"
+      "size": 2061,
+      "sha256": "2e35b6ead6bc4d6bbf62ed4ec20c595aeeea049c660c54c14ea0f09bd8ec04ed"
     },
     {
       "path": "tools/gameplay_tests.py",
-      "size": 4128,
-      "sha256": "cb0af82cada3b3262b159d17d87b35f2cb005ee77c8c836ea5375b794789384e"
+      "size": 4027,
+      "sha256": "cb2cae26933f7b65d223196682200d7c821085992f44fddcd59c58683b674e6e"
     },
     {
       "path": "tools/generate_audio_assets.py",
-      "size": 4136,
-      "sha256": "d320ec026ed76c8514636a1202252f1ce03450214ee3a70ae6606b624801d953"
+      "size": 4023,
+      "sha256": "099ff39012d5a79a665e3e10972ccab3482f27eacf52c458927c107505de97c9"
     },
     {
       "path": "tools/package_windows.py",
-      "size": 1390,
-      "sha256": "dc58b1dbab69c3c3dc2413432160998edc065140a00837f677b64a8141304c7a"
+      "size": 1355,
+      "sha256": "3bc0231f5747132aebea68bbf26f3dec628e389241a8bbdbc05f6d5a1352478a"
     },
     {
       "path": "tools/render_golden_scenes.py",
-      "size": 4415,
-      "sha256": "884dc27f0f8dfa45fababcfdb2e4ecc0fdaef5e7458fb8464120915e3eb9a35e"
+      "size": 4310,
+      "sha256": "08551340ff116dde34df68c1d380a6f69f330c7c3953a6d4764941767aa22a86"
     },
     {
       "path": "tools/smoke_test.py",
-      "size": 2157,
-      "sha256": "77699698af1d26e641484918f5db5ede270ee86988d2ef1a357dcf0e73cca015"
+      "size": 2093,
+      "sha256": "8bfc72246d7eef838bdd0d47158a6a3be4599e0ca2f3f85201b43ac02981b390"
     },
     {
       "path": "tools/static_validate.py",
-      "size": 7370,
-      "sha256": "fcaec6a4369231e512a2775fe8acd6a24e106e964959117976bf6941df62349e"
+      "size": 7194,
+      "sha256": "4e82beb329eb64bb0bee2db23679c70183d3555db83215a22dea653e0696527a"
     },
     {
       "path": "tools/write_build_metadata.py",
-      "size": 1410,
-      "sha256": "138ad1d73519dc2a722abb10c5e7ab1c7df4d503498e837009fd7230d4a95e5f"
+      "size": 1370,
+      "sha256": "7e78db5865c2ff0729bc2cb96a1f72ec67b05edd0e501e98f8eabdf91c7a9b0d"
     },
     {
       "path": "verify_awake.cmd",
-      "size": 498,
-      "sha256": "ac30fb01d6ac7ea0cb020cfc744c5aa5c9ebab8c0d6755c32e7ac496f16e2373"
-    },
-    {
-      "path": "VERSION",
-      "size": 11,
-      "sha256": "8b1ddcda7ec0d30e40cd6d3317f1132086ebb5711763e7071816eaa24790c956"
+      "size": 479,
+      "sha256": "a59564f921ae69656fdf5092fd7d68ad646865b8e9c1aed42dde4e8918ed5177"
     },
     {
       "path": "visual_baselines/signatures.json",
-      "size": 20780,
-      "sha256": "e1c5a32363a395ebfe3e5b15fd8469007949fc68d488baeccd38f7868a3bd9af"
+      "size": 19269,
+      "sha256": "09e7c8974863b2b8ce7838aab63334d409dd3e4cd34bc9a42cd6ffd41346ca28"
     }
   ]
 }
