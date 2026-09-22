@@ -9,7 +9,6 @@ from awake_world.design.material_light import (
     get_space_material_light_profile,
     resolve_space_appearance,
 )
-from awake_world.design.world_visuals import get_space_visual_profile
 from awake_world.world.items import (
     CollisionRect,
     InteractionSpec,
@@ -57,7 +56,6 @@ class QuarterScene(BaseRoomScene):
 
     def build_world(self) -> None:
         self.reset_scene()
-        profile = get_space_visual_profile(self.room_id)
         massing = get_space_massing_profile(self.room_id)
         appearance = resolve_space_appearance(self.room_id, self.phase, self.weather)
         material_profile = get_space_material_light_profile(self.room_id)
@@ -243,7 +241,6 @@ class AuthoredSpaceScene(BaseRoomScene):
 
     def build_world(self) -> None:
         self.reset_scene()
-        profile = get_space_visual_profile(self.space_id)
         massing = get_space_massing_profile(self.space_id)
         appearance = resolve_space_appearance(self.space_id, self.phase, self.weather)
         _add_material_floor(self, appearance)
