@@ -48,50 +48,51 @@ def _add_architectural_ground(
     border = foundation.ground_border
 
     # A shallow site plinth gives the diorama a deliberate architectural edge.
-    scene.addItem(
-        IsoBlock(
-            p,
-            -border,
-            -border,
-            scene.width_tiles + border * 2.0,
-            scene.depth_tiles + border * 2.0,
-            .10,
-            _q(appearance.floor_edge).lighter(106),
-            _q(appearance.structure).darker(112),
-            _q(appearance.structure).darker(118),
-            z=-.13,
-        )
+    site_plinth = IsoBlock(
+        p,
+        -border,
+        -border,
+        scene.width_tiles + border * 2.0,
+        scene.depth_tiles + border * 2.0,
+        .10,
+        _q(appearance.floor_edge).lighter(106),
+        _q(appearance.structure).darker(112),
+        _q(appearance.structure).darker(118),
+        z=-.13,
     )
-    scene.addItem(
-        IsoSurfacePatch(
-            p,
-            0.0,
-            0.0,
-            float(scene.width_tiles),
-            float(scene.depth_tiles),
-            _q(appearance.floor_a),
-            _q(appearance.floor_edge).lighter(108),
-            z=.002,
-        )
+    site_plinth.setZValue(-12000)
+    scene.addItem(site_plinth)
+
+    ground = IsoSurfacePatch(
+        p,
+        0.0,
+        0.0,
+        float(scene.width_tiles),
+        float(scene.depth_tiles),
+        _q(appearance.floor_a),
+        _q(appearance.floor_edge).lighter(108),
+        z=.002,
     )
+    ground.setZValue(-11000)
+    scene.addItem(ground)
 
     # Large-format architectural joints replace per-tile checkerboarding.
     seam = _q(appearance.floor_edge).darker(104)
     spacing = foundation.joint_spacing
     for x in range(spacing, scene.width_tiles, spacing):
-        scene.addItem(
-            IsoSurfacePatch(
-                p, x - .018, 0.0, .036, float(scene.depth_tiles),
-                seam, None, z=.006, opacity=.22,
-            )
+        joint = IsoSurfacePatch(
+            p, x - .018, 0.0, .036, float(scene.depth_tiles),
+            seam, None, z=.006, opacity=.22,
         )
+        joint.setZValue(-10900)
+        scene.addItem(joint)
     for y in range(spacing, scene.depth_tiles, spacing):
-        scene.addItem(
-            IsoSurfacePatch(
-                p, 0.0, y - .018, float(scene.width_tiles), .036,
-                seam, None, z=.006, opacity=.22,
-            )
+        joint = IsoSurfacePatch(
+            p, 0.0, y - .018, float(scene.width_tiles), .036,
+            seam, None, z=.006, opacity=.22,
         )
+        joint.setZValue(-10900)
+        scene.addItem(joint)
 
     # Perimeter inlay visually binds every environment to the same urban system.
     edge = _q(appearance.structure)
@@ -101,9 +102,9 @@ def _add_architectural_ground(
         (0.0, 0.0, .10, scene.depth_tiles),
         (scene.width_tiles - .10, 0.0, .10, scene.depth_tiles),
     ):
-        scene.addItem(
-            IsoSurfacePatch(p, x, y, w, d, edge, None, z=.009, opacity=.48)
-        )
+        perimeter = IsoSurfacePatch(p, x, y, w, d, edge, None, z=.009, opacity=.48)
+        perimeter.setZValue(-10800)
+        scene.addItem(perimeter)
 
 
 def _add_circulation(
@@ -114,19 +115,19 @@ def _add_circulation(
     massing = get_space_massing_profile(scene.room_id)
     p = scene.projector
     for index, band in enumerate(massing.circulation):
-        scene.addItem(
-            IsoSurfacePatch(
-                p,
-                band.x,
-                band.y,
-                band.w,
-                band.d,
-                _q(appearance.circulation).lighter(104 if index == 0 else 101),
-                _q(appearance.floor_edge).lighter(112),
-                z=.014,
-                opacity=primary_opacity if index == 0 else primary_opacity * .78,
-            )
+        path = IsoSurfacePatch(
+            p,
+            band.x,
+            band.y,
+            band.w,
+            band.d,
+            _q(appearance.circulation).lighter(104 if index == 0 else 101),
+            _q(appearance.floor_edge).lighter(112),
+            z=.014,
+            opacity=primary_opacity if index == 0 else primary_opacity * .78,
         )
+        path.setZValue(-7000 + index)
+        scene.addItem(path)
 
 
 def _volume_colors(
@@ -225,19 +226,19 @@ def _add_architectural_volume(
     p = scene.projector
 
     # Contact shadow is a real projected footprint, not a global post-process.
-    scene.addItem(
-        IsoSurfacePatch(
-            p,
-            volume.x + foundation.shadow_offset,
-            volume.y + foundation.shadow_offset * .72,
-            volume.w,
-            volume.d,
-            QColor("#12171A"),
-            None,
-            z=.010,
-            opacity=foundation.shadow_opacity,
-        )
+    shadow = IsoSurfacePatch(
+        p,
+        volume.x + foundation.shadow_offset,
+        volume.y + foundation.shadow_offset * .72,
+        volume.w,
+        volume.d,
+        QColor("#12171A"),
+        None,
+        z=.010,
+        opacity=foundation.shadow_opacity,
     )
+    shadow.setZValue(-6000)
+    scene.addItem(shadow)
 
     top, left, right, opacity = _volume_colors(volume, appearance, glass_landmark)
 
