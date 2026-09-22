@@ -252,7 +252,16 @@ def main() -> int:
 
     baseline = json.loads(baseline_path.read_text(encoding="utf-8"))
     failures = []
-    for key, _, _, _ in GOLDEN_SCENES:
+    deferred = []
+
+    # The pre-MVD-2 signatures remain an immutable historical reference.
+    # MVD-2 intentionally changes material/luma for every authored Quarter
+    # space, so comparing those pixels to the pre-MVD-2 palette would reject
+    # the phase itself. Until MVD-5 performs human acceptance + golden freeze,
+    # keep dimensions enforced here and let the dedicated MVD-1/MVD-2 gates
+    # own authored-space visual acceptance. Any legacy/non-MVD scene retains
+    # the strict luma regression check.
+    for key, room_id, _, _ in GOLDEN_SCENES:
         sig = current[key]
         old = baseline.get(key)
         if not old:
@@ -260,6 +269,9 @@ def main() -> int:
             continue
         if sig["width"] != old.get("width") or sig["height"] != old.get("height"):
             failures.append(f"{key}:dimensions")
+            continue
+        if room_id in MVD1_SPACES:
+            deferred.append(key)
             continue
         distance = luma_distance(sig["luma"], old.get("luma", []))
         if distance > 0.085:
@@ -269,7 +281,10 @@ def main() -> int:
         print("AWAKE_VISUAL_REGRESSION_FAILED", *failures, sep="\n")
         return 1
 
-    print("AWAKE_VISUAL_REGRESSION_OK")
+    print(
+        "AWAKE_VISUAL_REGRESSION_OK "
+        f"mvd2_deferred_until_mvd5={len(deferred)}"
+    )
     return 0
 
 
