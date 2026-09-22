@@ -114,6 +114,11 @@
       "sha256": "b2597f5893d813663541b36042b05457eeeeb82375042afcf054b8b7fe5521e8"
     },
     {
+      "path": "awake_world/design/spatial_depth.py",
+      "size": 5836,
+      "sha256": "ed1673049d44756541686bde6b75ff183ac39c53c569f78ce23b5c29295036b3"
+    },
+    {
       "path": "awake_world/design/theme/__init__.py",
       "size": 0,
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -162,11 +167,6 @@
       "path": "awake_world/design/tokens/typography.json",
       "size": 125,
       "sha256": "b43d0a9c9ef6fbaaae694831163d1b2e5932b05ae99673e874dac57540e6cab2"
-    },
-    {
-      "path": "awake_world/design/spatial_depth.py",
-      "size": 5836,
-      "sha256": "ed1673049d44756541686bde6b75ff183ac39c53c569f78ce23b5c29295036b3"
     },
     {
       "path": "awake_world/design/visual_foundation.py",
