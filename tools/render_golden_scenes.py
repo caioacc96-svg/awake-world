@@ -46,7 +46,16 @@ MVD1_SCENES = [
     for space_id in MVD1_SPACES
 ]
 
-SCENES = GOLDEN_SCENES + MVD1_SCENES
+MVD2_SCENES = [
+    scene
+    for space_id in MVD1_SPACES
+    for scene in (
+        (f"mvd2_{space_id}_day_clear", space_id, 11*60, "clear"),
+        (f"mvd2_{space_id}_night_rain", space_id, 22*60, "rain"),
+    )
+]
+
+SCENES = GOLDEN_SCENES + MVD1_SCENES + MVD2_SCENES
 
 
 def image_signature(image) -> dict[str, object]:
@@ -84,6 +93,12 @@ def luma_distance(a: list[float], b: list[float]) -> float:
     return sum(abs(x - y) for x, y in zip(a, b)) / max(1, len(a))
 
 
+def mean_luma(signature: dict[str, object]) -> float:
+    values = signature["luma"]
+    assert isinstance(values, list)
+    return sum(float(value) for value in values) / max(1, len(values))
+
+
 def validate_mvd1_silhouette_separation(
     signatures: dict[str, dict[str, object]],
 ) -> list[str]:
@@ -102,6 +117,29 @@ def validate_mvd1_silhouette_separation(
             distance = luma_distance(luma_a, luma_b)
             if distance < 0.006:
                 failures.append(f"{key_a}<->{key_b}:distance={distance:.4f}")
+    return failures
+
+
+def validate_mvd2_material_light_response(
+    signatures: dict[str, dict[str, object]],
+) -> list[str]:
+    """MVD-2 acceptance: every space must visibly respond to phase + rain."""
+
+    failures: list[str] = []
+    for space_id in MVD1_SPACES:
+        day_key = f"mvd2_{space_id}_day_clear"
+        night_key = f"mvd2_{space_id}_night_rain"
+        day_luma = mean_luma(signatures[day_key])
+        night_luma = mean_luma(signatures[night_key])
+        delta = day_luma - night_luma
+        if delta < 0.035:
+            failures.append(
+                f"{space_id}:day={day_luma:.4f}:night_rain={night_luma:.4f}:delta={delta:.4f}"
+            )
+        if not 0.12 <= day_luma <= 0.92:
+            failures.append(f"{space_id}:day_luma_out_of_range={day_luma:.4f}")
+        if not 0.08 <= night_luma <= 0.78:
+            failures.append(f"{space_id}:night_luma_out_of_range={night_luma:.4f}")
     return failures
 
 
@@ -157,6 +195,12 @@ def main() -> int:
         print("AWAKE_MVD1_SILHOUETTE_FAILED", *silhouette_failures, sep="\n")
         return 3
     print("AWAKE_MVD1_SILHOUETTE_OK")
+
+    material_light_failures = validate_mvd2_material_light_response(current)
+    if material_light_failures:
+        print("AWAKE_MVD2_MATERIAL_LIGHT_FAILED", *material_light_failures, sep="\n")
+        return 4
+    print("AWAKE_MVD2_MATERIAL_LIGHT_OK")
 
     if args.update:
         baseline_path.parent.mkdir(parents=True, exist_ok=True)
