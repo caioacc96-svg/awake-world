@@ -145,17 +145,19 @@ def _add_stair_flight(
     p = scene.projector
     step_run = stair.run / stair.steps
     for index in range(stair.steps):
-        level = index + 1
-        height = stair.rise * level / stair.steps
+        # stair.x/y is the high edge touching the platform. Each following
+        # tread moves outward and drops toward grade.
+        height = stair.rise * (stair.steps - index) / stair.steps
+        offset = step_run * index
         if stair.axis == "y":
             x = stair.x
-            y = stair.y + stair.direction * step_run * level
+            y = stair.y + stair.direction * offset
             w = stair.width
-            d = step_run + .018
+            d = step_run + .025
         else:
-            x = stair.x + stair.direction * step_run * level
+            x = stair.x + stair.direction * offset
             y = stair.y
-            w = step_run + .018
+            w = step_run + .025
             d = stair.width
         scene.addItem(
             IsoArchitecturalBlock(
@@ -165,9 +167,37 @@ def _add_stair_flight(
                 w,
                 d,
                 height,
-                _q(appearance.surface).lighter(110),
+                _q(appearance.surface).lighter(112 - index),
                 _q(appearance.material).lighter(103),
-                _q(appearance.structure).darker(105),
+                _q(appearance.structure).darker(108),
+            )
+        )
+
+        # Thin nosing makes each riser legible at isometric scale.
+        nosing_h = min(.018, height * .24)
+        if stair.axis == "y":
+            nx = x
+            ny = y + stair.direction * max(0.0, d - .035)
+            nw = w
+            nd = .045
+        else:
+            nx = x + stair.direction * max(0.0, w - .035)
+            ny = y
+            nw = .045
+            nd = d
+        scene.addItem(
+            IsoArchitecturalBlock(
+                p,
+                nx,
+                ny,
+                nw,
+                nd,
+                nosing_h,
+                _q(appearance.structure).lighter(116),
+                _q(appearance.structure),
+                _q(appearance.structure).darker(110),
+                z=height,
+                opacity=.88,
             )
         )
 
