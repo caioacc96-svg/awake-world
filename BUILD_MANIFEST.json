@@ -430,8 +430,8 @@
     },
     {
       "path": "tools/build_manifest.py",
-      "size": 2926,
-      "sha256": "34b686f970ddf5324c586f3ef3ae650c3477e4afd065d615106548e4d1ba10de"
+      "size": 4727,
+      "sha256": "f310f1a113bf6c45e1fd6f60da4c644ec089f4a3bdc32b42f4c96c34b9f120a6"
     },
     {
       "path": "tools/core_test.py",
