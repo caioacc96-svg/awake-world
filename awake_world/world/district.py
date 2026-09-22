@@ -3,17 +3,21 @@ from __future__ import annotations
 from PySide6.QtCore import QRectF
 from PySide6.QtGui import QColor
 
-from awake_world.design.massing import get_space_massing_profile
+from awake_world.design.massing import MassingVolume, get_space_massing_profile
 from awake_world.design.material_light import (
     ResolvedSpaceAppearance,
     get_space_material_light_profile,
     resolve_space_appearance,
 )
+from awake_world.design.visual_foundation import (
+    VisualFoundationProfile,
+    framed_scene_rect,
+    get_space_visual_foundation_profile,
+)
 from awake_world.world.items import (
     CollisionRect,
     InteractionSpec,
     IsoBlock,
-    IsoFloorTile,
     IsoSurfacePatch,
     PlantItem,
     PortalDoor,
@@ -23,20 +27,383 @@ from awake_world.world.room import BaseRoomScene
 from awake_world.world.systems.spaces import SPACE_CATALOG
 
 
-def _add_material_floor(scene: BaseRoomScene, appearance: ResolvedSpaceAppearance) -> None:
-    """MVD-2 floor response shared by every Living Quarter environment."""
+def _q(color: str) -> QColor:
+    return QColor(color)
 
-    for y in range(scene.depth_tiles):
-        for x in range(scene.width_tiles):
-            point = scene.projector.project(x, y)
-            fill = QColor(appearance.floor_a if (x + y) % 2 == 0 else appearance.floor_b)
+
+def _framed_rect(space_id: str) -> QRectF:
+    massing = get_space_massing_profile(space_id)
+    foundation = get_space_visual_foundation_profile(space_id)
+    return QRectF(*framed_scene_rect(massing.scene_rect, foundation))
+
+
+def _add_architectural_ground(
+    scene: BaseRoomScene,
+    appearance: ResolvedSpaceAppearance,
+    foundation: VisualFoundationProfile,
+) -> None:
+    """Continuous civic ground: no checkerboard/debug-grid visual language."""
+
+    p = scene.projector
+    border = foundation.ground_border
+
+    # A shallow site plinth gives the diorama a deliberate architectural edge.
+    scene.addItem(
+        IsoBlock(
+            p,
+            -border,
+            -border,
+            scene.width_tiles + border * 2.0,
+            scene.depth_tiles + border * 2.0,
+            .10,
+            _q(appearance.floor_edge).lighter(106),
+            _q(appearance.structure).darker(112),
+            _q(appearance.structure).darker(118),
+            z=-.13,
+        )
+    )
+    scene.addItem(
+        IsoSurfacePatch(
+            p,
+            0.0,
+            0.0,
+            float(scene.width_tiles),
+            float(scene.depth_tiles),
+            _q(appearance.floor_a),
+            _q(appearance.floor_edge).lighter(108),
+            z=.002,
+        )
+    )
+
+    # Large-format architectural joints replace per-tile checkerboarding.
+    seam = _q(appearance.floor_edge).darker(104)
+    spacing = foundation.joint_spacing
+    for x in range(spacing, scene.width_tiles, spacing):
+        scene.addItem(
+            IsoSurfacePatch(
+                p, x - .018, 0.0, .036, float(scene.depth_tiles),
+                seam, None, z=.006, opacity=.22,
+            )
+        )
+    for y in range(spacing, scene.depth_tiles, spacing):
+        scene.addItem(
+            IsoSurfacePatch(
+                p, 0.0, y - .018, float(scene.width_tiles), .036,
+                seam, None, z=.006, opacity=.22,
+            )
+        )
+
+    # Perimeter inlay visually binds every environment to the same urban system.
+    edge = _q(appearance.structure)
+    for x, y, w, d in (
+        (0.0, 0.0, scene.width_tiles, .10),
+        (0.0, scene.depth_tiles - .10, scene.width_tiles, .10),
+        (0.0, 0.0, .10, scene.depth_tiles),
+        (scene.width_tiles - .10, 0.0, .10, scene.depth_tiles),
+    ):
+        scene.addItem(
+            IsoSurfacePatch(p, x, y, w, d, edge, None, z=.009, opacity=.48)
+        )
+
+
+def _add_circulation(
+    scene: BaseRoomScene,
+    appearance: ResolvedSpaceAppearance,
+    primary_opacity: float = .78,
+) -> None:
+    massing = get_space_massing_profile(scene.room_id)
+    p = scene.projector
+    for index, band in enumerate(massing.circulation):
+        scene.addItem(
+            IsoSurfacePatch(
+                p,
+                band.x,
+                band.y,
+                band.w,
+                band.d,
+                _q(appearance.circulation).lighter(104 if index == 0 else 101),
+                _q(appearance.floor_edge).lighter(112),
+                z=.014,
+                opacity=primary_opacity if index == 0 else primary_opacity * .78,
+            )
+        )
+
+
+def _volume_colors(
+    volume: MassingVolume,
+    appearance: ResolvedSpaceAppearance,
+    glass_landmark: bool,
+) -> tuple[QColor, QColor, QColor, float]:
+    surface = _q(appearance.surface)
+    material = _q(appearance.material)
+    structure = _q(appearance.structure)
+
+    if volume.role == "landmark" and glass_landmark:
+        return (
+            _q(appearance.glass).lighter(112),
+            _q(appearance.glass),
+            structure.darker(104),
+            appearance.glass_opacity,
+        )
+    if volume.role == "landmark":
+        return surface.lighter(116), material.lighter(108), structure, 1.0
+    if volume.role == "primary":
+        return surface.lighter(109), material, structure.darker(104), 1.0
+    return surface.lighter(104), material.lighter(102), structure.lighter(102), 1.0
+
+
+def _add_facade_rhythm(
+    scene: BaseRoomScene,
+    volume: MassingVolume,
+    foundation: VisualFoundationProfile,
+    appearance: ResolvedSpaceAppearance,
+    body_inset: float,
+    plinth_h: float,
+    cap_h: float,
+) -> None:
+    """Window bands + mullions make massing read as architecture, not boxes."""
+
+    if volume.h < .82 or volume.w < .85 or volume.d < .42:
+        return
+
+    p = scene.projector
+    available_h = max(.18, volume.h - plinth_h - cap_h)
+    window_h = min(available_h * .72, max(.30, available_h * foundation.glazing_ratio))
+    window_z = plinth_h + available_h * .22
+    if window_z + window_h > volume.h - cap_h - .035:
+        window_h = max(.16, volume.h - cap_h - .035 - window_z)
+
+    front_margin = min(.24, volume.w * .16)
+    front_w = volume.w - body_inset * 2.0 - front_margin * 2.0
+    glass = _q(appearance.glass)
+    frame = _q(appearance.structure).darker(106)
+
+    if front_w > .34:
+        front_x = volume.x + body_inset + front_margin
+        front_y = volume.y + volume.d - body_inset - .045
+        scene.addItem(
+            IsoBlock(
+                p, front_x, front_y, front_w, .085, window_h,
+                glass.lighter(108), glass, frame,
+                z=window_z, opacity=min(.94, appearance.glass_opacity + .06),
+            )
+        )
+        bays = max(2, min(foundation.facade_bays, round(front_w / .55) + 1))
+        for bay in range(1, bays):
+            mx = front_x + front_w * bay / bays
             scene.addItem(
-                IsoFloorTile(
-                    point,
-                    scene.projector.m.tile_width,
-                    scene.projector.m.tile_height,
-                    fill,
-                    QColor(appearance.floor_edge),
+                IsoBlock(
+                    p, mx - .016, front_y - .008, .032, .10, window_h + .025,
+                    frame.lighter(105), frame, frame.darker(108),
+                    z=max(.02, window_z - .012),
+                )
+            )
+
+    side_margin = min(.22, volume.d * .17)
+    side_d = volume.d - body_inset * 2.0 - side_margin * 2.0
+    if side_d > .40 and volume.w > .7:
+        side_x = volume.x + volume.w - body_inset - .045
+        side_y = volume.y + body_inset + side_margin
+        scene.addItem(
+            IsoBlock(
+                p, side_x, side_y, .085, side_d, window_h,
+                glass.lighter(106), glass.darker(102), frame,
+                z=window_z, opacity=min(.93, appearance.glass_opacity + .04),
+            )
+        )
+
+
+def _add_architectural_volume(
+    scene: BaseRoomScene,
+    volume: MassingVolume,
+    appearance: ResolvedSpaceAppearance,
+    foundation: VisualFoundationProfile,
+    glass_landmark: bool,
+) -> None:
+    """Layer a canonical MVD-1 volume into an authored architectural assembly."""
+
+    p = scene.projector
+
+    # Contact shadow is a real projected footprint, not a global post-process.
+    scene.addItem(
+        IsoSurfacePatch(
+            p,
+            volume.x + foundation.shadow_offset,
+            volume.y + foundation.shadow_offset * .72,
+            volume.w,
+            volume.d,
+            QColor("#12171A"),
+            None,
+            z=.010,
+            opacity=foundation.shadow_opacity,
+        )
+    )
+
+    top, left, right, opacity = _volume_colors(volume, appearance, glass_landmark)
+
+    plinth_h = min(foundation.plinth_height, max(.025, volume.h * .18))
+    cap_h = min(foundation.cap_height, max(.020, volume.h * .10))
+    body_h = max(.05, volume.h - plinth_h - cap_h)
+    max_inset = max(.0, min(volume.w, volume.d) * .16)
+    body_inset = min(foundation.body_inset, max_inset)
+    if volume.w - body_inset * 2.0 < .08 or volume.d - body_inset * 2.0 < .08:
+        body_inset = 0.0
+
+    # Darker plinth anchors the volume and fixes the previous floating-box read.
+    scene.addItem(
+        IsoBlock(
+            p,
+            volume.x,
+            volume.y,
+            volume.w,
+            volume.d,
+            plinth_h,
+            _q(appearance.material).darker(103),
+            _q(appearance.structure).darker(108),
+            _q(appearance.structure).darker(114),
+        )
+    )
+
+    body_x = volume.x + body_inset
+    body_y = volume.y + body_inset
+    body_w = volume.w - body_inset * 2.0
+    body_d = volume.d - body_inset * 2.0
+    scene.addItem(
+        IsoBlock(
+            p,
+            body_x,
+            body_y,
+            body_w,
+            body_d,
+            body_h,
+            top,
+            left,
+            right,
+            z=plinth_h,
+            opacity=opacity,
+        )
+    )
+
+    _add_facade_rhythm(
+        scene,
+        volume,
+        foundation,
+        appearance,
+        body_inset,
+        plinth_h,
+        cap_h,
+    )
+
+    # A thin shadow line before the roof slab creates depth with very little geometry.
+    if volume.h > .42:
+        scene.addItem(
+            IsoBlock(
+                p,
+                body_x - .025,
+                body_y - .025,
+                body_w + .05,
+                body_d + .05,
+                .035,
+                _q(appearance.structure).darker(112),
+                _q(appearance.structure).darker(116),
+                _q(appearance.structure).darker(120),
+                z=max(plinth_h, volume.h - cap_h - .035),
+                opacity=.82,
+            )
+        )
+
+    overhang = min(foundation.cap_overhang, max(.015, min(volume.w, volume.d) * .14))
+    scene.addItem(
+        IsoBlock(
+            p,
+            volume.x - overhang,
+            volume.y - overhang,
+            volume.w + overhang * 2.0,
+            volume.d + overhang * 2.0,
+            cap_h,
+            _q(appearance.surface).lighter(114),
+            _q(appearance.material).lighter(105),
+            _q(appearance.structure),
+            z=max(.0, volume.h - cap_h),
+        )
+    )
+
+    if foundation.accent_inlay and volume.role in {"primary", "landmark"} and volume.h > .55:
+        band = _q(appearance.accent).darker(122)
+        scene.addItem(
+            IsoBlock(
+                p,
+                body_x,
+                body_y + max(.0, body_d - .055),
+                body_w,
+                .055,
+                .035,
+                band.lighter(106),
+                band,
+                band.darker(108),
+                z=max(plinth_h, volume.h - cap_h - .11),
+                opacity=.68,
+            )
+        )
+
+    scene.collisions.append(
+        CollisionRect(volume.x, volume.y, volume.w, volume.d, .055)
+    )
+
+
+def _add_massing(
+    scene: BaseRoomScene,
+    appearance: ResolvedSpaceAppearance,
+) -> None:
+    massing = get_space_massing_profile(scene.room_id)
+    foundation = get_space_visual_foundation_profile(scene.room_id)
+    material_profile = get_space_material_light_profile(scene.room_id)
+    glass_landmark = material_profile.glass_mode in {"framed", "full"}
+
+    for volume in massing.volumes:
+        _add_architectural_volume(
+            scene,
+            volume,
+            appearance,
+            foundation,
+            glass_landmark=glass_landmark and volume.role == "landmark",
+        )
+
+
+def _add_landscape(
+    scene: BaseRoomScene,
+    appearance: ResolvedSpaceAppearance,
+) -> None:
+    """Architectural planting clusters; motion remains reserved for MVD-3."""
+
+    massing = get_space_massing_profile(scene.room_id)
+    foundation = get_space_visual_foundation_profile(scene.room_id)
+    p = scene.projector
+    green = _q(appearance.vegetation)
+    offsets = ((.0, .0, 1.0), (.24, -.12, .66), (-.20, .15, .58))
+
+    for x, y, scale in massing.vegetation_points:
+        scene.addItem(
+            IsoSurfacePatch(
+                p,
+                x - .36 * scale,
+                y - .26 * scale,
+                .72 * scale,
+                .52 * scale,
+                green.darker(132),
+                _q(appearance.floor_edge),
+                z=.018,
+                opacity=.34,
+            )
+        )
+        for dx, dy, layer_scale in offsets[:foundation.landscape_layers]:
+            scene.addItem(
+                PlantItem(
+                    p,
+                    x + dx * scale,
+                    y + dy * scale,
+                    green.lighter(100 + round((1.0 - layer_scale) * 14)),
+                    scale * layer_scale,
                 )
             )
 
@@ -58,58 +425,16 @@ class QuarterScene(BaseRoomScene):
         self.reset_scene()
         massing = get_space_massing_profile(self.room_id)
         appearance = resolve_space_appearance(self.room_id, self.phase, self.weather)
-        material_profile = get_space_material_light_profile(self.room_id)
-        _add_material_floor(self, appearance)
+        foundation = get_space_visual_foundation_profile(self.room_id)
+        _add_architectural_ground(self, appearance, foundation)
+        _add_circulation(self, appearance, .82)
+        _add_massing(self, appearance)
+        _add_landscape(self, appearance)
         p = self.projector
 
-        path_fill = QColor(appearance.circulation)
-        path_edge = QColor(appearance.floor_edge).lighter(108)
-        for band in massing.circulation:
-            self.addItem(
-                IsoSurfacePatch(
-                    p, band.x, band.y, band.w, band.d,
-                    path_fill, path_edge, opacity=.90,
-                )
-            )
-
-        # MVD-2: hierarchy remains spatial, while surfaces now react to phase/weather.
-        for volume in massing.volumes:
-            opacity = 1.0
-            if volume.role == "landmark" and material_profile.glass_mode in {"framed", "full"}:
-                top = QColor(appearance.glass).lighter(106)
-                side = QColor(appearance.glass).darker(106)
-                right = QColor(appearance.structure)
-                opacity = appearance.glass_opacity
-            elif volume.role == "landmark":
-                top = QColor(appearance.surface).lighter(116)
-                side = QColor(appearance.material).lighter(106)
-                right = QColor(appearance.structure)
-            elif volume.role == "primary":
-                top = QColor(appearance.surface).lighter(108)
-                side = QColor(appearance.material)
-                right = QColor(appearance.structure).darker(102)
-            else:
-                top = QColor(appearance.surface).lighter(103)
-                side = QColor(appearance.material).darker(102)
-                right = QColor(appearance.structure).lighter(103)
-            self.addItem(
-                IsoBlock(
-                    p, volume.x, volume.y, volume.w, volume.d, volume.h,
-                    top, side, right, opacity=opacity,
-                )
-            )
-            self.collisions.append(
-                CollisionRect(volume.x, volume.y, volume.w, volume.d, .08)
-            )
-
-        green = QColor(appearance.vegetation)
-        for x, y, scale in massing.vegetation_points:
-            self.addItem(PlantItem(p, x, y, green, scale))
-
-        # Destination color is reserved for thresholds; massing does the recognition work.
         for space_id, (x, y) in self.PORTALS.items():
             threshold_appearance = resolve_space_appearance(space_id, self.phase, self.weather)
-            door = PortalDoor(p, x, y, QColor(threshold_appearance.accent))
+            door = PortalDoor(p, x, y, _q(threshold_appearance.accent))
             self.addItem(door)
             self.register_animation(door)
             definition = SPACE_CATALOG[space_id]
@@ -126,16 +451,16 @@ class QuarterScene(BaseRoomScene):
         self.add_npc("maintenance", [(12.1, 4.6), (13.0, 8.0), (12.2, 12.8)], .38)
         self.add_motes(
             [(2.0, 2.0, 1.1), (20.0, 3.0, 1.2), (4.0, 15.0, 1.0), (18.0, 14.5, 1.2)],
-            QColor(appearance.ambient),
+            _q(appearance.ambient),
         )
         self.addItem(
             ZoneLabel(
                 "awake quarter · the living network",
                 p.project(11.8, 16.8),
-                QColor(appearance.label),
+                _q(appearance.label),
             )
         )
-        self.finish_build(QRectF(*massing.scene_rect), spawn=massing.spawn)
+        self.finish_build(_framed_rect(self.room_id), spawn=massing.spawn)
 
 
 class AuthoredSpaceScene(BaseRoomScene):
@@ -166,7 +491,7 @@ class AuthoredSpaceScene(BaseRoomScene):
     def palette(self) -> tuple[QColor, QColor, QColor, QColor]:
         appearance = resolve_space_appearance(self.space_id, self.phase, self.weather)
         return tuple(
-            QColor(color)
+            _q(color)
             for color in (
                 appearance.surface,
                 appearance.material,
@@ -174,59 +499,6 @@ class AuthoredSpaceScene(BaseRoomScene):
                 appearance.accent,
             )
         )  # type: ignore[return-value]
-
-    def _add_circulation(self) -> None:
-        massing = get_space_massing_profile(self.space_id)
-        appearance = resolve_space_appearance(self.space_id, self.phase, self.weather)
-        p = self.projector
-        for index, band in enumerate(massing.circulation):
-            fill = QColor(appearance.circulation).lighter(104 if index == 0 else 100)
-            self.addItem(
-                IsoSurfacePatch(
-                    p, band.x, band.y, band.w, band.d,
-                    fill,
-                    QColor(appearance.floor_edge).lighter(108),
-                    opacity=.64 if index else .80,
-                )
-            )
-
-    def _add_massing(self) -> None:
-        massing = get_space_massing_profile(self.space_id)
-        appearance = resolve_space_appearance(self.space_id, self.phase, self.weather)
-        material_profile = get_space_material_light_profile(self.space_id)
-        p = self.projector
-        surface = QColor(appearance.surface)
-        material = QColor(appearance.material)
-        structure = QColor(appearance.structure)
-
-        for volume in massing.volumes:
-            opacity = 1.0
-            if volume.role == "landmark" and material_profile.glass_mode in {"framed", "full"}:
-                top = QColor(appearance.glass).lighter(106)
-                left = QColor(appearance.glass)
-                right = structure
-                opacity = appearance.glass_opacity
-            elif volume.role == "landmark":
-                top = surface.lighter(116)
-                left = material.lighter(108)
-                right = structure
-            elif volume.role == "primary":
-                top = surface.lighter(108)
-                left = material
-                right = structure.darker(102)
-            else:
-                top = surface.lighter(103)
-                left = material.lighter(103)
-                right = structure.lighter(103)
-            self.addItem(
-                IsoBlock(
-                    p, volume.x, volume.y, volume.w, volume.d, volume.h,
-                    top, left, right, opacity=opacity,
-                )
-            )
-            self.collisions.append(
-                CollisionRect(volume.x, volume.y, volume.w, volume.d, .055)
-            )
 
     def _signature_interaction(self) -> tuple[float, float]:
         massing = get_space_massing_profile(self.space_id)
@@ -243,18 +515,13 @@ class AuthoredSpaceScene(BaseRoomScene):
         self.reset_scene()
         massing = get_space_massing_profile(self.space_id)
         appearance = resolve_space_appearance(self.space_id, self.phase, self.weather)
-        _add_material_floor(self, appearance)
+        foundation = get_space_visual_foundation_profile(self.space_id)
+        _add_architectural_ground(self, appearance, foundation)
+        _add_circulation(self, appearance)
+        _add_massing(self, appearance)
+        _add_landscape(self, appearance)
         p = self.projector
         definition = SPACE_CATALOG[self.space_id]
-
-        # MVD-1 order matters: void first, then structure, then local life.
-        self._add_circulation()
-        self._add_massing()
-
-        for x, y, scale in massing.vegetation_points:
-            self.addItem(
-                PlantItem(p, x, y, QColor(appearance.vegetation), scale)
-            )
 
         if self.space_id == "kawaii_garden":
             self.add_npc(
@@ -283,7 +550,7 @@ class AuthoredSpaceScene(BaseRoomScene):
 
         exit_x = massing.width_tiles / 2.0
         exit_y = massing.depth_tiles - 1.15
-        exit_door = PortalDoor(p, exit_x, exit_y, QColor(appearance.accent))
+        exit_door = PortalDoor(p, exit_x, exit_y, _q(appearance.accent))
         self.addItem(exit_door)
         self.register_animation(exit_door)
         self.interactions.append(
@@ -301,10 +568,10 @@ class AuthoredSpaceScene(BaseRoomScene):
             ZoneLabel(
                 definition.name,
                 p.project(exit_x, massing.depth_tiles - .35),
-                QColor(appearance.label),
+                _q(appearance.label),
             )
         )
-        self.finish_build(QRectF(*massing.scene_rect), spawn=massing.spawn)
+        self.finish_build(_framed_rect(self.space_id), spawn=massing.spawn)
 
 
 class ObservatoryScene(AuthoredSpaceScene):
