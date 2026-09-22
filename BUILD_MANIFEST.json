@@ -1,5 +1,5 @@
 {
-  "build": "0.5.0-dev",
+  "build": "0.5.0",
   "name": "Awake World — 0.5 GLOBAL",
   "identity": "awake/world — THE LIVING NETWORK",
   "canonical_windows_entry": "AWAKE_WORLD.exe",
@@ -35,8 +35,8 @@
     },
     {
       "path": ".github/workflows/release.yml",
-      "size": 3687,
-      "sha256": "ee9e3496dffd5658f24e8146c02c6fcbffbb1a420644aed13f4a1b58213dfc3c"
+      "size": 5888,
+      "sha256": "c821455625bc3a89a94d28d94907efd02ff95969752f188ae6d88c26b63b713a"
     },
     {
       "path": ".github/workflows/update-goldens.yml",
@@ -85,8 +85,8 @@
     },
     {
       "path": "VERSION",
-      "size": 10,
-      "sha256": "90c55baf2f7a40eaba6a4502e42e39285710734266feb653b68cff2122ae777d"
+      "size": 6,
+      "sha256": "a0ad50640139a524f86591157145bf1d4674ea9c065bfea21558f0f7b04430c8"
     },
     {
       "path": "awake_world/__init__.py",
