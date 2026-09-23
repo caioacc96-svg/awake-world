@@ -7,7 +7,6 @@ from awake_world.world.systems.ambient_life import AmbientLifeSystem
 from awake_world.world.systems.foundation_freeze import SPACES, FOUNDATION_GOLDEN_MATRIX, validate_foundation_matrix
 from awake_world.world.systems.hardening import HardeningSystem
 from awake_world.world.systems.interactions import InteractionSystem
-from awake_world.world.systems.microevents import MicroEventSystem
 from awake_world.world.systems.network_contracts import (
     AvatarReplicationState,
     RealtimeCapabilities,
