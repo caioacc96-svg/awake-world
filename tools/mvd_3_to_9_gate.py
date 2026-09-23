@@ -7,6 +7,7 @@ from awake_world.world.systems.hardening import HardeningSystem
 from awake_world.world.systems.interactions import InteractionSystem
 from awake_world.world.systems.network_contracts import validate_multiplayer_ready_contract
 from awake_world.world.systems.npc_system import ROUTINES
+from awake_world.world.systems.performance import PerformanceSystem
 from awake_world.world.systems.release_candidate import evaluate_release_candidate
 from awake_world.world.systems.subtle_life import SPACE_SUBTLE_LIFE_PROFILES, validate_subtle_life_contract
 from awake_world.world.systems.surfaces import SURFACES
@@ -34,10 +35,28 @@ def main() -> int:
     interaction = InteractionSystem()
     if interaction.switch_margin <= 0 or interaction.linger_multiplier <= 1:
         fail("AWAKE_MVD4_SPATIAL_INTERACTION", "target_retention")
+
+    class Probe:
+        def __init__(self, x: float, y: float, radius: float, priority: float, z: float = 0.0) -> None:
+            self.x = x
+            self.y = y
+            self.radius = radius
+            self.priority = priority
+            self.z = z
+
+    targets = (Probe(1.0, 0.0, 2.0, .5), Probe(1.08, .04, 2.0, .3))
+    for index in range(5000):
+        x = ((index % 29) - 14) * .002
+        chosen = interaction.nearest(targets, x, 0.0, (1.0, 0.0), 0.0)
+        if chosen not in targets:
+            fail("AWAKE_MVD4_SPATIAL_INTERACTION", "interaction_stress")
     print("AWAKE_MVD4_SPATIAL_INTERACTION_OK")
 
     if validate_foundation_matrix() or len(FOUNDATION_GOLDEN_MATRIX) != 30:
         fail("AWAKE_MVD5_FOUNDATION_FREEZE", "golden_matrix")
+    perf = PerformanceSystem().budget
+    if perf.target_fps < 60 or perf.frame_ms > 16.7 or perf.max_scene_objects < 1200:
+        fail("AWAKE_MVD5_FOUNDATION_FREEZE", "performance_budget")
     print("AWAKE_MVD5_FOUNDATION_FREEZE_OK")
 
     for space_id in SPACES:
@@ -66,6 +85,14 @@ def main() -> int:
         fail("AWAKE_MVD8_PRODUCTION_HARDENING", "deterministic_soak")
     if len(left.microevents.active) > 2:
         fail("AWAKE_MVD8_PRODUCTION_HARDENING", "microevent_bound")
+    runtime_failures = hardening.validate_counts(
+        active_microevents=len(left.microevents.active),
+        active_npcs=left.metrics.active_npcs,
+        max_active_npcs=left.performance.budget.max_active_npcs,
+        max_scene_objects=left.performance.budget.max_scene_objects,
+    )
+    if runtime_failures:
+        fail("AWAKE_MVD8_PRODUCTION_HARDENING", ",".join(runtime_failures))
 
     import json
     import tempfile
