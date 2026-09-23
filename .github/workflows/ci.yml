@@ -1,4 +1,4 @@
-name: Awake World 0.6 Gates
+name: Awake World 0.7 Gates
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: awake-06-${{ github.ref }}
+  group: awake-07-${{ github.ref }}
   cancel-in-progress: true
 
 env:
@@ -16,7 +16,7 @@ env:
 
 jobs:
   fast-linux:
-    name: STATIC · TYPE · UNIT · SIMULATION · SAVE
+    name: STATIC · TYPE · UNIT · SIMULATION · CAST
     runs-on: ubuntu-latest
     timeout-minutes: 12
     steps:
@@ -33,11 +33,13 @@ jobs:
         run: |
           python -m compileall -q awake_world tools tests
           python tools/static_validate.py
+          python tools/build_manifest.py
+          git diff --exit-code -- BUILD_MANIFEST.json
           python tools/build_manifest.py --check
       - name: Lint critical Python errors
-        run: python -m ruff check --select F awake_world/simulation awake_world/presentation awake_world/world/systems awake_world/world/save.py tests tools/deterministic_replay_test.py tools/gameplay_tests.py tools/mvd_3_to_9_gate.py tools/render_golden_scenes.py tools/package_windows.py
+        run: python -m ruff check --select F awake_world/design/characters.py awake_world/simulation awake_world/presentation awake_world/world/systems awake_world/world/save.py tests tools/deterministic_replay_test.py tools/gameplay_tests.py tools/mvd_3_to_9_gate.py tools/living_cast_gate.py tools/render_golden_scenes.py tools/render_living_cast.py tools/package_windows.py
       - name: Type pure boundaries
-        run: python -m mypy awake_world/simulation awake_world/presentation awake_world/world/save.py
+        run: python -m mypy awake_world/design/characters.py awake_world/simulation awake_world/presentation awake_world/world/save.py
       - name: Unit + deterministic simulation
         run: python -m pytest -q tests
       - name: Core systems
@@ -46,11 +48,13 @@ jobs:
         run: python tools/deterministic_replay_test.py
       - name: Automated gameplay drivers
         run: python tools/gameplay_tests.py
-      - name: MVD 3-9 engineering gates
+      - name: MVD 3-9 inherited gates
         run: python tools/mvd_3_to_9_gate.py
+      - name: Living Cast LC-1 engineering gate
+        run: python -m tools.living_cast_gate
 
   windows-qt:
-    name: WINDOWS QT · VISUAL · PACKAGE · PACKAGED SMOKE
+    name: WINDOWS QT · VISUAL · CAST · PACKAGE · SMOKE
     runs-on: windows-latest
     timeout-minutes: 25
     needs: fast-linux
@@ -78,6 +82,14 @@ jobs:
           $env:QT_QPA_PLATFORM='offscreen'
           $env:QT_LOGGING_RULES='qt.multimedia.*=false'
           python tools/render_golden_scenes.py --output visual_output
+      - name: Render Living Cast review
+        id: cast_visual
+        continue-on-error: true
+        shell: pwsh
+        run: |
+          $env:QT_QPA_PLATFORM='offscreen'
+          $env:QT_LOGGING_RULES='qt.multimedia.*=false'
+          python tools/render_living_cast.py --output living_cast_output
       - name: Write build metadata
         run: python tools/write_build_metadata.py
       - name: Build Windows executable
@@ -97,21 +109,32 @@ jobs:
           $zip = Get-ChildItem '.\release\AwakeWorld_*_Windows.zip' | Select-Object -First 1
           if ($null -eq $zip) { throw 'Windows candidate ZIP missing' }
           Get-FileHash $zip.FullName -Algorithm SHA256 | Format-List
-      - name: Enforce visual gate
+      - name: Enforce inherited visual gate
         if: steps.visual.outcome != 'success'
         shell: pwsh
-        run: throw 'VISUAL gate failed; inspect awake-06-visual-output or generate a reviewed baseline candidate.'
-      - name: Upload visual diffs/renders on failure
+        run: throw 'Inherited visual gate failed; inspect awake-07-visual-output.'
+      - name: Enforce Living Cast visual gate
+        if: steps.cast_visual.outcome != 'success'
+        shell: pwsh
+        run: throw 'Living Cast renderer failed; inspect awake-07-living-cast-review.'
+      - name: Upload inherited visual evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: awake-06-visual-output
+          name: awake-07-visual-output
           path: visual_output
+          if-no-files-found: ignore
+      - name: Upload Living Cast review
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: awake-07-living-cast-review
+          path: living_cast_output
           if-no-files-found: ignore
       - name: Upload Windows candidate
         if: success()
         uses: actions/upload-artifact@v4
         with:
-          name: AwakeWorld_0.6_DEV_Windows
+          name: AwakeWorld_0.7_DEV_Windows
           path: release/AwakeWorld_*_Windows.zip
           if-no-files-found: error

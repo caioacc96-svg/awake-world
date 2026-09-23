@@ -810,6 +810,40 @@ def _add_signature_details(
         beam(7.16, .82, .085, 2.10, 2.94, .09)
         beam(9.72, .82, .085, 2.10, 2.94, .09)
 
+        # 0.7 LIVING CAST · MONKS selector console.
+        console_top = _q(appearance.material).lighter(111)
+        console_side = _q(appearance.structure).lighter(103)
+        scene.addItem(
+            IsoArchitecturalBlock(
+                p, 6.72, 6.48, 2.20, .62, .10,
+                console_top, console_side, console_side.darker(108),
+                z=.34, opacity=.96,
+            )
+        )
+        for deck_x in (6.92, 8.10):
+            scene.addItem(
+                IsoArchitecturalBlock(
+                    p, deck_x, 6.60, .66, .34, .055,
+                    _q(appearance.surface).lighter(110),
+                    _q(appearance.structure),
+                    _q(appearance.structure).darker(110),
+                    z=.45, opacity=.96,
+                )
+            )
+        scene.addItem(
+            IsoArchitecturalBlock(
+                p, 7.66, 6.61, .32, .32, .075,
+                _q(appearance.accent).darker(108),
+                _q(appearance.structure),
+                _q(appearance.structure).darker(112),
+                z=.45, opacity=.96,
+            )
+        )
+        selector_screen = ScreenItem(p, 8.58, 6.30, _q(appearance.accent), .72)
+        selector_screen.set_active(True)
+        scene.addItem(selector_screen)
+        scene.register_animation(selector_screen)
+
     elif scene.room_id == "grid":
         for index in range(6):
             beam(4.78 + index * .70, 5.23, .045, .16, .58, 2.22)

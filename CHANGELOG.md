@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.7.0-dev — THE LIVING CAST
+
+- Opened the post-v0.6 character/visual line without modifying the frozen v0.6.0 release.
+- Added Character + Sprite Bible v1 and an eight-direction modular presentation contract.
+- Rebuilt the local avatar as a procedural layered sprite with authored direction, pose, shadow and elevation behavior.
+- Added the Caio / MONKS pilot identity as an Observatory host/selector brand character; this is not a physical-likeness claim.
+- Added working, listening, resting, seated and phone poses on top of inherited locomotion.
+- Added a restrained MONKS selector console to the Observatory around the existing work anchor.
+- Added deterministic Living Cast review renders, tests and the LC-1 engineering gate.
+
+# Changelog
+
 ## 0.6.0 — THE LIVING QUARTER
 
 Awake World 0.6 closes the Minimum Viable Design sequence as one coherent authored world while preserving the immutable `v0.5.0 GLOBAL` baseline.

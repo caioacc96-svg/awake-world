@@ -8,7 +8,7 @@ from awake_world.world.progression import STARTER_DECOR
 @dataclass
 class WorldState:
     schema_version: int = 6
-    build_version: str = "0.6.0"
+    build_version: str = "0.7.0-dev"
     world_seed: int = 404
     discovered: set[str] = field(default_factory=set)
     toggles: dict[str, bool] = field(default_factory=dict)
