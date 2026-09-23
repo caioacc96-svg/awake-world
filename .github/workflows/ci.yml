@@ -33,6 +33,8 @@ jobs:
         run: |
           python -m compileall -q awake_world tools tests
           python tools/static_validate.py
+          python tools/build_manifest.py
+          git diff --exit-code -- BUILD_MANIFEST.json
           python tools/build_manifest.py --check
       - name: Lint critical Python errors
         run: python -m ruff check --select F awake_world/design/characters.py awake_world/simulation awake_world/presentation awake_world/world/systems awake_world/world/save.py tests tools/deterministic_replay_test.py tools/gameplay_tests.py tools/mvd_3_to_9_gate.py tools/living_cast_gate.py tools/render_golden_scenes.py tools/render_living_cast.py tools/package_windows.py
