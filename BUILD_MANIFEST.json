@@ -1,6 +1,6 @@
 {
-  "build": "0.6.0",
-  "name": "Awake World — 0.6.0",
+  "build": "0.7.0-dev",
+  "name": "Awake World — 0.7.0-dev",
   "identity": "awake/world — THE LIVING NETWORK",
   "canonical_windows_entry": "AWAKE_WORLD.exe",
   "save_schema": 6,
@@ -20,7 +20,8 @@
     "visual": "WINDOWS_CI_REQUIRED",
     "windows_qt": "WINDOWS_CI_REQUIRED",
     "package": "WINDOWS_CI_REQUIRED",
-    "packaged_smoke": "WINDOWS_CI_REQUIRED"
+    "packaged_smoke": "WINDOWS_CI_REQUIRED",
+    "living_cast": "WINDOWS_CI_REQUIRED"
   },
   "files": [
     {
@@ -30,8 +31,8 @@
     },
     {
       "path": ".github/workflows/ci.yml",
-      "size": 4590,
-      "sha256": "e29dbf3a0041e70bd0587af56594563167e5c18a707f7c4065e1d97342942def"
+      "size": 5521,
+      "sha256": "20c3fa3747f9cb00f257a958e91b69d20b6c2211e1c7a31a325ecc17a7380c35"
     },
     {
       "path": ".github/workflows/release.yml",
@@ -54,44 +55,14 @@
       "sha256": "789dd240f645c94ecfa2aabcb49d1fb260d0c784004067126c7c1412c669b9ef"
     },
     {
-      "path": "BASELINE_0.4.1.md",
-      "size": 554,
-      "sha256": "300ec47a0cfcce4601ee8483a33d632cf3384508aff1c6a50c22f3fb9eae6a37"
-    },
-    {
-      "path": "BUILD_NOTES_0.4.1.txt",
-      "size": 1317,
-      "sha256": "b0d38badaf59860d948e5574e5068991f183bdd2354696d4f81b5a09dc79cf7c"
-    },
-    {
-      "path": "CHANGELOG.md",
-      "size": 3397,
-      "sha256": "5eb0fc145266ef388bb5cd93a0b5aa8f6372a4c317a4e38fc2701a21d3972cde"
-    },
-    {
-      "path": "README.md",
-      "size": 5477,
-      "sha256": "d7e67954ebee6c13aa310c7e5195b14b29940bcaa115afc07a559f7bf2145c0e"
-    },
-    {
-      "path": "README_START.txt",
-      "size": 360,
-      "sha256": "f0ca6238dc62c3bf35207ca24e30dbf0a529e375762b3724466e32140a4d6ba9"
-    },
-    {
-      "path": "RUN_AWAKE_WORLD.cmd",
-      "size": 817,
-      "sha256": "7817a2b72431cebf82dd56c020ab598025e443a1f3ebb30822c23bed6d46809d"
-    },
-    {
-      "path": "VERSION",
-      "size": 6,
-      "sha256": "97a5d6e540a6120d09c39ddb667e0e8e2bac7fcc2ffef813b82e08fd60365bce"
+      "path": "awake_world.spec",
+      "size": 747,
+      "sha256": "cdeea45c8a7222fe1496cfb733b055e7106c531a90866f8885c526c9a9861df3"
     },
     {
       "path": "awake_world/__init__.py",
       "size": 26,
-      "sha256": "f5250ec9ca8be36dad4c358cfe95d88c0837cbbe289e81702e55ad61832e248b"
+      "sha256": "0f9403b9420c196767abbfdb8faa132618b0300fc18d80dbcd534e16976d73d5"
     },
     {
       "path": "awake_world/app.py",
@@ -102,6 +73,11 @@
       "path": "awake_world/design/__init__.py",
       "size": 0,
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "awake_world/design/characters.py",
+      "size": 3181,
+      "sha256": "7e66592e704782966caf01bf48c377b619082e192287598b6f0cd49b367603de"
     },
     {
       "path": "awake_world/design/massing.py",
@@ -235,13 +211,13 @@
     },
     {
       "path": "awake_world/world/avatar.py",
-      "size": 6963,
-      "sha256": "543354a866562346519623dc438dbd18c2a5ce506b9a609a8052617207a1d111"
+      "size": 10908,
+      "sha256": "80c1c882834a416023b365bcf5ccbedb351bce14a1a6b12fa14bbf6be5e8009b"
     },
     {
       "path": "awake_world/world/district.py",
-      "size": 35328,
-      "sha256": "51f3616b0e7371a69865d7cceccc6d14577ccf4f4acfd74667a4f594932d107c"
+      "size": 36646,
+      "sha256": "844b2cb0755f9dae21e15bd1923439e1e7558c3c503e0d82d2a6ff1cc82a9943"
     },
     {
       "path": "awake_world/world/environment.py",
@@ -285,8 +261,8 @@
     },
     {
       "path": "awake_world/world/state.py",
-      "size": 1450,
-      "sha256": "6765f0df03fcb53df8348b118069c9d5f969d376a75e3950598bfcb0b94fab53"
+      "size": 1454,
+      "sha256": "f558c4b66aa28056bc47e1384d887e60640e19f8c1c1ca044d29b0b15f8382e9"
     },
     {
       "path": "awake_world/world/systems/__init__.py",
@@ -409,14 +385,24 @@
       "sha256": "de9d19455b4f2431eba9f9f5906804db89f711d661adc22dfd7654a625cb70a3"
     },
     {
-      "path": "awake_world.spec",
-      "size": 747,
-      "sha256": "cdeea45c8a7222fe1496cfb733b055e7106c531a90866f8885c526c9a9861df3"
+      "path": "BASELINE_0.4.1.md",
+      "size": 554,
+      "sha256": "300ec47a0cfcce4601ee8483a33d632cf3384508aff1c6a50c22f3fb9eae6a37"
+    },
+    {
+      "path": "BUILD_NOTES_0.4.1.txt",
+      "size": 1317,
+      "sha256": "b0d38badaf59860d948e5574e5068991f183bdd2354696d4f81b5a09dc79cf7c"
+    },
+    {
+      "path": "CHANGELOG.md",
+      "size": 4148,
+      "sha256": "79fb1853b80bd0844bfa11b8ac39818a8bfbd3ffeba57bc511d7226e3ec1d857"
     },
     {
       "path": "data/build.json",
-      "size": 244,
-      "sha256": "fda63ec96c95201eb248286671bfafe4ef2209af86aa65a7458077d71fe66cf1"
+      "size": 260,
+      "sha256": "8af0016fc8d23b218191bc3cfb53e8b4cbe610d6b16834e3dda908c3ed064023"
     },
     {
       "path": "docs/AWAKE_WORLD_06_MVD_3_TO_9_EXECUTION_CANON.md",
@@ -432,6 +418,11 @@
       "path": "docs/AWAKE_WORLD_06_MVD_CANON.md",
       "size": 8775,
       "sha256": "832fe1e1b38b8856692fb7c67e89722d30015c3df91785d5473911e47bb4a8b6"
+    },
+    {
+      "path": "docs/AWAKE_WORLD_07_CHARACTER_SPRITE_BIBLE.md",
+      "size": 3965,
+      "sha256": "4645a01fa066cf3f0dde79321fb0480a32715aa6c2d7453f47bc5516a40b8040"
     },
     {
       "path": "docs/AWAKE_WORLD_INTERACTION_EXPERIENCE_BIBLE_v1.md",
@@ -454,6 +445,16 @@
       "sha256": "f59b44e7a808876355af46270502f72e1c180f0f2e7d504cab5c57579b9cc425"
     },
     {
+      "path": "README_START.txt",
+      "size": 444,
+      "sha256": "413197d2d37e15ab8ed2bcee30dd759f3c0cb11d93f2d246d2c07452e7c5a252"
+    },
+    {
+      "path": "README.md",
+      "size": 5477,
+      "sha256": "d7e67954ebee6c13aa310c7e5195b14b29940bcaa115afc07a559f7bf2145c0e"
+    },
+    {
       "path": "requirements-dev.txt",
       "size": 63,
       "sha256": "a5259f42fbda30737e0db72fade4a78785e77c902ad4c4c3fcdf935c5a324a85"
@@ -462,6 +463,11 @@
       "path": "requirements.txt",
       "size": 16,
       "sha256": "385e039f43c455549f3e79039a7b68169284eac3f18a35e0db4fa5ebdec01e44"
+    },
+    {
+      "path": "RUN_AWAKE_WORLD.cmd",
+      "size": 817,
+      "sha256": "7817a2b72431cebf82dd56c020ab598025e443a1f3ebb30822c23bed6d46809d"
     },
     {
       "path": "run.py",
@@ -497,6 +503,11 @@
       "path": "tests/test_interactions_npc_pets.py",
       "size": 1027,
       "sha256": "a8581107fd889afbc0bf3c5849d5cef71af016c44c2e72f3e8ddb475cb01c6d0"
+    },
+    {
+      "path": "tests/test_living_cast.py",
+      "size": 1099,
+      "sha256": "41699238c4454f0aa216687f83a7c596b59e072b60d701c4a474437ea492d149"
     },
     {
       "path": "tests/test_mvd_3_to_9.py",
@@ -544,6 +555,11 @@
       "sha256": "099ff39012d5a79a665e3e10972ccab3482f27eacf52c458927c107505de97c9"
     },
     {
+      "path": "tools/living_cast_gate.py",
+      "size": 2209,
+      "sha256": "8089b281e791fd94378596ecdf25e3ace8aa9c8097ec2e55860650954aebf5c7"
+    },
+    {
       "path": "tools/mvd_3_to_9_gate.py",
       "size": 6335,
       "sha256": "70d08105c69cfb1878454a8ec558136422f3117d842da4588c85734a3a4a69a5"
@@ -559,14 +575,19 @@
       "sha256": "7dc0e5f73ec97e7f0040b738d3e476e4ffd286712df5c1a4e63a02651b0ab32c"
     },
     {
+      "path": "tools/render_living_cast.py",
+      "size": 5630,
+      "sha256": "36034754f02e31167f4d00c58d683b0177c3193239e3cf75d424ae37da33ad7c"
+    },
+    {
       "path": "tools/smoke_test.py",
       "size": 3317,
       "sha256": "1277b13a283179081e37816afdf7edf49b4a25bd77ebe7f89866e7e03a143a80"
     },
     {
       "path": "tools/static_validate.py",
-      "size": 7627,
-      "sha256": "63bef8901b5f53b2c424d428cd2d8e4736313b7469f1770c0918d0ab617fb106"
+      "size": 8354,
+      "sha256": "3e4085db615f2f51c68906b9c9edf4988206097e1d3edbc9b8e88194594f2e04"
     },
     {
       "path": "tools/write_build_metadata.py",
@@ -577,6 +598,11 @@
       "path": "verify_awake.cmd",
       "size": 479,
       "sha256": "a59564f921ae69656fdf5092fd7d68ad646865b8e9c1aed42dde4e8918ed5177"
+    },
+    {
+      "path": "VERSION",
+      "size": 10,
+      "sha256": "04d22ef949ad05cfebfaaa1f4336dddb6fbdb0811a4689e9fe1f28d89658874e"
     },
     {
       "path": "visual_baselines/signatures.json",
