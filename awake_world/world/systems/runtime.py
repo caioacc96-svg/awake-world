@@ -116,11 +116,12 @@ class WorldRuntime:
         if self.paused:
             self.metrics.simulation_steps_last_frame = 0
             return {"steps": 0, "minute_changed": False, "phase_changed": False}
-        frame_dt = self.hardening.clamp_frame_dt(dt)
+        elapsed = max(0.0, float(dt))
+        self.hardening.clamp_frame_dt(elapsed)
         self.metrics.hardening_fallbacks = self.hardening.fallback_count
         budget = self.hardening.budget
         self._accumulator = min(
-            self._accumulator + frame_dt * self.simulation_speed,
+            self._accumulator + elapsed * self.simulation_speed,
             budget.max_accumulator,
         )
         steps = 0
