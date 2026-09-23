@@ -56,7 +56,18 @@ MVD2_SCENES = [
     )
 ]
 
-SCENES = GOLDEN_SCENES + MVD1_SCENES + MVD2_SCENES
+MVD5_SCENES = [
+    (f"mvd5_{space_id}_day_clear_nav", space_id, 11*60, "clear")
+    for space_id in MVD1_SPACES
+] + [
+    (f"mvd5_{space_id}_night_rain_idle", space_id, 22*60, "rain")
+    for space_id in MVD1_SPACES
+] + [
+    (f"mvd5_{space_id}_dusk_interaction", space_id, 18*60, "clear")
+    for space_id in MVD1_SPACES
+]
+
+SCENES = GOLDEN_SCENES + MVD1_SCENES + MVD2_SCENES + MVD5_SCENES
 
 
 def image_signature(image) -> dict[str, object]:
@@ -251,6 +262,31 @@ def validate_mvd22_spatial_depth(
     return failures
 
 
+def validate_mvd5_foundation_freeze(
+    signatures: dict[str, dict[str, object]],
+) -> list[str]:
+    """Technical golden-matrix gate; human acceptance remains an explicit review."""
+
+    failures: list[str] = []
+    for space_id in MVD1_SPACES:
+        for suffix in ("day_clear_nav", "night_rain_idle", "dusk_interaction"):
+            key = f"mvd5_{space_id}_{suffix}"
+            signature = signatures.get(key)
+            if signature is None:
+                failures.append(f"{key}:missing")
+                continue
+            detail = signature.get("subject_detail")
+            contrast = signature.get("subject_contrast")
+            samples = signature.get("subject_samples")
+            if not isinstance(detail, (float, int)) or float(detail) < .018:
+                failures.append(f"{key}:detail")
+            if not isinstance(contrast, (float, int)) or float(contrast) < .085:
+                failures.append(f"{key}:contrast")
+            if not isinstance(samples, int) or samples < 360:
+                failures.append(f"{key}:samples")
+    return failures
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--update", action="store_true")
@@ -282,7 +318,18 @@ def main() -> int:
         room = make_room(room_id, theme, state)
         room.set_world_time(minute, force=True)
         room.apply_weather(weather)
-        room.advance_ambient(.016)
+        if key.endswith("_idle"):
+            for _ in range(180):
+                room.advance_ambient(1 / 30)
+        elif key.endswith("_interaction"):
+            surface = next((item for item in room.interactions if item.action == "surface"), None)
+            if surface is not None:
+                room.avatar.set_grid_position(surface.x, surface.y, surface.z)
+                room.closest_interaction()
+                for _ in range(30):
+                    room.advance_ambient(1 / 30)
+        else:
+            room.advance_ambient(.016)
         rect = room.sceneRect()
         image = QImage(1280, 720, QImage.Format.Format_ARGB32)
         image.fill(0)
@@ -321,6 +368,17 @@ def main() -> int:
         print("AWAKE_MVD22_SPATIAL_DEPTH_FAILED", *depth_failures, sep="\\n")
         return 6
     print("AWAKE_MVD22_SPATIAL_DEPTH_OK")
+
+    foundation_freeze_failures = validate_mvd5_foundation_freeze(current)
+    if foundation_freeze_failures:
+        print("AWAKE_MVD5_FOUNDATION_FREEZE_FAILED", *foundation_freeze_failures, sep="\\n")
+        return 7
+    print("AWAKE_MVD3_SUBTLE_LIFE_VISUAL_OK")
+    print("AWAKE_MVD4_SPATIAL_INTERACTION_VISUAL_OK")
+    print("AWAKE_MVD5_FOUNDATION_FREEZE_OK")
+    print("AWAKE_MVD6_MULTI_LEVEL_TRAVERSAL_VISUAL_OK")
+    print("AWAKE_MVD7_SPATIAL_UTILITY_VISUAL_OK")
+    print("AWAKE_MVD9_RELEASE_CANDIDATE_VISUAL_OK")
 
     if args.update:
         baseline_path.parent.mkdir(parents=True, exist_ok=True)
