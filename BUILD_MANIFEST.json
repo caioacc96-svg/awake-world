@@ -384,9 +384,14 @@
       "sha256": "ab3f80217e838fd115d935374fcce93753cbb7c337817cc8c45fc8609e89dcc2"
     },
     {
+      "path": "docs/AWAKE_WORLD_06_MVD_3_TO_9_EXECUTION_CANON.md",
+      "size": 22461,
+      "sha256": "9c4287fcfb58fb950886662bec635b32d46121a0f5490010a76eff5d2dfe5426"
+    },
+    {
       "path": "docs/AWAKE_WORLD_06_MVD_CANON.md",
-      "size": 7821,
-      "sha256": "1b50503d4acfc783716f6a0ad8349b7e86c12c5d3e0be29efab8dc5f426d80e6"
+      "size": 8775,
+      "sha256": "832fe1e1b38b8856692fb7c67e89722d30015c3df91785d5473911e47bb4a8b6"
     },
     {
       "path": "docs/AWAKE_WORLD_INTERACTION_EXPERIENCE_BIBLE_v1.md",
