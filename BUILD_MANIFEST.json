@@ -565,8 +565,8 @@
     },
     {
       "path": "tools/smoke_test.py",
-      "size": 2093,
-      "sha256": "8bfc72246d7eef838bdd0d47158a6a3be4599e0ca2f3f85201b43ac02981b390"
+      "size": 3038,
+      "sha256": "58f47a2b24e370df1ef0fbffb4c56b805ef9d354d07afd7f89becc42e1aa3f43"
     },
     {
       "path": "tools/static_validate.py",
