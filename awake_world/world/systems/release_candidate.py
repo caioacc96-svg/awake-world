@@ -3,6 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from awake_world.world.systems.foundation_freeze import SPACES
+from awake_world.world.systems.network_contracts import validate_multiplayer_ready_contract
 from awake_world.world.systems.spaces import SPACE_CATALOG
 from awake_world.world.systems.subtle_life import SPACE_SUBTLE_LIFE_PROFILES
 from awake_world.world.systems.surfaces import surfaces_for_space
@@ -44,6 +45,11 @@ def evaluate_release_candidate(human_acceptance: bool = False) -> ReleaseReadine
         checks.append("multi_level_traversal")
     if not any(":surfaces" in item for item in failures):
         checks.append("social_work_surfaces")
+
+    if validate_multiplayer_ready_contract():
+        failures.append("multiplayer_ready_contract")
+    else:
+        checks.append("multiplayer_ready_contract")
 
     checks.extend(("deterministic_runtime", "windows_packaging_contract", "golden_matrix_contract"))
     return ReleaseReadiness(not failures, bool(human_acceptance), tuple(checks), tuple(failures))
