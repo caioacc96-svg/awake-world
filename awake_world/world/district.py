@@ -21,15 +21,19 @@ from awake_world.design.spatial_depth import (
 from awake_world.world.items import (
     ArchitecturalPortalDoor,
     CollisionRect,
+    InteractionAnchorItem,
     InteractionSpec,
     IsoArchitecturalBlock,
     IsoBlock,
     IsoSurfacePatch,
     PlantItem,
+    ScreenItem,
     ZoneLabel,
 )
 from awake_world.world.room import BaseRoomScene
 from awake_world.world.systems.spaces import SPACE_CATALOG
+from awake_world.world.systems.subtle_life import get_subtle_life_profile
+from awake_world.world.systems.surfaces import surfaces_for_space
 
 
 def _q(color: str) -> QColor:
@@ -614,15 +618,16 @@ def _add_landscape(
     scene: BaseRoomScene,
     appearance: ResolvedSpaceAppearance,
 ) -> None:
-    """Architectural planting clusters; motion remains reserved for MVD-3."""
+    """Architectural planting with bounded MVD-3 micro-motion."""
 
     massing = get_space_massing_profile(scene.room_id)
     foundation = get_space_visual_foundation_profile(scene.room_id)
+    life = get_subtle_life_profile(scene.room_id)
     p = scene.projector
     green = _q(appearance.vegetation)
     offsets = ((.0, .0, 1.0), (.24, -.12, .66), (-.20, .15, .58))
 
-    for x, y, scale in massing.vegetation_points:
+    for cluster_index, (x, y, scale) in enumerate(massing.vegetation_points):
         scene.addItem(
             IsoSurfacePatch(
                 p,
@@ -636,17 +641,121 @@ def _add_landscape(
                 opacity=.34,
             )
         )
-        for dx, dy, layer_scale in offsets[:foundation.landscape_layers]:
-            scene.addItem(
-                PlantItem(
-                    p,
-                    x + dx * scale,
-                    y + dy * scale,
-                    green.lighter(100 + round((1.0 - layer_scale) * 14)),
-                    scale * layer_scale,
-                )
+        for layer_index, (dx, dy, layer_scale) in enumerate(offsets[:foundation.landscape_layers]):
+            plant = PlantItem(
+                p,
+                x + dx * scale,
+                y + dy * scale,
+                green.lighter(100 + round((1.0 - layer_scale) * 14)),
+                scale * layer_scale,
+                motion_phase=cluster_index * .83 + layer_index * .57,
+                motion_amplitude=life.vegetation_amplitude_deg,
+                motion_speed=life.vegetation_speed,
             )
+            scene.addItem(plant)
+            scene.register_animation(plant)
 
+
+def _add_subtle_life(
+    scene: BaseRoomScene,
+    appearance: ResolvedSpaceAppearance,
+) -> None:
+    """MVD-3 authored occupancy evidence and functional architectural state."""
+
+    profile = get_subtle_life_profile(scene.room_id)
+    p = scene.projector
+    material = _q(appearance.material)
+    accent = _q(appearance.accent)
+    for index, trace in enumerate(profile.occupancy_traces):
+        top = material.lighter(118 + (index % 2) * 5)
+        side = material.darker(108)
+        w = .18 * trace.scale
+        d = .13 * trace.scale
+        h = .05 if trace.kind in {"paper", "notebook", "tablet"} else .09
+        scene.addItem(
+            IsoArchitecturalBlock(
+                p,
+                trace.x - w / 2,
+                trace.y - d / 2,
+                w,
+                d,
+                h,
+                top,
+                side,
+                side.darker(106),
+                z=.02,
+                opacity=.88,
+            )
+        )
+
+    for anchor in profile.state_anchors:
+        screen = ScreenItem(p, anchor.x, anchor.y, accent, anchor.scale)
+        screen.set_active(True)
+        scene.addItem(screen)
+        scene.register_animation(screen)
+
+
+def _add_traversal_guardrails(
+    scene: BaseRoomScene,
+    appearance: ResolvedSpaceAppearance,
+) -> None:
+    """MVD-6 visual safety language around authored raised walkable planes."""
+
+    profile = get_space_spatial_depth_profile(scene.room_id)
+    p = scene.projector
+    rail = _q(appearance.structure).lighter(108)
+    for plane in profile.planes:
+        if plane.w < 2.2 or plane.d < .9:
+            continue
+        scene.addItem(
+            IsoArchitecturalBlock(
+                p, plane.x, plane.y, plane.w, .045, .28,
+                rail.lighter(108), rail, rail.darker(108),
+                z=plane.h, opacity=.76,
+            )
+        )
+        scene.addItem(
+            IsoArchitecturalBlock(
+                p, plane.x + plane.w - .045, plane.y, .045, plane.d, .28,
+                rail.lighter(108), rail, rail.darker(108),
+                z=plane.h, opacity=.76,
+            )
+        )
+
+
+def _add_surface_interactions(
+    scene: BaseRoomScene,
+    appearance: ResolvedSpaceAppearance,
+) -> None:
+    """MVD-4/MVD-7: work and social utility lives on physical world surfaces."""
+
+    p = scene.projector
+    accent = _q(appearance.accent)
+    for surface in surfaces_for_space(scene.room_id):
+        spec = InteractionSpec(
+            surface.id,
+            surface.x,
+            surface.y,
+            1.05,
+            surface.role.value.upper(),
+            surface.label or surface.kind.replace("_", " ").title(),
+            "E  engage",
+            surface.action,
+            surface.id,
+            surface.x,
+            surface.y,
+            0.0,
+            -1.0,
+            surface.z,
+            surface.priority,
+            surface.kind,
+        )
+        scene.interactions.append(spec)
+        acknowledgement = InteractionAnchorItem(
+            p, surface.x, surface.y, surface.z, accent
+        )
+        scene.interaction_acknowledgements[surface.id] = acknowledgement
+        scene.addItem(acknowledgement)
 
 def _add_signature_details(
     scene: BaseRoomScene,
@@ -777,6 +886,9 @@ class QuarterScene(BaseRoomScene):
         _add_massing(self, appearance)
         _add_signature_details(self, appearance)
         _add_landscape(self, appearance)
+        _add_subtle_life(self, appearance)
+        _add_traversal_guardrails(self, appearance)
+        _add_surface_interactions(self, appearance)
         p = self.projector
 
         for space_id, (x, y) in self.PORTALS.items():
@@ -869,6 +981,9 @@ class AuthoredSpaceScene(BaseRoomScene):
         _add_massing(self, appearance)
         _add_signature_details(self, appearance)
         _add_landscape(self, appearance)
+        _add_subtle_life(self, appearance)
+        _add_traversal_guardrails(self, appearance)
+        _add_surface_interactions(self, appearance)
         p = self.projector
         definition = SPACE_CATALOG[self.space_id]
 
