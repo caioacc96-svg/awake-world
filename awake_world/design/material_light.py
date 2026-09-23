@@ -63,12 +63,12 @@ PHASE_EXPOSURE = {
     "dawn": .94,
     "day": 1.0,
     "dusk": .84,
-    "night": .66,
+    "night": .70,
 }
 WEATHER_EXPOSURE = {
     "clear": 1.0,
     "cloudy": .93,
-    "rain": .86,
+    "rain": .90,
 }
 PHASE_TINT: dict[str, RGB] = {
     "dawn": (244, 206, 170),
@@ -101,6 +101,15 @@ def _scale(value: RGB, factor: float) -> RGB:
     return tuple(round(channel * factor) for channel in value)  # type: ignore[return-value]
 
 
+def _contrast_about_mid(value: RGB, factor: float) -> RGB:
+    """Preserve authored depth after low-light/weather tinting without adding glow."""
+    factor = max(1.0, min(float(factor), 1.55))
+    return tuple(
+        round(128 + (channel - 128) * factor)
+        for channel in value
+    )  # type: ignore[return-value]
+
+
 def _respond(
     value: str,
     phase: str,
@@ -131,6 +140,15 @@ def _respond(
         "rain": .085,
     }[weather] * profile.weather_response
     color = _mix(color, WEATHER_TINT[weather], weather_amount)
+
+    # Night + rain used to collapse distinct material families into one grey-blue
+    # band. Restore local material separation while keeping the overall exposure
+    # restrained; higher-contrast dialects retain slightly more edge definition.
+    if phase == "night":
+        boost = 1.16 + max(0.0, profile.contrast - .34) * .48
+        if weather == "rain":
+            boost += .10
+        color = _contrast_about_mid(color, boost)
 
     mid = (128, 128, 128)
     contrast_amount = max(-.2, min(.2, profile.contrast - .5)) * .22
@@ -168,14 +186,14 @@ def resolve_space_appearance(
         "day": 0,
         "dawn": 12,
         "dusk": 20,
-        "night": 34,
+        "night": 24,
     }[phase]
     phase_alpha += round(abs(profile.temperature_bias) * 8)
 
     weather_alpha = {
         "clear": 0,
         "cloudy": 18,
-        "rain": 34,
+        "rain": 24,
     }[weather]
     weather_alpha = round(weather_alpha * profile.weather_response)
 
