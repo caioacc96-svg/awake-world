@@ -12,6 +12,8 @@ def test_living_cast_profile_contract() -> None:
     assert CAIO_MONKS.display_name == "Caio / MONKS"
     assert CAIO_MONKS.accessory == "headphones"
     assert CAIO_MONKS.metrics.height_px > CAIO_MONKS.metrics.width_px
+    assert .58 <= CAIO_MONKS.metrics.world_scale <= .70
+    assert 74 <= CAIO_MONKS.metrics.height_px * CAIO_MONKS.metrics.world_scale <= 86
 
 
 def test_living_cast_has_eight_directions() -> None:

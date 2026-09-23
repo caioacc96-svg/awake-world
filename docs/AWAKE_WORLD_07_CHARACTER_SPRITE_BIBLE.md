@@ -23,13 +23,19 @@ Characters must look authored for the same world as the architecture. They are n
 10. **PERFORMANCE IS A VISUAL RULE** — deterministic Qt/PyInstaller remains the runtime target.
 
 ## Canonical dimensions
-Pilot envelope: approximately **82×126 px** at native scene scale.
-- head: ~39 px
-- shoulders: ~47 px
-- shadow: ~44 px
-- outline: <= 1.6 px
+The authored reference canvas is approximately **82×126 px**, then rendered into the world at a canonical **0.64 scale**.
+
+Effective in-world pilot envelope:
+- rendered height: ~81 px
+- rendered width: ~52 px
+- reference head: ~39 px
+- reference shoulders: ~47 px
+- reference shadow: ~44 px
+- outline: <= 1.6 px before world scaling
 - projected feet remain attached to the world anchor
 - elevation stays on the canonical `IsoProjector`
+
+The separation between reference canvas and world scale is intentional: review sheets may enlarge the sprite for inspection without changing architectural proportion in gameplay.
 
 ## Direction grammar
 `east · north_east · north · north_west · west · south_west · south · south_east`
@@ -85,7 +91,7 @@ LC-1 closes only when:
 - required poses exist;
 - avatar remains elevation-aware;
 - Observatory contains the selector-console visual anchor;
-- deterministic direction + pose sheets render;
+- deterministic direction + pose sheets render at inspection scale while world-context frames preserve true gameplay scale;
 - real Observatory context frames render;
 - inherited Linux/Windows/visual/package gates stay green;
 - human review confirms the character belongs to the world.

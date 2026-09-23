@@ -26,9 +26,12 @@ def main() -> int:
         failures.append("poses:contract")
     if CAIO_MONKS.id != "caio_monks" or CAIO_MONKS.accessory != "headphones":
         failures.append("pilot:identity")
+    effective_height = CAIO_MONKS.metrics.height_px * CAIO_MONKS.metrics.world_scale
+    if not 74 <= effective_height <= 86:
+        failures.append(f"pilot:world-scale={effective_height:.1f}px")
 
     avatar_source = (ROOT / "awake_world/world/avatar.py").read_text(encoding="utf-8")
-    for token in ("direction_from_vector", "profile_id", "grid_z", "setZValue", "headphones"):
+    for token in ("direction_from_vector", "profile_id", "grid_z", "setZValue", "headphones", "world_scale"):
         if token not in avatar_source:
             failures.append(f"avatar:{token}")
     district = (ROOT / "awake_world/world/district.py").read_text(encoding="utf-8")

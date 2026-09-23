@@ -23,6 +23,7 @@ class SpriteMetrics:
     shoulder_px: float = 47.0
     shadow_px: float = 44.0
     outline_px: float = 1.35
+    world_scale: float = 0.64
 
 
 @dataclass(frozen=True)
@@ -101,4 +102,9 @@ def validate_character_profiles() -> tuple[str, ...]:
             failures.append(f"{profile_id}:head")
         if m.outline_px > 1.6:
             failures.append(f"{profile_id}:outline")
+        if not .58 <= m.world_scale <= .70:
+            failures.append(f"{profile_id}:world-scale")
+        effective_height = m.height_px * m.world_scale
+        if not 74 <= effective_height <= 86:
+            failures.append(f"{profile_id}:effective-height")
     return tuple(failures)

@@ -106,8 +106,8 @@
     },
     {
       "path": "awake_world/design/characters.py",
-      "size": 3181,
-      "sha256": "7e66592e704782966caf01bf48c377b619082e192287598b6f0cd49b367603de"
+      "size": 3474,
+      "sha256": "2e32aabdd3232c3fe20a89b424c52ab3e9db960986740ee9d4204f0e4bf557d7"
     },
     {
       "path": "awake_world/design/massing.py",
@@ -241,8 +241,8 @@
     },
     {
       "path": "awake_world/world/avatar.py",
-      "size": 10908,
-      "sha256": "80c1c882834a416023b365bcf5ccbedb351bce14a1a6b12fa14bbf6be5e8009b"
+      "size": 11208,
+      "sha256": "3a0ada3da33f3ee90d00c1dbc7b432347e8f3cb0e15f3288130f31731beb6073"
     },
     {
       "path": "awake_world/world/district.py",
@@ -441,8 +441,8 @@
     },
     {
       "path": "docs/AWAKE_WORLD_07_CHARACTER_SPRITE_BIBLE.md",
-      "size": 3965,
-      "sha256": "4645a01fa066cf3f0dde79321fb0480a32715aa6c2d7453f47bc5516a40b8040"
+      "size": 4414,
+      "sha256": "05e640a0614f3d1ae61c625d5df3e8c3ca750eddfa73cd33106f8b788585ad32"
     },
     {
       "path": "docs/AWAKE_WORLD_INTERACTION_EXPERIENCE_BIBLE_v1.md",
@@ -511,8 +511,8 @@
     },
     {
       "path": "tests/test_living_cast.py",
-      "size": 1099,
-      "sha256": "41699238c4454f0aa216687f83a7c596b59e072b60d701c4a474437ea492d149"
+      "size": 1240,
+      "sha256": "d27d93838de40e3530c6dfa51772e767f535684248ada4f4245a437411985782"
     },
     {
       "path": "tests/test_mvd_3_to_9.py",
@@ -561,8 +561,8 @@
     },
     {
       "path": "tools/living_cast_gate.py",
-      "size": 2209,
-      "sha256": "8089b281e791fd94378596ecdf25e3ace8aa9c8097ec2e55860650954aebf5c7"
+      "size": 2421,
+      "sha256": "898b6b906342c276755c18dd5c3bce3170a8a9d096ebeb0b60d6f0404b5ebe2c"
     },
     {
       "path": "tools/mvd_3_to_9_gate.py",
@@ -581,8 +581,8 @@
     },
     {
       "path": "tools/render_living_cast.py",
-      "size": 5800,
-      "sha256": "288d641de5abc571754a399ce720ae186a12200caad4123ba648509c31efdfde"
+      "size": 6006,
+      "sha256": "e3efbf8e9fa56913aaa6a74e9fe9f0f6dfa57562f554f2e41252f8810ee30938"
     },
     {
       "path": "tools/smoke_test.py",

@@ -44,7 +44,13 @@ class AvatarItem(QGraphicsItem):
 
     def boundingRect(self) -> QRectF:
         m = self.profile.metrics
-        return QRectF(-m.width_px / 2 - 5, -m.height_px + 3, m.width_px + 10, m.height_px + 18)
+        s = m.world_scale
+        return QRectF(
+            (-m.width_px / 2 - 5) * s,
+            (-m.height_px + 3) * s,
+            (m.width_px + 10) * s,
+            (m.height_px + 18) * s,
+        )
 
     @property
     def locked_in_pose(self) -> bool:
@@ -149,6 +155,11 @@ class AvatarItem(QGraphicsItem):
         painter.drawPath(cap)
         painter.drawRoundedRect(QRectF(-18 + side, -103, 8, 17), 4, 4)
 
+        if rear:
+            # Back-of-head mass reads as hair, never as a visor across a face.
+            painter.setBrush(hair.darker(103))
+            painter.drawRoundedRect(QRectF(-18 + side, -108, 36, 28), 11, 11)
+
         # Persistent headphones establish the MONKS pilot silhouette.
         painter.setPen(QPen(self._q(self.profile.metal), 2.4))
         painter.drawArc(QRectF(-23 + side, -111, 46, 34), 8 * 16, 164 * 16)
@@ -158,8 +169,6 @@ class AvatarItem(QGraphicsItem):
         painter.drawRoundedRect(QRectF(17 + side, -101, 6, 13), 3, 3)
 
         if rear:
-            painter.setBrush(hair.darker(108))
-            painter.drawRoundedRect(QRectF(-15 + side, -96, 30, 9), 4, 4)
             return
 
         painter.setBrush(QColor("#252A31"))
@@ -183,8 +192,9 @@ class AvatarItem(QGraphicsItem):
         seated = self.pose in {"seated", "working", "listening", "resting"}
         y_shift = 11.0 if seated else 0.0
 
-        self._draw_shadow(painter)
         painter.save()
+        painter.scale(self.profile.metrics.world_scale, self.profile.metrics.world_scale)
+        self._draw_shadow(painter)
         painter.translate(side * lean, idle_bob - walk_bob + y_shift)
         self._draw_legs(painter, stride, seated)
         self._draw_torso(painter, side)

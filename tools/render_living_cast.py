@@ -17,7 +17,7 @@ os.environ.setdefault("QT_LOGGING_RULES", "qt.multimedia.*=false")
 
 def render_avatar_sheet(target: Path, pose_sheet: bool = False) -> dict[str, object]:
     from PySide6.QtCore import QPointF, QRectF, Qt
-    from PySide6.QtGui import QColor, QImage, QPainter
+    from PySide6.QtGui import QColor, QFont, QImage, QPainter
     from awake_world.world.avatar import AvatarItem
     from awake_world.world.iso import IsoProjector
 
@@ -25,6 +25,7 @@ def render_avatar_sheet(target: Path, pose_sheet: bool = False) -> dict[str, obj
     image.fill(QColor("#E8E4DB"))
     painter = QPainter(image)
     painter.setRenderHint(QPainter.RenderHint.Antialiasing, True)
+    painter.setFont(QFont("Arial", 12))
 
     if pose_sheet:
         variants = [
@@ -58,6 +59,7 @@ def render_avatar_sheet(target: Path, pose_sheet: bool = False) -> dict[str, obj
         avatar.motion_phase = phase
         painter.save()
         painter.translate(pos)
+        painter.scale(1.55, 1.55)
         avatar.paint(painter, None)
         painter.restore()
         painter.setPen(QColor("#30343A"))
@@ -93,13 +95,15 @@ def render_observatory(target: Path, minute: int, pose: str) -> dict[str, object
     elif pose == "listening":
         room.avatar.set_pose("listening", 8.45, 7.15, -1.0, -1.0, room.elevation_at(8.45, 7.15))
     else:
+        idle_x, idle_y = 7.25, 7.72
+        room.avatar.set_grid_position(idle_x, idle_y, room.elevation_at(idle_x, idle_y))
         room.avatar.set_facing(1.0, -1.0)
 
     for _ in range(45):
         room.advance_ambient(1 / 30)
 
     center = room.avatar.scenePos()
-    source = QRectF(center.x() - 335, center.y() - 235, 670, 390)
+    source = QRectF(center.x() - 390, center.y() - 219, 780, 438)
     image = QImage(1280, 720, QImage.Format.Format_ARGB32)
     image.fill(0)
     painter = QPainter(image)
