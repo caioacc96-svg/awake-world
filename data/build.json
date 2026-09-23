@@ -1,11 +1,11 @@
 {
-  "build_version": "0.6.0",
+  "build_version": "0.7.0-dev",
   "identity": "awake/world — THE LIVING NETWORK",
   "save_schema": 6,
   "simulation_hz": 60,
-  "release_channel": "GLOBAL",
+  "release_channel": "DEVELOPMENT",
   "commit": "source",
-  "ref": "release/0.6.0",
+  "ref": "feat/0.7-living-cast",
   "built_at_utc": null,
   "ci": false
 }

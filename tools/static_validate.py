@@ -123,6 +123,10 @@ for relative in (
     "tools/deterministic_replay_test.py",
     "tools/gameplay_tests.py",
     "tools/mvd_3_to_9_gate.py",
+    "tools/living_cast_gate.py",
+    "tools/render_living_cast.py",
+    "docs/AWAKE_WORLD_07_CHARACTER_SPRITE_BIBLE.md",
+    "awake_world/design/characters.py",
     "tools/render_golden_scenes.py",
     "tools/package_windows.py",
     "tools/write_build_metadata.py",
@@ -138,12 +142,22 @@ for space_id in ("quarter","central_plaza","observatory","grid","twin_core","tri
 
 # Frozen 0.5 invariants inherited by the 0.6 development line.
 version = (ROOT / "VERSION").read_text(encoding="utf-8").strip()
-if not re.fullmatch(r"0\.(?:5|6)\.\d+(?:-dev)?", version):
+if not re.fullmatch(r"0\.(?:5|6|7)\.\d+(?:-dev)?", version):
     fail(f"unexpected Awake World version: {version}")
 
 state_source = (ROOT / "awake_world" / "world" / "state.py").read_text(encoding="utf-8")
 if "schema_version: int = 6" not in state_source:
     fail("WorldState schema 6 missing")
+
+if version.startswith("0.7."):
+    init_source = (ROOT / "awake_world" / "__init__.py").read_text(encoding="utf-8")
+    if '__version__ = "0.7.0-dev"' not in init_source:
+        fail("0.7 package version mismatch")
+    if 'build_version: str = "0.7.0-dev"' not in state_source:
+        fail("0.7 WorldState build version mismatch")
+    cast_source = (ROOT / "awake_world" / "design" / "characters.py").read_text(encoding="utf-8")
+    if "CAIO_MONKS" not in cast_source or "DIRECTIONS" not in cast_source:
+        fail("0.7 Living Cast profile contract missing")
 
 runtime_source = (ROOT / "awake_world" / "world" / "systems" / "runtime.py").read_text(encoding="utf-8")
 if "FIXED_HZ = 60" not in runtime_source:
