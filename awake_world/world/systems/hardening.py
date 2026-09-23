@@ -6,7 +6,7 @@ from dataclasses import dataclass
 @dataclass(frozen=True, slots=True)
 class HardeningBudget:
     max_dt: float = .05
-    max_accumulator: float = .25
+    max_accumulator: float = 2.0
     ambient_divisor: int = 2
     pet_divisor: int = 2
     npc_sync_divisor: int = 6
