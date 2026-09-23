@@ -1,5 +1,12 @@
 from __future__ import annotations
 
+from pathlib import Path
+import sys
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
 from awake_world.world.state import WorldState
 from awake_world.world.systems.ambient_life import AmbientLifeSystem
 from awake_world.world.systems.foundation_freeze import SPACES, FOUNDATION_GOLDEN_MATRIX, validate_foundation_matrix
