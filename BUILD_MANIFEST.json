@@ -110,8 +110,8 @@
     },
     {
       "path": "awake_world/design/material_light.py",
-      "size": 6938,
-      "sha256": "b2597f5893d813663541b36042b05457eeeeb82375042afcf054b8b7fe5521e8"
+      "size": 7700,
+      "sha256": "d9c9758227e1283d7ca4aaca776b460e77f63d04e67268e5765f1dacad67c45c"
     },
     {
       "path": "awake_world/design/spatial_depth.py",
