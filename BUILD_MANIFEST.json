@@ -55,6 +55,41 @@
       "sha256": "789dd240f645c94ecfa2aabcb49d1fb260d0c784004067126c7c1412c669b9ef"
     },
     {
+      "path": "BASELINE_0.4.1.md",
+      "size": 554,
+      "sha256": "300ec47a0cfcce4601ee8483a33d632cf3384508aff1c6a50c22f3fb9eae6a37"
+    },
+    {
+      "path": "BUILD_NOTES_0.4.1.txt",
+      "size": 1317,
+      "sha256": "b0d38badaf59860d948e5574e5068991f183bdd2354696d4f81b5a09dc79cf7c"
+    },
+    {
+      "path": "CHANGELOG.md",
+      "size": 4148,
+      "sha256": "79fb1853b80bd0844bfa11b8ac39818a8bfbd3ffeba57bc511d7226e3ec1d857"
+    },
+    {
+      "path": "README.md",
+      "size": 5477,
+      "sha256": "d7e67954ebee6c13aa310c7e5195b14b29940bcaa115afc07a559f7bf2145c0e"
+    },
+    {
+      "path": "README_START.txt",
+      "size": 444,
+      "sha256": "413197d2d37e15ab8ed2bcee30dd759f3c0cb11d93f2d246d2c07452e7c5a252"
+    },
+    {
+      "path": "RUN_AWAKE_WORLD.cmd",
+      "size": 817,
+      "sha256": "7817a2b72431cebf82dd56c020ab598025e443a1f3ebb30822c23bed6d46809d"
+    },
+    {
+      "path": "VERSION",
+      "size": 10,
+      "sha256": "04d22ef949ad05cfebfaaa1f4336dddb6fbdb0811a4689e9fe1f28d89658874e"
+    },
+    {
       "path": "awake_world.spec",
       "size": 747,
       "sha256": "cdeea45c8a7222fe1496cfb733b055e7106c531a90866f8885c526c9a9861df3"
@@ -385,21 +420,6 @@
       "sha256": "de9d19455b4f2431eba9f9f5906804db89f711d661adc22dfd7654a625cb70a3"
     },
     {
-      "path": "BASELINE_0.4.1.md",
-      "size": 554,
-      "sha256": "300ec47a0cfcce4601ee8483a33d632cf3384508aff1c6a50c22f3fb9eae6a37"
-    },
-    {
-      "path": "BUILD_NOTES_0.4.1.txt",
-      "size": 1317,
-      "sha256": "b0d38badaf59860d948e5574e5068991f183bdd2354696d4f81b5a09dc79cf7c"
-    },
-    {
-      "path": "CHANGELOG.md",
-      "size": 4148,
-      "sha256": "79fb1853b80bd0844bfa11b8ac39818a8bfbd3ffeba57bc511d7226e3ec1d857"
-    },
-    {
       "path": "data/build.json",
       "size": 260,
       "sha256": "8af0016fc8d23b218191bc3cfb53e8b4cbe610d6b16834e3dda908c3ed064023"
@@ -445,16 +465,6 @@
       "sha256": "f59b44e7a808876355af46270502f72e1c180f0f2e7d504cab5c57579b9cc425"
     },
     {
-      "path": "README_START.txt",
-      "size": 444,
-      "sha256": "413197d2d37e15ab8ed2bcee30dd759f3c0cb11d93f2d246d2c07452e7c5a252"
-    },
-    {
-      "path": "README.md",
-      "size": 5477,
-      "sha256": "d7e67954ebee6c13aa310c7e5195b14b29940bcaa115afc07a559f7bf2145c0e"
-    },
-    {
       "path": "requirements-dev.txt",
       "size": 63,
       "sha256": "a5259f42fbda30737e0db72fade4a78785e77c902ad4c4c3fcdf935c5a324a85"
@@ -463,11 +473,6 @@
       "path": "requirements.txt",
       "size": 16,
       "sha256": "385e039f43c455549f3e79039a7b68169284eac3f18a35e0db4fa5ebdec01e44"
-    },
-    {
-      "path": "RUN_AWAKE_WORLD.cmd",
-      "size": 817,
-      "sha256": "7817a2b72431cebf82dd56c020ab598025e443a1f3ebb30822c23bed6d46809d"
     },
     {
       "path": "run.py",
@@ -598,11 +603,6 @@
       "path": "verify_awake.cmd",
       "size": 479,
       "sha256": "a59564f921ae69656fdf5092fd7d68ad646865b8e9c1aed42dde4e8918ed5177"
-    },
-    {
-      "path": "VERSION",
-      "size": 10,
-      "sha256": "04d22ef949ad05cfebfaaa1f4336dddb6fbdb0811a4689e9fe1f28d89658874e"
     },
     {
       "path": "visual_baselines/signatures.json",
