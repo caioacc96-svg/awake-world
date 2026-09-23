@@ -1,6 +1,6 @@
 {
-  "build": "0.6.0-dev",
-  "name": "Awake World — 0.6.0-dev",
+  "build": "0.6.0",
+  "name": "Awake World — 0.6.0",
   "identity": "awake/world — THE LIVING NETWORK",
   "canonical_windows_entry": "AWAKE_WORLD.exe",
   "save_schema": 6,
@@ -35,8 +35,8 @@
     },
     {
       "path": ".github/workflows/release.yml",
-      "size": 5888,
-      "sha256": "c821455625bc3a89a94d28d94907efd02ff95969752f188ae6d88c26b63b713a"
+      "size": 6870,
+      "sha256": "a9fcaa841c29de83ba7f8627ece2eb18d176a115d573e90e0561e5e5be0a5428"
     },
     {
       "path": ".github/workflows/update-goldens.yml",
@@ -65,8 +65,8 @@
     },
     {
       "path": "CHANGELOG.md",
-      "size": 1568,
-      "sha256": "82134ea792f52e472a008f788063d82e00bfb2e653af4ffc5050285260e58a98"
+      "size": 3397,
+      "sha256": "5eb0fc145266ef388bb5cd93a0b5aa8f6372a4c317a4e38fc2701a21d3972cde"
     },
     {
       "path": "README.md",
@@ -75,8 +75,8 @@
     },
     {
       "path": "README_START.txt",
-      "size": 337,
-      "sha256": "c85aea672c482cdd69b85519f069e4e2a36e08214648840f1edc671d25650040"
+      "size": 360,
+      "sha256": "f0ca6238dc62c3bf35207ca24e30dbf0a529e375762b3724466e32140a4d6ba9"
     },
     {
       "path": "RUN_AWAKE_WORLD.cmd",
@@ -85,8 +85,8 @@
     },
     {
       "path": "VERSION",
-      "size": 10,
-      "sha256": "f02880b17e4ef60ef45a1d03a6457c761f1c4e1167246f57fcb4016673cc736b"
+      "size": 6,
+      "sha256": "97a5d6e540a6120d09c39ddb667e0e8e2bac7fcc2ffef813b82e08fd60365bce"
     },
     {
       "path": "awake_world/__init__.py",
@@ -285,8 +285,8 @@
     },
     {
       "path": "awake_world/world/state.py",
-      "size": 1454,
-      "sha256": "1816d9ab54e65935b2e8c987be0f9abf975c224c8b31a300d4544b34a4dad40f"
+      "size": 1450,
+      "sha256": "6765f0df03fcb53df8348b118069c9d5f969d376a75e3950598bfcb0b94fab53"
     },
     {
       "path": "awake_world/world/systems/__init__.py",
@@ -416,7 +416,7 @@
     {
       "path": "data/build.json",
       "size": 244,
-      "sha256": "ab3f80217e838fd115d935374fcce93753cbb7c337817cc8c45fc8609e89dcc2"
+      "sha256": "fda63ec96c95201eb248286671bfafe4ef2209af86aa65a7458077d71fe66cf1"
     },
     {
       "path": "docs/AWAKE_WORLD_06_MVD_3_TO_9_EXECUTION_CANON.md",
@@ -425,8 +425,8 @@
     },
     {
       "path": "docs/AWAKE_WORLD_06_MVD_3_TO_9_IMPLEMENTATION_STATUS.md",
-      "size": 4752,
-      "sha256": "f9aca4a6dae5bb05ab4739cff2f96f8001ade1078b4005cf583b0df4d6df864d"
+      "size": 4711,
+      "sha256": "0fd1f029201aca61c3e3db84ba69b2a2857558db295c3742cc776cbea320a6ed"
     },
     {
       "path": "docs/AWAKE_WORLD_06_MVD_CANON.md",
