@@ -370,8 +370,8 @@
     },
     {
       "path": "awake_world/world/systems/release_candidate.py",
-      "size": 1817,
-      "sha256": "ecd024f9a7c2013ea9db78ef6049d3a2c0e50317900359df9349f9949554cf03"
+      "size": 2072,
+      "sha256": "4d147d800f6b5bbff659a706e70eb7820bb92454233472cf246f2342ec049b3b"
     },
     {
       "path": "awake_world/world/systems/runtime.py",
@@ -570,8 +570,8 @@
     },
     {
       "path": "tools/static_validate.py",
-      "size": 7573,
-      "sha256": "18ee09c9ce43ee30094f834e999aeeaf9b9298b87c1d69ab977b88945b6c92cf"
+      "size": 7627,
+      "sha256": "63bef8901b5f53b2c424d428cd2d8e4736313b7469f1770c0918d0ab617fb106"
     },
     {
       "path": "tools/write_build_metadata.py",
