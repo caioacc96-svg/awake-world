@@ -34,11 +34,6 @@
       "sha256": "e29dbf3a0041e70bd0587af56594563167e5c18a707f7c4065e1d97342942def"
     },
     {
-      "path": ".github/workflows/mvd-3-9-manifest-refresh.yml",
-      "size": 1072,
-      "sha256": "536f3c6ff188b75404c7aefe6e8bacac9c7474c048b564b870f9017f89ae7543"
-    },
-    {
       "path": ".github/workflows/release.yml",
       "size": 5888,
       "sha256": "c821455625bc3a89a94d28d94907efd02ff95969752f188ae6d88c26b63b713a"
