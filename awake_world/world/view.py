@@ -54,6 +54,7 @@ class GameView(QGraphicsView):
                     if self.world.can_move_to(px, py):
                         self.world.avatar.grid_x = px
                         self.world.avatar.grid_y = py
+                        self.world.avatar.grid_z = self.world.elevation_at(px, py)
                         self.world.avatar.sync_scene_position()
                 except (TypeError, ValueError):
                     pass
@@ -297,6 +298,9 @@ class GameView(QGraphicsView):
             "simulation_steps": self.runtime.metrics.simulation_steps_last_frame,
             "simulation_paused": self.runtime.paused,
             "simulation_speed": self.runtime.simulation_speed,
+            "hardening_fallbacks": self.runtime.metrics.hardening_fallbacks,
+            "elevation": round(self.world.avatar.grid_z, 4),
+            "surface_occupancy": self.runtime.surfaces.snapshot(self.room_id),
             "camera": {"x": round(self.camera_controller.state.x,2), "y": round(self.camera_controller.state.y,2), "zoom": round(self.camera_controller.state.zoom,3)},
             "pet_states": dict(self.state.pet_states),
             "npc_states": dict(self.state.npc_states),
@@ -312,6 +316,18 @@ class GameView(QGraphicsView):
         key = str(event.payload.get("key", "event"))
         labels = {
             "delivery": "A delivery crossed the quarter",
+            "courier_arrival": "Courier route · a package changed hands",
+            "maintenance_pass": "Maintenance · a quiet inspection passed nearby",
+            "cafe_cycle": "Commons café · service rhythm changed",
+            "garden_watering": "Garden irrigation · short cycle",
+            "instrument_cycle": "Observatory · instrument cycle complete",
+            "system_check": "Grid · operational check complete",
+            "build_cycle": "Twin Core · build state refreshed",
+            "research_cycle": "Trinity Lab · instrument cycle complete",
+            "service_cycle": "Garage · service bench changed state",
+            "pet_pause": "Kawaii Garden · Momo settled nearby",
+            "social_gathering": "A small social cluster formed",
+            "climate_cycle": "Glasshouse · climate system adjusted",
             "dog_in_plaza": "A dog wandered into Central Plaza",
             "rooftop_session": "A distant rooftop session started",
             "power_flicker": "Power flicker · local systems recovered",
@@ -438,6 +454,7 @@ class GameView(QGraphicsView):
         visual = self.actor_runtime.interpolated_position()
         avatar.grid_x = visual.x
         avatar.grid_y = visual.y
+        avatar.grid_z = self.world.elevation_at(visual.x, visual.y)
         velocity = self.actor_runtime.velocity
         if velocity.length() > 0.01:
             avatar.set_facing(velocity.x, velocity.y)
@@ -499,8 +516,12 @@ class GameView(QGraphicsView):
         avatar = self.world.avatar
         target = avatar.scenePos()
         vx, vy = self.actor_runtime.velocity.x, self.actor_runtime.velocity.y
-        p0 = self.world.projector.project(avatar.grid_x, avatar.grid_y, 0)
-        p1 = self.world.projector.project(avatar.grid_x + vx, avatar.grid_y + vy, 0)
+        p0 = self.world.projector.project(avatar.grid_x, avatar.grid_y, avatar.grid_z)
+        p1 = self.world.projector.project(
+            avatar.grid_x + vx,
+            avatar.grid_y + vy,
+            self.world.elevation_at(avatar.grid_x + vx, avatar.grid_y + vy),
+        )
         state = self.camera_controller.update(
             dt, target.x(), target.y(), p1.x()-p0.x(), p1.y()-p0.y(), self._camera_profile()
         )
@@ -514,6 +535,7 @@ class GameView(QGraphicsView):
         self.state.player_state = {
             "space_id": self.room_id,
             "position": [round(self.actor_runtime.position.x, 4), round(self.actor_runtime.position.y, 4)],
+            "elevation": round(self.world.avatar.grid_z, 4),
             "velocity": [round(self.actor_runtime.velocity.x, 4), round(self.actor_runtime.velocity.y, 4)],
             "state": self.actor_runtime.state.value,
             "facing": [round(self.actor_runtime.facing.x, 4), round(self.actor_runtime.facing.y, 4)],
