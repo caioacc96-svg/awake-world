@@ -1,12 +1,16 @@
-name: Awake World 0.5 Release
+name: Awake World 0.6 Release
 
 on:
   push:
     branches:
-      - 'release/**'
+      - 'release/0.6.*'
     tags:
-      - 'v0.5.*'
+      - 'v0.6.*'
   workflow_dispatch:
+
+concurrency:
+  group: awake-release-${{ github.ref }}
+  cancel-in-progress: true
 
 permissions:
   contents: write
@@ -22,6 +26,7 @@ jobs:
     outputs:
       source_sha: ${{ steps.source.outputs.sha }}
       release_tag: ${{ steps.source.outputs.tag }}
+      artifact_stem: ${{ steps.source.outputs.stem }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -39,9 +44,13 @@ jobs:
             echo "RELEASE_VERSION_NOT_FINAL: $version"
             exit 1
           fi
+          if [[ ! "$version" =~ ^0\.6\.[0-9]+$ ]]; then
+            echo "RELEASE_VERSION_NOT_0_6: $version"
+            exit 1
+          fi
 
+          python tools/build_manifest.py
           if [[ "$GITHUB_REF_TYPE" == "branch" ]]; then
-            python tools/build_manifest.py
             git config user.name "awake-world-ci"
             git config user.email "awake-world-ci@users.noreply.github.com"
             git add BUILD_MANIFEST.json
@@ -54,16 +63,20 @@ jobs:
           fi
 
           source_sha="$(git rev-parse HEAD)"
+          clean_version="${version//./_}"
+          stem="AwakeWorld_${clean_version}_GLOBAL_Windows"
           echo "sha=$source_sha" >> "$GITHUB_OUTPUT"
           echo "tag=v$version" >> "$GITHUB_OUTPUT"
+          echo "stem=$stem" >> "$GITHUB_OUTPUT"
           echo "AWAKE_RELEASE_SOURCE=$source_sha"
           echo "AWAKE_RELEASE_TAG=v$version"
+          echo "AWAKE_RELEASE_ARTIFACT=$stem"
 
   validate:
     name: RELEASE QUALITY GATES
     needs: prepare
     runs-on: ubuntu-latest
-    timeout-minutes: 12
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
         with:
@@ -83,6 +96,7 @@ jobs:
       - run: python tools/core_test.py
       - run: python tools/deterministic_replay_test.py
       - run: python tools/gameplay_tests.py
+      - run: python tools/mvd_3_to_9_gate.py
 
   windows-release:
     name: WINDOWS RELEASE · QT · VISUAL · PACKAGE · SMOKE
@@ -127,17 +141,27 @@ jobs:
           if ($p.ExitCode -ne 0) { throw "Packaged smoke failed with exit code $($p.ExitCode)" }
       - name: Package + checksums
         shell: pwsh
+        env:
+          ARTIFACT_STEM: ${{ needs.prepare.outputs.artifact_stem }}
         run: |
           python tools/package_windows.py
-          $hash = (Get-FileHash '.\release\AwakeWorld_0.5_GLOBAL_Windows.zip' -Algorithm SHA256).Hash.ToLower()
-          "$hash  AwakeWorld_0.5_GLOBAL_Windows.zip" | Set-Content -NoNewline '.\release\AwakeWorld_0.5_GLOBAL_Windows.zip.sha256'
+          $zip = ".\release\$env:ARTIFACT_STEM.zip"
+          if (-not (Test-Path $zip)) { throw "Release package missing: $zip" }
+          $hash = (Get-FileHash $zip -Algorithm SHA256).Hash.ToLower()
+          "$hash  $env:ARTIFACT_STEM.zip" | Set-Content -NoNewline ".\release\$env:ARTIFACT_STEM.zip.sha256"
+      - name: Upload visual review artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: awake-06-release-visual-output
+          path: visual_output
+          if-no-files-found: error
       - name: Upload release artifact
         uses: actions/upload-artifact@v4
         with:
-          name: AwakeWorld_0.5_GLOBAL_Windows
+          name: ${{ needs.prepare.outputs.artifact_stem }}
           path: |
-            release/AwakeWorld_0.5_GLOBAL_Windows.zip
-            release/AwakeWorld_0.5_GLOBAL_Windows.zip.sha256
+            release/${{ needs.prepare.outputs.artifact_stem }}.zip
+            release/${{ needs.prepare.outputs.artifact_stem }}.zip.sha256
           if-no-files-found: error
       - name: Publish GitHub release
         shell: pwsh
@@ -145,9 +169,10 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           RELEASE_TAG: ${{ needs.prepare.outputs.release_tag }}
           SOURCE_SHA: ${{ needs.prepare.outputs.source_sha }}
+          ARTIFACT_STEM: ${{ needs.prepare.outputs.artifact_stem }}
         run: |
           gh release view $env:RELEASE_TAG --repo $env:GITHUB_REPOSITORY *> $null
           if ($LASTEXITCODE -eq 0) {
             throw "Release $env:RELEASE_TAG already exists; refusing to overwrite a published release."
           }
-          gh release create $env:RELEASE_TAG '.\release\AwakeWorld_0.5_GLOBAL_Windows.zip' '.\release\AwakeWorld_0.5_GLOBAL_Windows.zip.sha256' --repo $env:GITHUB_REPOSITORY --target $env:SOURCE_SHA --title "Awake World 0.5 GLOBAL" --notes-file CHANGELOG.md
+          gh release create $env:RELEASE_TAG ".\release\$env:ARTIFACT_STEM.zip" ".\release\$env:ARTIFACT_STEM.zip.sha256" --repo $env:GITHUB_REPOSITORY --target $env:SOURCE_SHA --title "Awake World 0.6.0 — THE LIVING QUARTER" --notes-file CHANGELOG.md
