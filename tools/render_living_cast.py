@@ -16,7 +16,7 @@ os.environ.setdefault("QT_LOGGING_RULES", "qt.multimedia.*=false")
 
 
 def render_avatar_sheet(target: Path, pose_sheet: bool = False) -> dict[str, object]:
-    from PySide6.QtCore import QPointF, QRectF
+    from PySide6.QtCore import QPointF
     from PySide6.QtGui import QColor, QImage, QPainter
     from awake_world.world.avatar import AvatarItem
     from awake_world.world.iso import IsoProjector
