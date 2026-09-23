@@ -90,11 +90,6 @@
       "sha256": "04d22ef949ad05cfebfaaa1f4336dddb6fbdb0811a4689e9fe1f28d89658874e"
     },
     {
-      "path": "awake_world.spec",
-      "size": 747,
-      "sha256": "cdeea45c8a7222fe1496cfb733b055e7106c531a90866f8885c526c9a9861df3"
-    },
-    {
       "path": "awake_world/__init__.py",
       "size": 26,
       "sha256": "0f9403b9420c196767abbfdb8faa132618b0300fc18d80dbcd534e16976d73d5"
@@ -418,6 +413,11 @@
       "path": "awake_world/world/view.py",
       "size": 26099,
       "sha256": "de9d19455b4f2431eba9f9f5906804db89f711d661adc22dfd7654a625cb70a3"
+    },
+    {
+      "path": "awake_world.spec",
+      "size": 747,
+      "sha256": "cdeea45c8a7222fe1496cfb733b055e7106c531a90866f8885c526c9a9861df3"
     },
     {
       "path": "data/build.json",
