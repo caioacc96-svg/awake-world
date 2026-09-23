@@ -72,7 +72,7 @@ jobs:
           $env:QT_QPA_PLATFORM='offscreen'
           $env:QT_LOGGING_RULES='qt.multimedia.*=false'
           python tools/smoke_test.py
-      - name: Render inherited deterministic golden scenes
+      - name: Render deterministic golden scenes
         id: visual
         continue-on-error: true
         shell: pwsh
