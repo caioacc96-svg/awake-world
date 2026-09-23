@@ -690,7 +690,10 @@ def _add_subtle_life(
 
     for anchor in profile.state_anchors:
         screen = ScreenItem(p, anchor.x, anchor.y, accent, anchor.scale)
-        screen.set_active(True)
+        screen.set_active(
+            scene.phase != "night"
+            or scene.room_id in {"observatory", "twin_core", "pit"}
+        )
         scene.addItem(screen)
         scene.register_animation(screen)
 
