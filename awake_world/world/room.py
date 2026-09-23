@@ -34,6 +34,7 @@ from awake_world.world.state import WorldState
 from awake_world.world.npc import NPCItem, NPC_PROFILES
 from awake_world.world.progression import STARTER_DECOR, add_journal, unlock_decor
 from awake_world.world.systems.interactions import InteractionSystem
+from awake_world.world.systems.surfaces import surfaces_for_space
 from awake_world.world.systems.traversal import TraversalSystem
 
 
@@ -62,6 +63,13 @@ class BaseRoomScene(QGraphicsScene):
         self.interactions: list[InteractionSpec] = []
         self.interaction_system = InteractionSystem()
         self.interaction_acknowledgements: dict[str, object] = {}
+        self.occupied_surface_id: str | None = None
+        existing_occupancy = self.state.space_states.get(self.room_id, {}).get("surface_occupancy", {})
+        if isinstance(existing_occupancy, dict):
+            for surface_id, members in existing_occupancy.items():
+                if isinstance(members, (list, tuple)) and "local_player" in {str(v) for v in members}:
+                    self.occupied_surface_id = str(surface_id)
+                    break
         self.collisions: list[CollisionRect] = []
         try:
             self.traversal: TraversalSystem | None = TraversalSystem(self.room_id)
@@ -272,6 +280,22 @@ class BaseRoomScene(QGraphicsScene):
                 setter(selected is not None and getattr(selected, "key", "") == key)
         return selected
 
+    def release_local_surface(self) -> None:
+        space_state = self.state.space_states.setdefault(self.room_id, {})
+        occupancy = space_state.get("surface_occupancy", {})
+        if not isinstance(occupancy, dict):
+            self.occupied_surface_id = None
+            return
+        for surface_id in tuple(occupancy):
+            raw = occupancy.get(surface_id, [])
+            members = [str(value) for value in raw] if isinstance(raw, (list, tuple)) else []
+            members = [member for member in members if member != "local_player"]
+            if members:
+                occupancy[surface_id] = members
+            else:
+                occupancy.pop(surface_id, None)
+        self.occupied_surface_id = None
+
     def _talk(self, npc_key: str) -> str:
         count = self.state.conversations.get(npc_key, 0)
         self.state.conversations[npc_key] = count + 1
@@ -333,6 +357,7 @@ class BaseRoomScene(QGraphicsScene):
             )
 
         if spec.action in {"sit", "rest", "use", "listen"}:
+            self.release_local_surface()
             pose_map = {"sit": "seated", "rest": "resting", "use": "working", "listen": "listening"}
             if self.avatar.locked_in_pose:
                 self.avatar.stand()
@@ -357,21 +382,41 @@ class BaseRoomScene(QGraphicsScene):
             return InteractionOutcome(message, changed=first_time, discovery=first_time)
 
         if spec.action == "surface":
+            surface_id = spec.target or spec.key
+            definition = next(
+                (surface for surface in surfaces_for_space(self.room_id) if surface.id == surface_id),
+                None,
+            )
+            capacity = definition.capacity if definition is not None else 1
             space_state = self.state.space_states.setdefault(self.room_id, {})
             occupancy = space_state.setdefault("surface_occupancy", {})
             if not isinstance(occupancy, dict):
                 occupancy = {}
                 space_state["surface_occupancy"] = occupancy
-            members = [str(value) for value in occupancy.get(spec.target or spec.key, [])]
+            members = [str(value) for value in occupancy.get(surface_id, [])]
+            if "local_player" not in members and len(members) >= capacity:
+                return InteractionOutcome(
+                    f"{spec.eyebrow.title()} · {spec.title} · currently occupied",
+                    changed=False,
+                    discovery=first_time,
+                )
+            if self.occupied_surface_id != surface_id:
+                self.release_local_surface()
+                occupancy = self.state.space_states.setdefault(self.room_id, {}).setdefault("surface_occupancy", {})
+                if not isinstance(occupancy, dict):
+                    occupancy = {}
+                    self.state.space_states[self.room_id]["surface_occupancy"] = occupancy
+                members = [str(value) for value in occupancy.get(surface_id, [])]
             if "local_player" not in members:
                 members.append("local_player")
-            occupancy[spec.target or spec.key] = members
+            occupancy[surface_id] = members
+            self.occupied_surface_id = surface_id
             ax = spec.anchor_x if spec.anchor_x is not None else spec.x
             ay = spec.anchor_y if spec.anchor_y is not None else spec.y
             pose = "seated" if spec.surface_kind in {"sofa", "meeting_table", "arcade"} else "working"
             self.avatar.set_pose(pose, ax, ay, spec.facing_x, spec.facing_y, spec.z)
             return InteractionOutcome(
-                f"{spec.eyebrow.title()} · {spec.title} · occupied",
+                f"{spec.eyebrow.title()} · {spec.title} · in use",
                 changed=True,
                 discovery=first_time,
             )
