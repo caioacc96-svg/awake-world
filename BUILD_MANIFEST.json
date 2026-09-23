@@ -280,8 +280,8 @@
     },
     {
       "path": "awake_world/world/room.py",
-      "size": 45397,
-      "sha256": "72f2043fa25c07110145283e139210b71caed9e7cb43f336446fea0c3f4366e1"
+      "size": 47794,
+      "sha256": "5ffc0510c492448abb7aa5fe80482c2e9fd507a45615c2fe2fb543f23165e4bf"
     },
     {
       "path": "awake_world/world/save.py",
