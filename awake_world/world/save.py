@@ -54,7 +54,7 @@ def _state_from_payload(raw: dict[str, Any]) -> WorldState:
         journal.insert(0, "arrival")
     return WorldState(
         schema_version=CURRENT_SAVE_SCHEMA,
-        build_version=str(data.get("build_version", "0.5.0-dev")),
+        build_version=str(data.get("build_version", "0.6.0-dev")),
         world_seed=int(data.get("world_seed", 404)),
         discovered={str(x) for x in data.get("discovered", [])},
         toggles={str(k): bool(v) for k, v in data.get("toggles", {}).items()},
