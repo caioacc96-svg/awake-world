@@ -179,6 +179,7 @@ class GameView(QGraphicsView):
         current = self.world.closest_interaction()
         if not current:
             if self.world.avatar.locked_in_pose:
+                self.world.release_local_surface()
                 self.world.avatar.stand()
                 self.worldMessage.emit("Back on your feet")
             return
@@ -224,6 +225,7 @@ class GameView(QGraphicsView):
         self._pending_room_id = room_id
         self.keys.clear()
         self.actor_runtime.clear_input()
+        self.world.release_local_surface()
         self.world.avatar.stand()
         profile = self._transition_profile_for(self.room_id, room_id)
         transition_state = self.transition.start(self.room_id, room_id, profile)
@@ -232,6 +234,7 @@ class GameView(QGraphicsView):
         self.runtime.bus.publish(WorldEvent.TRANSITION_STARTED, source=self.room_id, target=room_id, profile=profile)
 
     def _switch_room(self, room_id: str, transition_handoff: bool = False) -> None:
+        self.world.release_local_surface()
         self.state.world_minutes = self.clock.minutes
         self.room_id = room_id
         self.state.last_room = room_id
@@ -443,6 +446,7 @@ class GameView(QGraphicsView):
         movement_locked = self._transitioning and self.transition.snapshot.movement_locked
         moving_input = bool(dx or dy) and not movement_locked
         if moving_input and avatar.locked_in_pose:
+            self.world.release_local_surface()
             avatar.stand()
             self.actor_runtime.teleport(avatar.grid_x, avatar.grid_y)
 
