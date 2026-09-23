@@ -67,6 +67,7 @@ def build_manifest() -> dict[str, object]:
             "windows_qt": "WINDOWS_CI_REQUIRED",
             "package": "WINDOWS_CI_REQUIRED",
             "packaged_smoke": "WINDOWS_CI_REQUIRED",
+            "living_cast": "WINDOWS_CI_REQUIRED",
         },
         "files": files,
     }
