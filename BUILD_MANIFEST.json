@@ -505,8 +505,8 @@
     },
     {
       "path": "tests/test_mvd_3_to_9.py",
-      "size": 5330,
-      "sha256": "5bfbc2ee0f564a11d29f95f3c9bf8cc82d3019cdf13b30864e2bee84e05713e9"
+      "size": 6041,
+      "sha256": "8b1d67a644cc1a3020808595592e6b0e36c3a363ad7f78d003eea0091d37fddc"
     },
     {
       "path": "tests/test_replay.py",
@@ -550,8 +550,8 @@
     },
     {
       "path": "tools/mvd_3_to_9_gate.py",
-      "size": 3603,
-      "sha256": "54167b53c59544d2ffe235d4efea09e4bf3142a426427b228ea975b4b4297f21"
+      "size": 4960,
+      "sha256": "910f2827a1ba40e3d164a1e7ebe0f8fd357c07d92b314179f26a3312bf7b6791"
     },
     {
       "path": "tools/package_windows.py",
