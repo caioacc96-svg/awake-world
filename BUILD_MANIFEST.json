@@ -245,8 +245,8 @@
     },
     {
       "path": "awake_world/world/district.py",
-      "size": 35220,
-      "sha256": "5f6d1cae160503d8bd95c2c5c28992446827c226a75c214cf0dcc3e357184673"
+      "size": 35328,
+      "sha256": "51f3616b0e7371a69865d7cceccc6d14577ccf4f4acfd74667a4f594932d107c"
     },
     {
       "path": "awake_world/world/environment.py",
@@ -375,8 +375,8 @@
     },
     {
       "path": "awake_world/world/systems/runtime.py",
-      "size": 9622,
-      "sha256": "36ef9c41b08bb5bd3c633c56636ee8fe096d69c5011574beb49281c97df02131"
+      "size": 9971,
+      "sha256": "e1b9547df6adfe5408475b55881afca33a1e15508d8f613bdf7016e5ad867e78"
     },
     {
       "path": "awake_world/world/systems/spaces.py",
