@@ -18,6 +18,7 @@ class AvatarItem(QGraphicsItem):
         self.accent = QColor(accent)
         self.grid_x = 5.0
         self.grid_y = 6.5
+        self.grid_z = 0.0
         self.motion_phase = 0.0
         self.idle_phase = 0.0
         self.facing = QPointF(0.0, 1.0)
@@ -120,9 +121,11 @@ class AvatarItem(QGraphicsItem):
 
         painter.restore()
 
-    def set_grid_position(self, x: float, y: float) -> None:
+    def set_grid_position(self, x: float, y: float, z: float | None = None) -> None:
         self.grid_x = x
         self.grid_y = y
+        if z is not None:
+            self.grid_z = float(z)
         self.sync_scene_position()
 
     def set_facing(self, dx: float, dy: float) -> None:
@@ -136,6 +139,7 @@ class AvatarItem(QGraphicsItem):
         y: float | None = None,
         facing_x: float = 0.0,
         facing_y: float = -1.0,
+        z: float | None = None,
     ) -> None:
         self.pose = pose
         self.moving = False
@@ -143,6 +147,8 @@ class AvatarItem(QGraphicsItem):
         if x is not None and y is not None:
             self.grid_x = x
             self.grid_y = y
+        if z is not None:
+            self.grid_z = float(z)
         self.set_facing(facing_x, facing_y)
         self.sync_scene_position()
         self.update()
@@ -167,6 +173,6 @@ class AvatarItem(QGraphicsItem):
         self.update()
 
     def sync_scene_position(self) -> None:
-        p = self.projector.project(self.grid_x, self.grid_y, 0)
+        p = self.projector.project(self.grid_x, self.grid_y, self.grid_z)
         self.setPos(p)
         self.setZValue(p.y() + 1000)

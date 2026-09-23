@@ -25,6 +25,8 @@ def main() -> int:
         from awake_world.ui.main_window import AwakeMainWindow
         from awake_world.world.room import DISCOVERY_KEYS, ROOM_TYPES, all_room_ids, make_room
         from awake_world.world.save import load_state
+        from awake_world.world.systems.spaces import SPACE_CATALOG
+        from awake_world.world.systems.surfaces import surfaces_for_space
 
         app = QApplication.instance() or QApplication(sys.argv)
         theme = ThemeEngine()
@@ -42,6 +44,27 @@ def main() -> int:
             room.advance_ambient(0.016)
             room.apply_weather("clear")
             assert room.avatar is not None
+            if room_id in SPACE_CATALOG:
+                assert room.traversal is not None
+                assert room.traversal.raised_plane_count() >= 1
+                assert room.traversal.connector_count() >= 1
+                surfaces = surfaces_for_space(room_id)
+                assert surfaces
+                assert len(room.interaction_acknowledgements) == len(surfaces)
+                surface_spec = next(item for item in room.interactions if item.action == "surface")
+                outcome = room.activate(surface_spec)
+                assert outcome.changed
+                assert room.occupied_surface_id == surface_spec.key
+                room.release_local_surface()
+                assert room.occupied_surface_id is None
+                plane = room.traversal.profile.planes[0]
+                elevation = room.elevation_at(
+                    plane.x + plane.w * .5,
+                    plane.y + plane.d * .5,
+                )
+                assert elevation >= plane.h
+                for _ in range(30):
+                    room.advance_ambient(1 / 30)
 
         window = AwakeMainWindow(theme)
         window.show()

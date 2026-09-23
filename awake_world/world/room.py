@@ -34,6 +34,8 @@ from awake_world.world.state import WorldState
 from awake_world.world.npc import NPCItem, NPC_PROFILES
 from awake_world.world.progression import STARTER_DECOR, add_journal, unlock_decor
 from awake_world.world.systems.interactions import InteractionSystem
+from awake_world.world.systems.surfaces import surfaces_for_space
+from awake_world.world.systems.traversal import TraversalSystem
 
 
 @dataclass(frozen=True)
@@ -60,7 +62,19 @@ class BaseRoomScene(QGraphicsScene):
         self.projector = IsoProjector()
         self.interactions: list[InteractionSpec] = []
         self.interaction_system = InteractionSystem()
+        self.interaction_acknowledgements: dict[str, object] = {}
+        self.occupied_surface_id: str | None = None
+        existing_occupancy = self.state.space_states.get(self.room_id, {}).get("surface_occupancy", {})
+        if isinstance(existing_occupancy, dict):
+            for surface_id, members in existing_occupancy.items():
+                if isinstance(members, (list, tuple)) and "local_player" in {str(v) for v in members}:
+                    self.occupied_surface_id = str(surface_id)
+                    break
         self.collisions: list[CollisionRect] = []
+        try:
+            self.traversal: TraversalSystem | None = TraversalSystem(self.room_id)
+        except KeyError:
+            self.traversal = None
         self.stateful_items: dict[str, object] = {}
         self.animated_items: list[object] = []
         self.ambient_lights: list[FloorLampItem] = []
@@ -83,6 +97,8 @@ class BaseRoomScene(QGraphicsScene):
     def reset_scene(self) -> None:
         self.clear()
         self.interactions.clear()
+        self.interaction_acknowledgements.clear()
+        self.interaction_system.clear()
         self.collisions.clear()
         self.stateful_items.clear()
         self.animated_items.clear()
@@ -154,7 +170,7 @@ class BaseRoomScene(QGraphicsScene):
     def finish_build(self, scene_rect: QRectF, spawn: tuple[float, float] | None = None) -> None:
         self.addItem(self.avatar)
         sx, sy = spawn or self.spawn
-        self.avatar.set_grid_position(sx, sy)
+        self.avatar.set_grid_position(sx, sy, self.elevation_at(sx, sy))
         self.setSceneRect(scene_rect)
         self.apply_world_state()
         self.apply_phase_lighting()
@@ -202,18 +218,20 @@ class BaseRoomScene(QGraphicsScene):
         facing = (self.avatar.facing.x(), self.avatar.facing.y())
         self.phase = new_phase
         self.build_world()
-        self.avatar.set_grid_position(*current)
+        current_z = self.elevation_at(*current)
+        self.avatar.set_grid_position(current[0], current[1], current_z)
         if pose != "standing":
-            self.avatar.set_pose(pose, current[0], current[1], facing[0], facing[1])
+            self.avatar.set_pose(pose, current[0], current[1], facing[0], facing[1], current_z)
 
     def rebuild_preserving_avatar(self) -> None:
         current = (self.avatar.grid_x, self.avatar.grid_y)
         pose = self.avatar.pose
         facing = (self.avatar.facing.x(), self.avatar.facing.y())
         self.build_world()
-        self.avatar.set_grid_position(*current)
+        current_z = self.elevation_at(*current)
+        self.avatar.set_grid_position(current[0], current[1], current_z)
         if pose != "standing":
-            self.avatar.set_pose(pose, current[0], current[1], facing[0], facing[1])
+            self.avatar.set_pose(pose, current[0], current[1], facing[0], facing[1], current_z)
 
     def apply_phase_lighting(self) -> None:
         active = self.phase in {"dusk", "night", "dawn"}
@@ -226,15 +244,57 @@ class BaseRoomScene(QGraphicsScene):
             if callable(advance):
                 advance(dt)
 
+    def elevation_at(self, x: float, y: float) -> float:
+        if self.traversal is None:
+            return 0.0
+        return self.traversal.elevation_at(x, y)
+
     def can_move_to(self, x: float, y: float, radius: float = 0.18) -> bool:
         if x < 0.35 or y < 0.35 or x > self.width_tiles - 0.35 or y > self.depth_tiles - 0.35:
             return False
-        return not any(rect.contains(x, y, radius) for rect in self.collisions)
+        if any(rect.contains(x, y, radius) for rect in self.collisions):
+            return False
+        if self.traversal is not None and not self.traversal.can_transition(
+            self.avatar.grid_x,
+            self.avatar.grid_y,
+            self.avatar.grid_z,
+            x,
+            y,
+        ):
+            return False
+        return True
 
     def closest_interaction(self) -> InteractionSpec | None:
         candidates = list(self.interactions)
         candidates.extend(npc.interaction_spec() for npc in self.npcs.values())
-        return self.interaction_system.nearest(candidates, self.avatar.grid_x, self.avatar.grid_y, (self.avatar.facing.x(), self.avatar.facing.y()))
+        selected = self.interaction_system.nearest(
+            candidates,
+            self.avatar.grid_x,
+            self.avatar.grid_y,
+            (self.avatar.facing.x(), self.avatar.facing.y()),
+            self.avatar.grid_z,
+        )
+        for key, item in self.interaction_acknowledgements.items():
+            setter = getattr(item, "set_active", None)
+            if callable(setter):
+                setter(selected is not None and getattr(selected, "key", "") == key)
+        return selected
+
+    def release_local_surface(self) -> None:
+        space_state = self.state.space_states.setdefault(self.room_id, {})
+        occupancy = space_state.get("surface_occupancy", {})
+        if not isinstance(occupancy, dict):
+            self.occupied_surface_id = None
+            return
+        for surface_id in tuple(occupancy):
+            raw = occupancy.get(surface_id, [])
+            members = [str(value) for value in raw] if isinstance(raw, (list, tuple)) else []
+            members = [member for member in members if member != "local_player"]
+            if members:
+                occupancy[surface_id] = members
+            else:
+                occupancy.pop(surface_id, None)
+        self.occupied_surface_id = None
 
     def _talk(self, npc_key: str) -> str:
         count = self.state.conversations.get(npc_key, 0)
@@ -297,13 +357,14 @@ class BaseRoomScene(QGraphicsScene):
             )
 
         if spec.action in {"sit", "rest", "use", "listen"}:
+            self.release_local_surface()
             pose_map = {"sit": "seated", "rest": "resting", "use": "working", "listen": "listening"}
             if self.avatar.locked_in_pose:
                 self.avatar.stand()
                 return InteractionOutcome("Back on your feet", changed=False)
             ax = spec.anchor_x if spec.anchor_x is not None else spec.x
             ay = spec.anchor_y if spec.anchor_y is not None else spec.y
-            self.avatar.set_pose(pose_map[spec.action], ax, ay, spec.facing_x, spec.facing_y)
+            self.avatar.set_pose(pose_map[spec.action], ax, ay, spec.facing_x, spec.facing_y, spec.z)
             if spec.action == "rest":
                 if "first_rest" not in self.state.flags:
                     self.state.flags.add("first_rest")
@@ -319,6 +380,46 @@ class BaseRoomScene(QGraphicsScene):
                     self.apply_world_state()
                 message = f"{spec.eyebrow.title()} · in use"
             return InteractionOutcome(message, changed=first_time, discovery=first_time)
+
+        if spec.action == "surface":
+            surface_id = spec.target or spec.key
+            definition = next(
+                (surface for surface in surfaces_for_space(self.room_id) if surface.id == surface_id),
+                None,
+            )
+            capacity = definition.capacity if definition is not None else 1
+            space_state = self.state.space_states.setdefault(self.room_id, {})
+            occupancy = space_state.setdefault("surface_occupancy", {})
+            if not isinstance(occupancy, dict):
+                occupancy = {}
+                space_state["surface_occupancy"] = occupancy
+            members = [str(value) for value in occupancy.get(surface_id, [])]
+            if "local_player" not in members and len(members) >= capacity:
+                return InteractionOutcome(
+                    f"{spec.eyebrow.title()} · {spec.title} · currently occupied",
+                    changed=False,
+                    discovery=first_time,
+                )
+            if self.occupied_surface_id != surface_id:
+                self.release_local_surface()
+                occupancy = self.state.space_states.setdefault(self.room_id, {}).setdefault("surface_occupancy", {})
+                if not isinstance(occupancy, dict):
+                    occupancy = {}
+                    self.state.space_states[self.room_id]["surface_occupancy"] = occupancy
+                members = [str(value) for value in occupancy.get(surface_id, [])]
+            if "local_player" not in members:
+                members.append("local_player")
+            occupancy[surface_id] = members
+            self.occupied_surface_id = surface_id
+            ax = spec.anchor_x if spec.anchor_x is not None else spec.x
+            ay = spec.anchor_y if spec.anchor_y is not None else spec.y
+            pose = "seated" if spec.surface_kind in {"sofa", "meeting_table", "arcade"} else "working"
+            self.avatar.set_pose(pose, ax, ay, spec.facing_x, spec.facing_y, spec.z)
+            return InteractionOutcome(
+                f"{spec.eyebrow.title()} · {spec.title} · in use",
+                changed=True,
+                discovery=first_time,
+            )
 
         if spec.action == "talk":
             return InteractionOutcome(self._talk(spec.target or ""), changed=True, discovery=first_time)

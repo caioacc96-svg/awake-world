@@ -30,8 +30,8 @@
     },
     {
       "path": ".github/workflows/ci.yml",
-      "size": 4480,
-      "sha256": "ffc464f9d1e96d1eab4461c0d694f1e9abd2bfecbe382fc1de4019e24203b574"
+      "size": 4590,
+      "sha256": "e29dbf3a0041e70bd0587af56594563167e5c18a707f7c4065e1d97342942def"
     },
     {
       "path": ".github/workflows/release.yml",
@@ -110,8 +110,8 @@
     },
     {
       "path": "awake_world/design/material_light.py",
-      "size": 6938,
-      "sha256": "b2597f5893d813663541b36042b05457eeeeb82375042afcf054b8b7fe5521e8"
+      "size": 7778,
+      "sha256": "a56d0e7326039ecbaed61b4cb7ac78c886912d3dd900307579fb433f71fb9e1e"
     },
     {
       "path": "awake_world/design/spatial_depth.py",
@@ -235,13 +235,13 @@
     },
     {
       "path": "awake_world/world/avatar.py",
-      "size": 6749,
-      "sha256": "0b8d9bf8f0243495295c24bebda0a25c4ffb681f11e162f07f2fe095c9fa8f97"
+      "size": 6963,
+      "sha256": "543354a866562346519623dc438dbd18c2a5ce506b9a609a8052617207a1d111"
     },
     {
       "path": "awake_world/world/district.py",
-      "size": 31298,
-      "sha256": "704de52463695c786f4b593574d45e664d80b9e4baad498a0058e910c3440ede"
+      "size": 35328,
+      "sha256": "51f3616b0e7371a69865d7cceccc6d14577ccf4f4acfd74667a4f594932d107c"
     },
     {
       "path": "awake_world/world/environment.py",
@@ -255,8 +255,8 @@
     },
     {
       "path": "awake_world/world/items.py",
-      "size": 29352,
-      "sha256": "bdfb76f66a32b42d6b346660dc6b1a6750f583ae791250d12e51bdfa5fa32630"
+      "size": 31257,
+      "sha256": "3e61ba2bf226c74ab082b276935d7191bb639c1dc72e6d19a8de58a4ca31039f"
     },
     {
       "path": "awake_world/world/lighting.py",
@@ -275,18 +275,18 @@
     },
     {
       "path": "awake_world/world/room.py",
-      "size": 42923,
-      "sha256": "4dc4520b9e7cb6d33055ab7f7977201b05e7ce026010cb361f9199f026a67a69"
+      "size": 47794,
+      "sha256": "5ffc0510c492448abb7aa5fe80482c2e9fd507a45615c2fe2fb543f23165e4bf"
     },
     {
       "path": "awake_world/world/save.py",
       "size": 6500,
-      "sha256": "fe6c1595e9bd1102cdf2d1cfbfc9a07f92928f0b8a5114e02186a85762aee401"
+      "sha256": "52bd4d4a982dd93928ed74187d45c613b7754f2751e2fbecfee2d8165fe20083"
     },
     {
       "path": "awake_world/world/state.py",
       "size": 1454,
-      "sha256": "359860d44094b19bce639c1f4d6a27331e93672570ebeb5feade981f78342509"
+      "sha256": "1816d9ab54e65935b2e8c987be0f9abf975c224c8b31a300d4544b34a4dad40f"
     },
     {
       "path": "awake_world/world/systems/__init__.py",
@@ -295,8 +295,8 @@
     },
     {
       "path": "awake_world/world/systems/ambient_life.py",
-      "size": 1645,
-      "sha256": "99f218d42b5fd446df3858a36bdf80dea90a70b874966fbdc1f7a73be403f812"
+      "size": 3438,
+      "sha256": "579f3206418ecf540b37dc4c6a0e0417dabdc6fda151235fc58116cd3c426ec3"
     },
     {
       "path": "awake_world/world/systems/audio_zones.py",
@@ -314,9 +314,19 @@
       "sha256": "1818d06d32b9bf076a338d16c06d26d768bd3e42b37933cc83c1b0d63440ef99"
     },
     {
+      "path": "awake_world/world/systems/foundation_freeze.py",
+      "size": 1591,
+      "sha256": "0e3e0af053ce9ef69b465fb5962bbc625b3f299fc3b0c4dc7a758a693878bc5c"
+    },
+    {
+      "path": "awake_world/world/systems/hardening.py",
+      "size": 1617,
+      "sha256": "4946b25108b5bba055db1d2f2f1da7b11974f52a1d6694d3f5e131ae82b91163"
+    },
+    {
       "path": "awake_world/world/systems/interactions.py",
-      "size": 2396,
-      "sha256": "14f0edd7339b30e4095f425750cff7d8ca8dd2f271d64a66af63b5df51185ca0"
+      "size": 2842,
+      "sha256": "170acbb51bd67c54a290674c10ff43fd13cb949caf60516de4cf0e1ac230992e"
     },
     {
       "path": "awake_world/world/systems/lighting_system.py",
@@ -325,13 +335,18 @@
     },
     {
       "path": "awake_world/world/systems/microevents.py",
-      "size": 2406,
-      "sha256": "b04bcb914598d2b4a21bda1517b080c1c47c408e09aa9e0d8d989569dd85b0a4"
+      "size": 3352,
+      "sha256": "6fbd45c83d6bf8d425634f45291aa832fdd0cd8e9e5c28775dd7e0d5a651e4a6"
+    },
+    {
+      "path": "awake_world/world/systems/network_contracts.py",
+      "size": 3132,
+      "sha256": "6a30b372f6bf55100e61cf0851494eac531b3c6fbc0e414f2476bfc372dabc77"
     },
     {
       "path": "awake_world/world/systems/npc_system.py",
-      "size": 3883,
-      "sha256": "ecc68862bac86531ccf1e8fba0eed7fad711e0efac85bae5d3fd77b16c300029"
+      "size": 5849,
+      "sha256": "682600c037da8a67544dde06bce194f89ab881b66c7a11dde1730d285f6ba361"
     },
     {
       "path": "awake_world/world/systems/performance.py",
@@ -349,9 +364,14 @@
       "sha256": "87a8ee9506c3c9123bf21db6fa88552864b0547efaf51e53f77821106e190cb2"
     },
     {
+      "path": "awake_world/world/systems/release_candidate.py",
+      "size": 2072,
+      "sha256": "4d147d800f6b5bbff659a706e70eb7820bb92454233472cf246f2342ec049b3b"
+    },
+    {
       "path": "awake_world/world/systems/runtime.py",
-      "size": 7707,
-      "sha256": "823233644c6ec206f17e24b6ae3347df3b3864f3f134481adec395cbbc139ec2"
+      "size": 10002,
+      "sha256": "a480455f19359ccb284810b656e5958845a988426f4304b6273469f47d24c67b"
     },
     {
       "path": "awake_world/world/systems/spaces.py",
@@ -359,9 +379,24 @@
       "sha256": "c9035f35d76aca5af7cb8a1ddb5e30c35d05949ce669534ee112a6772b13decc"
     },
     {
+      "path": "awake_world/world/systems/subtle_life.py",
+      "size": 6421,
+      "sha256": "e9f6b3d21f09719697a4f852660bd9b7802659f3427dc8f14c99b62f070c502b"
+    },
+    {
+      "path": "awake_world/world/systems/surfaces.py",
+      "size": 5479,
+      "sha256": "d4149db99bd038286a94cc9b2aa6f1701fd59fbe276917e975a5fcd7de706d96"
+    },
+    {
       "path": "awake_world/world/systems/time_system.py",
       "size": 2641,
       "sha256": "1de1bdc2a9d2a3af283640e0e00f47e78eb65d09e154f80327febea5614c9a37"
+    },
+    {
+      "path": "awake_world/world/systems/traversal.py",
+      "size": 3026,
+      "sha256": "9accb7569750834e0e612846932249c4932561937cd79f283d7a27a18aac11b0"
     },
     {
       "path": "awake_world/world/systems/weather.py",
@@ -370,8 +405,8 @@
     },
     {
       "path": "awake_world/world/view.py",
-      "size": 24520,
-      "sha256": "eb167be8daf4686765abee1127f917a5e2547ce2b8b5c5c88a063f8d575045a5"
+      "size": 26099,
+      "sha256": "de9d19455b4f2431eba9f9f5906804db89f711d661adc22dfd7654a625cb70a3"
     },
     {
       "path": "awake_world.spec",
@@ -387,6 +422,11 @@
       "path": "docs/AWAKE_WORLD_06_MVD_3_TO_9_EXECUTION_CANON.md",
       "size": 22461,
       "sha256": "9c4287fcfb58fb950886662bec635b32d46121a0f5490010a76eff5d2dfe5426"
+    },
+    {
+      "path": "docs/AWAKE_WORLD_06_MVD_3_TO_9_IMPLEMENTATION_STATUS.md",
+      "size": 4752,
+      "sha256": "f9aca4a6dae5bb05ab4739cff2f96f8001ade1078b4005cf583b0df4d6df864d"
     },
     {
       "path": "docs/AWAKE_WORLD_06_MVD_CANON.md",
@@ -459,6 +499,11 @@
       "sha256": "a8581107fd889afbc0bf3c5849d5cef71af016c44c2e72f3e8ddb475cb01c6d0"
     },
     {
+      "path": "tests/test_mvd_3_to_9.py",
+      "size": 5974,
+      "sha256": "7b2c0259fddf6c59e7056b315802be53fb27eca307e6d74357a0274af8031a78"
+    },
+    {
       "path": "tests/test_replay.py",
       "size": 398,
       "sha256": "fa4b93b8f1d104c9ca835aa92bc86d1563bb12900ec8f81b141b0e57b838203b"
@@ -499,24 +544,29 @@
       "sha256": "099ff39012d5a79a665e3e10972ccab3482f27eacf52c458927c107505de97c9"
     },
     {
+      "path": "tools/mvd_3_to_9_gate.py",
+      "size": 6335,
+      "sha256": "70d08105c69cfb1878454a8ec558136422f3117d842da4588c85734a3a4a69a5"
+    },
+    {
       "path": "tools/package_windows.py",
       "size": 1788,
       "sha256": "b2f3537d00580104afad04eb3be714d6e122e8ccb7fe48b9025196bb79ebf9d6"
     },
     {
       "path": "tools/render_golden_scenes.py",
-      "size": 13153,
-      "sha256": "c56d7ca4f07326613b277b50b7864a2d5c3677641e7755a90558974b7a3b0559"
+      "size": 15614,
+      "sha256": "7dc0e5f73ec97e7f0040b738d3e476e4ffd286712df5c1a4e63a02651b0ab32c"
     },
     {
       "path": "tools/smoke_test.py",
-      "size": 2093,
-      "sha256": "8bfc72246d7eef838bdd0d47158a6a3be4599e0ca2f3f85201b43ac02981b390"
+      "size": 3317,
+      "sha256": "1277b13a283179081e37816afdf7edf49b4a25bd77ebe7f89866e7e03a143a80"
     },
     {
       "path": "tools/static_validate.py",
-      "size": 7248,
-      "sha256": "4b64054776c5c6cc3c179dfeba8192c0890a827156c82ddf51c38f49904d6995"
+      "size": 7627,
+      "sha256": "63bef8901b5f53b2c424d428cd2d8e4736313b7469f1770c0918d0ab617fb106"
     },
     {
       "path": "tools/write_build_metadata.py",

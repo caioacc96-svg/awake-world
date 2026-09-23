@@ -54,6 +54,7 @@ class GameView(QGraphicsView):
                     if self.world.can_move_to(px, py):
                         self.world.avatar.grid_x = px
                         self.world.avatar.grid_y = py
+                        self.world.avatar.grid_z = self.world.elevation_at(px, py)
                         self.world.avatar.sync_scene_position()
                 except (TypeError, ValueError):
                     pass
@@ -178,6 +179,7 @@ class GameView(QGraphicsView):
         current = self.world.closest_interaction()
         if not current:
             if self.world.avatar.locked_in_pose:
+                self.world.release_local_surface()
                 self.world.avatar.stand()
                 self.worldMessage.emit("Back on your feet")
             return
@@ -223,6 +225,7 @@ class GameView(QGraphicsView):
         self._pending_room_id = room_id
         self.keys.clear()
         self.actor_runtime.clear_input()
+        self.world.release_local_surface()
         self.world.avatar.stand()
         profile = self._transition_profile_for(self.room_id, room_id)
         transition_state = self.transition.start(self.room_id, room_id, profile)
@@ -231,6 +234,7 @@ class GameView(QGraphicsView):
         self.runtime.bus.publish(WorldEvent.TRANSITION_STARTED, source=self.room_id, target=room_id, profile=profile)
 
     def _switch_room(self, room_id: str, transition_handoff: bool = False) -> None:
+        self.world.release_local_surface()
         self.state.world_minutes = self.clock.minutes
         self.room_id = room_id
         self.state.last_room = room_id
@@ -297,6 +301,9 @@ class GameView(QGraphicsView):
             "simulation_steps": self.runtime.metrics.simulation_steps_last_frame,
             "simulation_paused": self.runtime.paused,
             "simulation_speed": self.runtime.simulation_speed,
+            "hardening_fallbacks": self.runtime.metrics.hardening_fallbacks,
+            "elevation": round(self.world.avatar.grid_z, 4),
+            "surface_occupancy": self.runtime.surfaces.snapshot(self.room_id),
             "camera": {"x": round(self.camera_controller.state.x,2), "y": round(self.camera_controller.state.y,2), "zoom": round(self.camera_controller.state.zoom,3)},
             "pet_states": dict(self.state.pet_states),
             "npc_states": dict(self.state.npc_states),
@@ -312,6 +319,18 @@ class GameView(QGraphicsView):
         key = str(event.payload.get("key", "event"))
         labels = {
             "delivery": "A delivery crossed the quarter",
+            "courier_arrival": "Courier route · a package changed hands",
+            "maintenance_pass": "Maintenance · a quiet inspection passed nearby",
+            "cafe_cycle": "Commons café · service rhythm changed",
+            "garden_watering": "Garden irrigation · short cycle",
+            "instrument_cycle": "Observatory · instrument cycle complete",
+            "system_check": "Grid · operational check complete",
+            "build_cycle": "Twin Core · build state refreshed",
+            "research_cycle": "Trinity Lab · instrument cycle complete",
+            "service_cycle": "Garage · service bench changed state",
+            "pet_pause": "Kawaii Garden · Momo settled nearby",
+            "social_gathering": "A small social cluster formed",
+            "climate_cycle": "Glasshouse · climate system adjusted",
             "dog_in_plaza": "A dog wandered into Central Plaza",
             "rooftop_session": "A distant rooftop session started",
             "power_flicker": "Power flicker · local systems recovered",
@@ -427,6 +446,7 @@ class GameView(QGraphicsView):
         movement_locked = self._transitioning and self.transition.snapshot.movement_locked
         moving_input = bool(dx or dy) and not movement_locked
         if moving_input and avatar.locked_in_pose:
+            self.world.release_local_surface()
             avatar.stand()
             self.actor_runtime.teleport(avatar.grid_x, avatar.grid_y)
 
@@ -438,6 +458,7 @@ class GameView(QGraphicsView):
         visual = self.actor_runtime.interpolated_position()
         avatar.grid_x = visual.x
         avatar.grid_y = visual.y
+        avatar.grid_z = self.world.elevation_at(visual.x, visual.y)
         velocity = self.actor_runtime.velocity
         if velocity.length() > 0.01:
             avatar.set_facing(velocity.x, velocity.y)
@@ -499,8 +520,12 @@ class GameView(QGraphicsView):
         avatar = self.world.avatar
         target = avatar.scenePos()
         vx, vy = self.actor_runtime.velocity.x, self.actor_runtime.velocity.y
-        p0 = self.world.projector.project(avatar.grid_x, avatar.grid_y, 0)
-        p1 = self.world.projector.project(avatar.grid_x + vx, avatar.grid_y + vy, 0)
+        p0 = self.world.projector.project(avatar.grid_x, avatar.grid_y, avatar.grid_z)
+        p1 = self.world.projector.project(
+            avatar.grid_x + vx,
+            avatar.grid_y + vy,
+            self.world.elevation_at(avatar.grid_x + vx, avatar.grid_y + vy),
+        )
         state = self.camera_controller.update(
             dt, target.x(), target.y(), p1.x()-p0.x(), p1.y()-p0.y(), self._camera_profile()
         )
@@ -514,6 +539,7 @@ class GameView(QGraphicsView):
         self.state.player_state = {
             "space_id": self.room_id,
             "position": [round(self.actor_runtime.position.x, 4), round(self.actor_runtime.position.y, 4)],
+            "elevation": round(self.world.avatar.grid_z, 4),
             "velocity": [round(self.actor_runtime.velocity.x, 4), round(self.actor_runtime.velocity.y, 4)],
             "state": self.actor_runtime.state.value,
             "facing": [round(self.actor_runtime.facing.x, 4), round(self.actor_runtime.facing.y, 4)],

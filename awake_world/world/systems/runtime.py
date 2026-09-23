@@ -7,6 +7,7 @@ from awake_world.world.systems.ambient_life import AmbientLifeSystem
 from awake_world.world.systems.audio_zones import AudioZone, AudioZoneSystem
 from awake_world.world.systems.diagnostics import DiagnosticsSystem
 from awake_world.world.systems.events import EventBus, WorldEvent
+from awake_world.world.systems.hardening import HardeningSystem
 from awake_world.world.systems.interactions import InteractionSystem
 from awake_world.world.systems.lighting_system import LightingSystem
 from awake_world.world.systems.microevents import MicroEventSystem
@@ -15,6 +16,8 @@ from awake_world.world.systems.pets import PetSystem
 from awake_world.world.systems.performance import PerformanceSystem
 from awake_world.world.systems.presence import PresenceMode, PresenceSystem
 from awake_world.world.systems.spaces import SpaceSystem
+from awake_world.world.systems.subtle_life import SPACE_SUBTLE_LIFE_PROFILES
+from awake_world.world.systems.surfaces import SurfaceOccupancySystem
 from awake_world.world.systems.time_system import TimeSystem
 from awake_world.world.systems.weather import WeatherSystem
 
@@ -30,10 +33,11 @@ class RuntimeMetrics:
     audio_sources: int = 0
     scene_objects: int = 0
     simulation_lod: str = "full"
+    hardening_fallbacks: int = 0
 
 
 class WorldRuntime:
-    """Deterministic single-player simulation backbone with presentation/network boundaries."""
+    """Deterministic single-player backbone with explicit presentation/network boundaries."""
 
     FIXED_HZ = 60
 
@@ -48,10 +52,12 @@ class WorldRuntime:
         self.pets = PetSystem(state.world_seed)
         self.ambient = AmbientLifeSystem(state.world_seed)
         self.spaces = SpaceSystem(state)
+        self.surfaces = SurfaceOccupancySystem(state)
         self.audio_zones = AudioZoneSystem()
         self.lighting = LightingSystem()
         self.interactions = InteractionSystem()
         self.performance = PerformanceSystem()
+        self.hardening = HardeningSystem()
         self.diagnostics = DiagnosticsSystem()
         self.metrics = RuntimeMetrics()
         self.current_space = self.spaces.current_space
@@ -59,7 +65,8 @@ class WorldRuntime:
         self._day = 0
         self.paused = False
         self.simulation_speed = 1.0
-        self._sync_derived_state()
+        self.state.pet_states = self.pets.tick(0.0, self.state.weather, int(self.time.minutes), self.current_space)
+        self._sync_derived_state(update_npcs=True)
 
     @property
     def fixed_dt(self) -> float:
@@ -88,12 +95,12 @@ class WorldRuntime:
         self.presence.set("local_player", space_id, PresenceMode.AVAILABLE)
         self.bus.publish(WorldEvent.PLAYER_ENTERED_SPACE, space_id=space_id)
         self.diagnostics.event("SPACE", action="enter", space_id=space_id)
-        self._sync_derived_state()
+        self._sync_derived_state(update_npcs=True)
 
     def set_weather(self, kind: str) -> None:
         self.weather.set(kind)
         self.diagnostics.event("WEATHER", weather=kind)
-        self._sync_derived_state()
+        self._sync_derived_state(update_npcs=True)
 
     def set_speed(self, speed: float) -> None:
         self.simulation_speed = max(0.0, min(4.0, float(speed)))
@@ -109,8 +116,17 @@ class WorldRuntime:
         if self.paused:
             self.metrics.simulation_steps_last_frame = 0
             return {"steps": 0, "minute_changed": False, "phase_changed": False}
-        self._accumulator = min(self._accumulator + max(0.0, float(dt)) * self.simulation_speed, 2.0)
-        steps = 0; minute_changed = False; phase_changed = False
+        elapsed = max(0.0, float(dt))
+        self.hardening.clamp_frame_dt(elapsed)
+        self.metrics.hardening_fallbacks = self.hardening.fallback_count
+        budget = self.hardening.budget
+        self._accumulator = min(
+            self._accumulator + elapsed * self.simulation_speed,
+            budget.max_accumulator,
+        )
+        steps = 0
+        minute_changed = False
+        phase_changed = False
         while self._accumulator + 1e-12 >= self.fixed_dt:
             m, p = self._fixed_tick(self.fixed_dt)
             minute_changed = minute_changed or m
@@ -125,26 +141,64 @@ class WorldRuntime:
         self.weather.tick(dt)
         self.microevents.tick(dt, self.current_space)
         self.audio_zones.tick(dt)
-        for ambient in self.ambient.tick(dt, self.current_space, self.state.weather, int(self.time.minutes)):
-            self.bus.publish(WorldEvent.AMBIENT_EVENT, key=ambient.key, category=ambient.category, space_id=ambient.space_id, strength=ambient.strength)
-        self.state.pet_states = self.pets.tick(dt, self.state.weather, int(self.time.minutes), self.current_space)
-        self.metrics.simulation_tick += 1
-        self._sync_derived_state()
+
+        next_tick = self.metrics.simulation_tick + 1
+        budget = self.hardening.budget
+        if self.hardening.due(next_tick, budget.ambient_divisor):
+            ambient_dt = dt * budget.ambient_divisor
+            for ambient in self.ambient.tick(ambient_dt, self.current_space, self.state.weather, int(self.time.minutes)):
+                self.bus.publish(
+                    WorldEvent.AMBIENT_EVENT,
+                    key=ambient.key,
+                    category=ambient.category,
+                    space_id=ambient.space_id,
+                    strength=ambient.strength,
+                )
+        if self.hardening.due(next_tick, budget.pet_divisor):
+            self.state.pet_states = self.pets.tick(
+                dt * budget.pet_divisor,
+                self.state.weather,
+                int(self.time.minutes),
+                self.current_space,
+            )
+
+        self.metrics.simulation_tick = next_tick
+        self._sync_derived_state(
+            update_npcs=self.hardening.due(next_tick, budget.npc_sync_divisor)
+        )
         return minute_changed, phase_changed
 
-    def _sync_derived_state(self) -> None:
+    def _sync_derived_state(self, update_npcs: bool = True) -> None:
         self.state.weather = self.weather.state.kind.value
         self.state.weather_intensity = self.weather.state.intensity
         self.state.active_events = self.microevents.snapshot()
         self.state.presence = self.presence.snapshot()
-        self.state.npc_states = self.npcs.snapshots(int(self.time.minutes), self.state.weather, self.current_space, self._day)
+        if update_npcs or not self.state.npc_states:
+            self.state.npc_states = self.npcs.snapshots(
+                int(self.time.minutes),
+                self.state.weather,
+                self.current_space,
+                self._day,
+            )
+        life_profile = SPACE_SUBTLE_LIFE_PROFILES.get(self.current_space)
         self.state.environment_state = {
             "phase": self.time.phase,
             "audio_mix": self.audio_mix(),
             "lighting_exposure": self.resolved_lighting().global_exposure,
+            "ambient_life": self.ambient.snapshot(),
+            "room_tone": life_profile.room_tone if life_profile is not None else "legacy",
+            "weather_response": life_profile.weather_response if life_profile is not None else "standard",
+            "surface_occupancy": self.surfaces.snapshot(self.current_space),
+            "hardening_fallbacks": self.hardening.fallback_count,
         }
-        self.metrics.active_npcs = sum(1 for v in self.state.npc_states.values() if v.get("simulation_lod") in {"full","reduced"})
-        self.metrics.sleeping_actors = sum(1 for v in self.state.npc_states.values() if v.get("simulation_lod") == "sleep")
+        self.metrics.active_npcs = sum(
+            1 for value in self.state.npc_states.values()
+            if value.get("simulation_lod") in {"full", "reduced"}
+        )
+        self.metrics.sleeping_actors = sum(
+            1 for value in self.state.npc_states.values()
+            if value.get("simulation_lod") == "sleep"
+        )
 
     def resolved_lighting(self):
         return self.lighting.resolve(self.time.phase, self.state.weather)
@@ -154,8 +208,16 @@ class WorldRuntime:
 
     def snapshot(self) -> dict[str, Any]:
         return {
-            "time": round(self.time.minutes, 3), "phase": self.time.phase, "weather": self.state.weather,
-            "seed": self.state.world_seed, "tick": self.metrics.simulation_tick, "space": self.current_space,
-            "active_events": sorted(self.microevents.active), "npc_states": self.state.npc_states,
-            "pet_states": self.state.pet_states, "audio_mix": self.audio_mix(),
+            "time": round(self.time.minutes, 3),
+            "phase": self.time.phase,
+            "weather": self.state.weather,
+            "seed": self.state.world_seed,
+            "tick": self.metrics.simulation_tick,
+            "space": self.current_space,
+            "active_events": sorted(self.microevents.active),
+            "npc_states": self.state.npc_states,
+            "pet_states": self.state.pet_states,
+            "audio_mix": self.audio_mix(),
+            "surface_occupancy": self.surfaces.snapshot(self.current_space),
+            "hardening_fallbacks": self.hardening.fallback_count,
         }
