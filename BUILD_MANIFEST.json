@@ -410,8 +410,8 @@
     },
     {
       "path": "awake_world/world/view.py",
-      "size": 25915,
-      "sha256": "f0d97db3e9f9820569731c95e6135de906036dcbe3037b2e4cd86f9a5494a289"
+      "size": 26099,
+      "sha256": "de9d19455b4f2431eba9f9f5906804db89f711d661adc22dfd7654a625cb70a3"
     },
     {
       "path": "awake_world.spec",
@@ -565,8 +565,8 @@
     },
     {
       "path": "tools/smoke_test.py",
-      "size": 3038,
-      "sha256": "58f47a2b24e370df1ef0fbffb4c56b805ef9d354d07afd7f89becc42e1aa3f43"
+      "size": 3317,
+      "sha256": "1277b13a283179081e37816afdf7edf49b4a25bd77ebe7f89866e7e03a143a80"
     },
     {
       "path": "tools/static_validate.py",
