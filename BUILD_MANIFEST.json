@@ -34,6 +34,11 @@
       "sha256": "e29dbf3a0041e70bd0587af56594563167e5c18a707f7c4065e1d97342942def"
     },
     {
+      "path": ".github/workflows/mvd-3-9-manifest-refresh.yml",
+      "size": 1072,
+      "sha256": "536f3c6ff188b75404c7aefe6e8bacac9c7474c048b564b870f9017f89ae7543"
+    },
+    {
       "path": ".github/workflows/release.yml",
       "size": 5888,
       "sha256": "c821455625bc3a89a94d28d94907efd02ff95969752f188ae6d88c26b63b713a"
@@ -281,7 +286,7 @@
     {
       "path": "awake_world/world/save.py",
       "size": 6500,
-      "sha256": "fe6c1595e9bd1102cdf2d1cfbfc9a07f92928f0b8a5114e02186a85762aee401"
+      "sha256": "52bd4d4a982dd93928ed74187d45c613b7754f2751e2fbecfee2d8165fe20083"
     },
     {
       "path": "awake_world/world/state.py",
@@ -321,7 +326,7 @@
     {
       "path": "awake_world/world/systems/hardening.py",
       "size": 1617,
-      "sha256": "68db73f52b007a0266c5b2ec8487679861a875e85150aa9ad9bec31e1ced4cd4"
+      "sha256": "4946b25108b5bba055db1d2f2f1da7b11974f52a1d6694d3f5e131ae82b91163"
     },
     {
       "path": "awake_world/world/systems/interactions.py",
@@ -370,8 +375,8 @@
     },
     {
       "path": "awake_world/world/systems/runtime.py",
-      "size": 9971,
-      "sha256": "e1b9547df6adfe5408475b55881afca33a1e15508d8f613bdf7016e5ad867e78"
+      "size": 10002,
+      "sha256": "a480455f19359ccb284810b656e5958845a988426f4304b6273469f47d24c67b"
     },
     {
       "path": "awake_world/world/systems/spaces.py",
