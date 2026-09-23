@@ -41,6 +41,9 @@ class InteractionSpec:
     anchor_y: float | None = None
     facing_x: float = 0.0
     facing_y: float = -1.0
+    z: float = 0.0
+    priority: float = 0.0
+    surface_kind: str = ""
 
 
 @dataclass(frozen=True)
@@ -344,9 +347,23 @@ class ArchitecturalPortalDoor(QGraphicsItemGroup):
 
 
 class PlantItem(QGraphicsItemGroup):
-    def __init__(self, projector: IsoProjector, x: float, y: float, green: QColor, scale: float = 1.0) -> None:
+    def __init__(
+        self,
+        projector: IsoProjector,
+        x: float,
+        y: float,
+        green: QColor,
+        scale: float = 1.0,
+        motion_phase: float = 0.0,
+        motion_amplitude: float = 0.0,
+        motion_speed: float = 0.65,
+    ) -> None:
         super().__init__()
         p = projector.project(x, y, 0)
+        self.origin = QPointF(p)
+        self.motion_phase = float(motion_phase)
+        self.motion_amplitude = max(0.0, min(2.0, float(motion_amplitude)))
+        self.motion_speed = max(0.1, min(1.5, float(motion_speed)))
         shadow = QGraphicsEllipseItem(-18 * scale, -7, 36 * scale, 12)
         shadow.setBrush(QColor(20, 22, 28, 42))
         shadow.setPen(Qt.PenStyle.NoPen)
@@ -373,6 +390,15 @@ class PlantItem(QGraphicsItemGroup):
             self.addToGroup(leaf)
         self.setPos(p)
         self.setZValue(p.y() + 42 * scale)
+
+    def advance_animation(self, dt: float) -> None:
+        if self.motion_amplitude <= 0.0:
+            return
+        self.motion_phase += max(0.0, dt) * self.motion_speed
+        self.setPos(
+            self.origin.x() + sin(self.motion_phase) * self.motion_amplitude,
+            self.origin.y() + sin(self.motion_phase * .73) * self.motion_amplitude * .28,
+        )
 
 
 class ScreenItem(QGraphicsItemGroup):
@@ -603,6 +629,34 @@ class ZoneLabel(QGraphicsSimpleTextItem):
         self.setOpacity(0.46)
         self.setPos(p.x() - self.boundingRect().width() / 2, p.y())
         self.setZValue(p.y() + 1)
+
+
+class InteractionAnchorItem(QGraphicsItemGroup):
+    """Small world-space acknowledgement; never becomes a HUD prompt."""
+
+    def __init__(self, projector: IsoProjector, x: float, y: float, z: float, accent: QColor) -> None:
+        super().__init__()
+        p = projector.project(x, y, z + .018)
+        self.accent = QColor(accent)
+        self.ring = QGraphicsEllipseItem(-13, -6, 26, 12)
+        fill = QColor(accent)
+        fill.setAlpha(16)
+        edge = QColor(accent)
+        edge.setAlpha(58)
+        self.ring.setBrush(fill)
+        self.ring.setPen(QPen(edge, .9))
+        self.dot = QGraphicsEllipseItem(-2.2, -2.2, 4.4, 4.4)
+        self.dot.setBrush(QColor(accent.red(), accent.green(), accent.blue(), 92))
+        self.dot.setPen(Qt.PenStyle.NoPen)
+        self.addToGroup(self.ring)
+        self.addToGroup(self.dot)
+        self.setPos(p)
+        self.setOpacity(.34)
+        self.setZValue(p.y() + 6)
+
+    def set_active(self, active: bool) -> None:
+        self.setOpacity(.86 if active else .34)
+        self.setScale(1.08 if active else 1.0)
 
 
 def nearest_interaction(interactions: list[InteractionSpec], x: float, y: float) -> InteractionSpec | None:
