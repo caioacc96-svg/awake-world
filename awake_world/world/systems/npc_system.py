@@ -53,6 +53,34 @@ ROUTINES = {
         ScheduleEntry(420,"quarter","inspect",6), ScheduleEntry(720,"trinity_lab","maintenance",7),
         ScheduleEntry(900,"quarter","inspect",6), ScheduleEntry(1020,"offsite","leave",4),
     )),
+    "observer": NPCRoutine("observer", "observatory", "observatory", (
+        ScheduleEntry(510,"observatory","instrument_check",5), ScheduleEntry(720,"central_plaza","coffee_break",5),
+        ScheduleEntry(780,"observatory","project_review",4), ScheduleEntry(1110,"observatory","horizon_observe",5),
+    )),
+    "operator": NPCRoutine("operator", "grid", "grid", (
+        ScheduleEntry(480,"grid","systems_open",3), ScheduleEntry(660,"quarter","route_check",4),
+        ScheduleEntry(720,"grid","operations",3), ScheduleEntry(1020,"grid","handoff",4),
+    )),
+    "developer": NPCRoutine("developer", "twin_core", "twin_core", (
+        ScheduleEntry(540,"twin_core","build_review",5), ScheduleEntry(720,"central_plaza","lunch",5),
+        ScheduleEntry(780,"twin_core","hardware_test",4), ScheduleEntry(1080,"twin_core","pair_session",5),
+    )),
+    "researcher": NPCRoutine("researcher", "trinity_lab", "trinity_lab", (
+        ScheduleEntry(500,"trinity_lab","instrument_cycle",4), ScheduleEntry(690,"glasshouse","sample_check",5),
+        ScheduleEntry(780,"trinity_lab","collaborate",4), ScheduleEntry(1000,"trinity_lab","archive_results",5),
+    )),
+    "maker": NPCRoutine("maker", "garage", "garage", (
+        ScheduleEntry(500,"garage","open_bench",4), ScheduleEntry(700,"quarter","parts_run",6),
+        ScheduleEntry(760,"garage","prototype",4), ScheduleEntry(1030,"garage","service_close",4),
+    )),
+    "host": NPCRoutine("host", "pit", "pit", (
+        ScheduleEntry(780,"pit","setup_social",5), ScheduleEntry(900,"central_plaza","socialize",5),
+        ScheduleEntry(1020,"pit","session_host",4), ScheduleEntry(1320,"pit","close_session",4),
+    )),
+    "gardener": NPCRoutine("gardener", "glasshouse", "glasshouse", (
+        ScheduleEntry(450,"glasshouse","climate_check",4), ScheduleEntry(600,"kawaii_garden","watering",5),
+        ScheduleEntry(780,"glasshouse","plant_care",4), ScheduleEntry(990,"kawaii_garden","garden_check",5),
+    )),
 }
 
 
