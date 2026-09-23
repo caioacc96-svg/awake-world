@@ -145,7 +145,7 @@ def _respond(
     # band. Restore local material separation while keeping the overall exposure
     # restrained; higher-contrast dialects retain slightly more edge definition.
     if phase == "night":
-        boost = 1.16 + max(0.0, profile.contrast - .34) * .48
+        boost = 1.19 + max(0.0, profile.contrast - .34) * .48
         if weather == "rain":
             boost += .10
         color = _contrast_about_mid(color, boost)
