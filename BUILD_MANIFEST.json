@@ -30,8 +30,8 @@
     },
     {
       "path": ".github/workflows/ci.yml",
-      "size": 4565,
-      "sha256": "f83d911531df254a1fac41737077e8ca99d5a8a939851cdb0780c61146c7701a"
+      "size": 4590,
+      "sha256": "e29dbf3a0041e70bd0587af56594563167e5c18a707f7c4065e1d97342942def"
     },
     {
       "path": ".github/workflows/mvd-3-9-manifest-refresh.yml",
@@ -505,8 +505,8 @@
     },
     {
       "path": "tests/test_mvd_3_to_9.py",
-      "size": 6041,
-      "sha256": "8b1d67a644cc1a3020808595592e6b0e36c3a363ad7f78d003eea0091d37fddc"
+      "size": 5974,
+      "sha256": "7b2c0259fddf6c59e7056b315802be53fb27eca307e6d74357a0274af8031a78"
     },
     {
       "path": "tests/test_replay.py",
