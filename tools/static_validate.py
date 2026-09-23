@@ -109,6 +109,7 @@ for relative in (
     "awake_world/world/systems/surfaces.py",
     "awake_world/world/systems/foundation_freeze.py",
     "awake_world/world/systems/hardening.py",
+    "awake_world/world/systems/network_contracts.py",
     "awake_world/world/systems/release_candidate.py",
     "awake_world/simulation/actor_runtime.py",
     "awake_world/simulation/replay.py",
