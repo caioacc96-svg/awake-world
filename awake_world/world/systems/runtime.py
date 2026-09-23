@@ -16,6 +16,7 @@ from awake_world.world.systems.pets import PetSystem
 from awake_world.world.systems.performance import PerformanceSystem
 from awake_world.world.systems.presence import PresenceMode, PresenceSystem
 from awake_world.world.systems.spaces import SpaceSystem
+from awake_world.world.systems.subtle_life import SPACE_SUBTLE_LIFE_PROFILES
 from awake_world.world.systems.surfaces import SurfaceOccupancySystem
 from awake_world.world.systems.time_system import TimeSystem
 from awake_world.world.systems.weather import WeatherSystem
@@ -178,11 +179,14 @@ class WorldRuntime:
                 self.current_space,
                 self._day,
             )
+        life_profile = SPACE_SUBTLE_LIFE_PROFILES.get(self.current_space)
         self.state.environment_state = {
             "phase": self.time.phase,
             "audio_mix": self.audio_mix(),
             "lighting_exposure": self.resolved_lighting().global_exposure,
             "ambient_life": self.ambient.snapshot(),
+            "room_tone": life_profile.room_tone if life_profile is not None else "legacy",
+            "weather_response": life_profile.weather_response if life_profile is not None else "standard",
             "surface_occupancy": self.surfaces.snapshot(self.current_space),
             "hardening_fallbacks": self.hardening.fallback_count,
         }
