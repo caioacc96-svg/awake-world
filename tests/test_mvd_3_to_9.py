@@ -8,6 +8,12 @@ from awake_world.world.systems.foundation_freeze import SPACES, FOUNDATION_GOLDE
 from awake_world.world.systems.hardening import HardeningSystem
 from awake_world.world.systems.interactions import InteractionSystem
 from awake_world.world.systems.microevents import MicroEventSystem
+from awake_world.world.systems.network_contracts import (
+    AvatarReplicationState,
+    RealtimeCapabilities,
+    ReplicationEnvelope,
+    validate_multiplayer_ready_contract,
+)
 from awake_world.world.systems.npc_system import NPCSystem, ROUTINES
 from awake_world.world.systems.release_candidate import evaluate_release_candidate
 from awake_world.world.systems.subtle_life import SPACE_SUBTLE_LIFE_PROFILES, validate_subtle_life_contract
@@ -104,6 +110,16 @@ def test_mvd7_surface_contract_and_capacity() -> None:
     occupancy.release(surface, "local_player")
     assert occupancy.occupy(surface, "second_member")
     assert surfaces_for_space("twin_core")
+
+
+def test_mvd7_multiplayer_ready_contract_is_explicit_and_serializable() -> None:
+    assert validate_multiplayer_ready_contract() == ()
+    capabilities = RealtimeCapabilities()
+    assert capabilities.voice_ready and capabilities.video_ready and capabilities.screen_share_ready
+    state = AvatarReplicationState("member", "observatory", 1.0, 2.0, .3, 0.0, -1.0, "walk", 7)
+    wire = ReplicationEnvelope.from_state("avatar", 7, state).to_wire()
+    assert wire["kind"] == "avatar"
+    assert wire["payload"]["elevation"] == .3
 
 
 def test_mvd8_hardening_is_bounded_and_deterministic() -> None:
