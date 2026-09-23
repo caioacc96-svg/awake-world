@@ -32,7 +32,7 @@
     {
       "path": ".github/workflows/ci.yml",
       "size": 5606,
-      "sha256": "cca4ec5fe757b8e723b5993a6b2b06926bd534a7f6d0e06b22f3bce60a3c1a46"
+      "sha256": "f3b3a0f3536028d0bcaa41aff3e2e356e1b720609f70876702eab370ba179a42"
     },
     {
       "path": ".github/workflows/release.yml",

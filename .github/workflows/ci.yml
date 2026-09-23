@@ -51,7 +51,7 @@ jobs:
       - name: MVD 3-9 inherited gates
         run: python tools/mvd_3_to_9_gate.py
       - name: Living Cast LC-1 engineering gate
-        run: python tools/living_cast_gate.py
+        run: python -m tools.living_cast_gate
 
   windows-qt:
     name: WINDOWS QT · VISUAL · CAST · PACKAGE · SMOKE
