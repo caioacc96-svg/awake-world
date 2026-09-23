@@ -291,7 +291,7 @@
     {
       "path": "awake_world/world/state.py",
       "size": 1454,
-      "sha256": "359860d44094b19bce639c1f4d6a27331e93672570ebeb5feade981f78342509"
+      "sha256": "1816d9ab54e65935b2e8c987be0f9abf975c224c8b31a300d4544b34a4dad40f"
     },
     {
       "path": "awake_world/world/systems/__init__.py",
