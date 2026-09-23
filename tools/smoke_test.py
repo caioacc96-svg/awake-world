@@ -51,7 +51,12 @@ def main() -> int:
                 surfaces = surfaces_for_space(room_id)
                 assert surfaces
                 assert len(room.interaction_acknowledgements) == len(surfaces)
-                assert any(item.action == "surface" for item in room.interactions)
+                surface_spec = next(item for item in room.interactions if item.action == "surface")
+                outcome = room.activate(surface_spec)
+                assert outcome.changed
+                assert room.occupied_surface_id == surface_spec.key
+                room.release_local_surface()
+                assert room.occupied_surface_id is None
                 plane = room.traversal.profile.planes[0]
                 elevation = room.elevation_at(
                     plane.x + plane.w * .5,
