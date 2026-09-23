@@ -344,6 +344,11 @@
       "sha256": "6fbd45c83d6bf8d425634f45291aa832fdd0cd8e9e5c28775dd7e0d5a651e4a6"
     },
     {
+      "path": "awake_world/world/systems/network_contracts.py",
+      "size": 3132,
+      "sha256": "6a30b372f6bf55100e61cf0851494eac531b3c6fbc0e414f2476bfc372dabc77"
+    },
+    {
       "path": "awake_world/world/systems/npc_system.py",
       "size": 5849,
       "sha256": "682600c037da8a67544dde06bce194f89ab881b66c7a11dde1730d285f6ba361"
