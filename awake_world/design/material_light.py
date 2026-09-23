@@ -120,6 +120,8 @@ def _respond(
     phase = phase if phase in PHASE_EXPOSURE else "day"
     weather = weather if weather in WEATHER_EXPOSURE else "clear"
     exposure = PHASE_EXPOSURE[phase] * WEATHER_EXPOSURE[weather] * reflectance
+    if phase == "night" and profile.contrast >= .75:
+        exposure *= 1.08
     color = _scale(_rgb(value), exposure)
 
     phase_amount = {
