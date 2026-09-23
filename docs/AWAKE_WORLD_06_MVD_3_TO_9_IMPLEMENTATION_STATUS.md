@@ -81,7 +81,10 @@ Implemented:
 - capacity-aware occupancy state;
 - occupancy persisted inside existing per-space state;
 - local player can occupy a physical surface;
-- contract remains replication-friendly for future multiplayer.
+- explicit replication contracts for identity, avatar, interaction, surface occupancy and ephemeral presence;
+- media/file reference contract;
+- voice/video/screen-share readiness declared without pretending the transport is already live;
+- replication envelope is deterministic and serializable.
 
 Gate: `AWAKE_MVD7_SPATIAL_UTILITY_OK`.
 
@@ -96,8 +99,11 @@ Implemented:
 - bounded ambient amplitudes;
 - sparse microevent ceiling;
 - deterministic soak gate;
+- 5,000-target interaction stress;
+- 24-cycle save/reload stress;
+- performance-budget enforcement;
 - diagnostics expose hardening fallbacks;
-- existing save/replay/package/transition gates remain active.
+- existing replay/transition/package/startup-shutdown gates remain active.
 
 Gate: `AWAKE_MVD8_PRODUCTION_HARDENING_OK`.
 
