@@ -16,8 +16,8 @@ os.environ.setdefault("QT_LOGGING_RULES", "qt.multimedia.*=false")
 
 
 def render_avatar_sheet(target: Path, pose_sheet: bool = False) -> dict[str, object]:
-    from PySide6.QtCore import QPointF, QRectF, Qt
-    from PySide6.QtGui import QColor, QFont, QImage, QPainter
+    from PySide6.QtCore import QPointF, QRectF
+    from PySide6.QtGui import QColor, QImage, QPainter
     from awake_world.world.avatar import AvatarItem
     from awake_world.world.iso import IsoProjector
 
@@ -25,7 +25,6 @@ def render_avatar_sheet(target: Path, pose_sheet: bool = False) -> dict[str, obj
     image.fill(QColor("#E8E4DB"))
     painter = QPainter(image)
     painter.setRenderHint(QPainter.RenderHint.Antialiasing, True)
-    painter.setFont(QFont("Arial", 12))
 
     if pose_sheet:
         variants = [
@@ -62,12 +61,6 @@ def render_avatar_sheet(target: Path, pose_sheet: bool = False) -> dict[str, obj
         painter.scale(1.55, 1.55)
         avatar.paint(painter, None)
         painter.restore()
-        painter.setPen(QColor("#30343A"))
-        painter.drawText(
-            QRectF(pos.x() - 110, pos.y() + 28, 220, 28),
-            Qt.AlignmentFlag.AlignHCenter,
-            label.replace("_", " "),
-        )
     painter.end()
     image.save(str(target))
     return {"width": image.width(), "height": image.height(), "variants": [v[0] for v in variants]}

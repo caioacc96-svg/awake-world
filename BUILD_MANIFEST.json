@@ -241,8 +241,8 @@
     },
     {
       "path": "awake_world/world/avatar.py",
-      "size": 11208,
-      "sha256": "3a0ada3da33f3ee90d00c1dbc7b432347e8f3cb0e15f3288130f31731beb6073"
+      "size": 11391,
+      "sha256": "bcf829e15493bb5bb060bfe8731ea41a91049983988160627dd29e964c7b2b75"
     },
     {
       "path": "awake_world/world/district.py",
@@ -581,8 +581,8 @@
     },
     {
       "path": "tools/render_living_cast.py",
-      "size": 6006,
-      "sha256": "e3efbf8e9fa56913aaa6a74e9fe9f0f6dfa57562f554f2e41252f8810ee30938"
+      "size": 5739,
+      "sha256": "a850b72226acbd35bbabd5b76bf081293ae2af93c41ae9de2ee239a011f15fe0"
     },
     {
       "path": "tools/smoke_test.py",

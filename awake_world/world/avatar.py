@@ -61,7 +61,16 @@ class AvatarItem(QGraphicsItem):
 
     def _direction_traits(self) -> tuple[float, bool, bool]:
         direction = self.direction
-        side = 1.0 if "east" in direction else -1.0 if "west" in direction else 0.0
+        side = {
+            "east": 1.0,
+            "north_east": .55,
+            "south_east": .55,
+            "west": -1.0,
+            "north_west": -.55,
+            "south_west": -.55,
+            "north": 0.0,
+            "south": 0.0,
+        }[direction]
         rear = direction in {"north", "north_east", "north_west"}
         profile_view = direction in {"east", "west"}
         return side, rear, profile_view
