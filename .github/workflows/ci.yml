@@ -46,6 +46,8 @@ jobs:
         run: python tools/deterministic_replay_test.py
       - name: Automated gameplay drivers
         run: python tools/gameplay_tests.py
+      - name: MVD 3-9 engineering gates
+        run: python tools/mvd_3_to_9_gate.py
 
   windows-qt:
     name: WINDOWS QT · VISUAL · PACKAGE · PACKAGED SMOKE
