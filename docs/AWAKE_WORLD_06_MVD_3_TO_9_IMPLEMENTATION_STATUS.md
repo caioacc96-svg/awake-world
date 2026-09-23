@@ -26,7 +26,7 @@ Implemented:
 
 Gate: `AWAKE_MVD3_SUBTLE_LIFE_OK`.
 
-Human acceptance: **PENDING** — idle 20–30 seconds must feel alive without screensaver behavior.
+Human acceptance: **ACCEPTED 2026-09-23**.
 
 ## MVD-4 — SPATIAL INTERACTION INTEGRATION
 
@@ -40,7 +40,7 @@ Implemented:
 
 Gate: `AWAKE_MVD4_SPATIAL_INTERACTION_OK`.
 
-Human acceptance: **PENDING**.
+Human acceptance: **ACCEPTED 2026-09-23**.
 
 ## MVD-5 — FOUNDATION GOLDEN FREEZE
 
@@ -53,7 +53,7 @@ Implemented:
 
 Gate: `AWAKE_MVD5_FOUNDATION_FREEZE_OK`.
 
-Freeze decision: **PENDING HUMAN ACCEPTANCE**. No golden foundation is declared frozen by this document.
+Freeze decision: **ACCEPTED / FROZEN 2026-09-23**.
 
 ## MVD-6 — MULTI-LEVEL TRAVERSAL
 
@@ -70,7 +70,7 @@ Implemented:
 
 Gate: `AWAKE_MVD6_MULTI_LEVEL_TRAVERSAL_OK`.
 
-Human gameplay acceptance: **PENDING**.
+Human gameplay acceptance: **ACCEPTED 2026-09-23**.
 
 ## MVD-7 — SOCIAL + WORK SURFACES
 
@@ -88,7 +88,7 @@ Implemented:
 
 Gate: `AWAKE_MVD7_SPATIAL_UTILITY_OK`.
 
-Human product acceptance: **PENDING**.
+Human product acceptance: **ACCEPTED 2026-09-23**.
 
 ## MVD-8 — WORLD COHERENCE + PRODUCTION HARDENING
 
@@ -107,7 +107,7 @@ Implemented:
 
 Gate: `AWAKE_MVD8_PRODUCTION_HARDENING_OK`.
 
-Production acceptance: **PENDING CI + HUMAN REVIEW**.
+Production acceptance: **ACCEPTED 2026-09-23** after full Linux + Windows + visual + packaged-smoke validation.
 
 ## MVD-9 — 0.6 RELEASE CANDIDATE + FINAL GOLDEN FREEZE
 
@@ -121,7 +121,7 @@ Implemented:
 
 Gate: `AWAKE_MVD9_RELEASE_CANDIDATE_OK`.
 
-Final freeze / `0.6.0 — THE LIVING QUARTER` release: **NOT DECLARED** until visual/gameplay human acceptance and the required CI/artifact evidence are complete.
+Final freeze / `0.6.0 — THE LIVING QUARTER`: **ACCEPTED 2026-09-23**. Release branch `release/0.6.0` is the canonical publication source.
 
 ## Evidence policy
 

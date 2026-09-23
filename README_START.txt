@@ -1,5 +1,5 @@
 awake/world — THE LIVING NETWORK
-Build 0.5 GLOBAL
+Build 0.6 GLOBAL — THE LIVING QUARTER
 
 1. Extract the ZIP.
 2. Run AWAKE_WORLD.exe.

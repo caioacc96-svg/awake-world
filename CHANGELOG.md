@@ -1,13 +1,53 @@
 # Changelog
 
-## 0.6.0-dev — THE LIVING QUARTER / MVD
+## 0.6.0 — THE LIVING QUARTER
 
-- Started the 0.6 visual-development cycle from the frozen v0.5.0 GLOBAL baseline.
-- Added the canonical MVD contract for cross-world design iterations.
-- Added centralized global/per-space visual profiles so all environments evolve through one authored system.
-- Moved Awake Quarter thresholds and authored-space palettes onto the shared visual profile layer.
-- Normalized technology/gaming architecture language away from cyberpunk/generic-dungeon shortcuts.
-- Preserved the Interaction + Experience Bible v1 as the governing product/UX contract.
+Awake World 0.6 closes the Minimum Viable Design sequence as one coherent authored world while preserving the immutable `v0.5.0 GLOBAL` baseline.
+
+### MVD-1 — Massing + Scale
+- Authored footprint, scale, circulation, negative space, landmark and vegetation hierarchy across all 10 canonical spaces.
+
+### MVD-2 — Material + Light
+- Per-space material dialects, glass treatment, phase response and weather response.
+
+### MVD-2.1 / MVD-2.2 — Visual Foundation + Spatial Depth
+- Continuous architectural ground, layered building assemblies, framed glazing, thresholds, integrated planting and stronger isometric composition.
+- Raised platforms, terraces, visible stair flights, structural piers, setbacks and multi-part vertical massing.
+
+### MVD-3 — Subtle Life
+- Bounded vegetation micro-motion, occupancy traces, authored microevents, purposeful NPC routines, contextual pet behavior and weather-aware ambience.
+
+### MVD-4 — Spatial Interaction
+- Contextual distance/facing/height scoring, hysteresis, forgiving target retention and world-space acknowledgement.
+
+### MVD-5 — Foundation Golden Freeze
+- Deterministic 30-frame review matrix across all 10 spaces.
+- Human foundation acceptance completed on 2026-09-23.
+- Night/rain material readability corrected without weakening acceptance thresholds.
+
+### MVD-6 — Multi-Level Traversal
+- Lightweight authored elevation model with stairs, raised planes, elevation-aware avatar projection, camera and interaction.
+- No general-purpose 3D physics introduced.
+
+### MVD-7 — Social + Work Surfaces
+- Canonical work/social/media/transit surface registry across all spaces.
+- Capacity-aware local occupancy and replication-ready contracts.
+
+### MVD-8 — Production Hardening
+- Bounded frame delta and simulation accumulator, deterministic throttling, long-run soak, interaction/save-load stress and diagnostics.
+
+### MVD-9 — Release Candidate + Final Freeze
+- Exact 10-space release-readiness contract.
+- Full Linux and Windows validation, deterministic replay, visual matrix, packaged executable smoke and artifact integrity.
+- Human visual/product acceptance completed on 2026-09-23.
+
+### Identity preserved
+- `THE SPACE IS THE INTERFACE`
+- `SUBTLE LIFE`
+- `PERCEIVED COMPLEXITY > RAW COMPLEXITY`
+- `HIGH-END EXPERIENCE / LOW-COST ARCHITECTURE`
+- single-player first / multiplayer-ready
+- `awake/world — THE LIVING NETWORK`
 
 ## 0.5.0 — GLOBAL
 
