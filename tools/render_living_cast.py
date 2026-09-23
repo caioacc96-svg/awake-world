@@ -114,6 +114,11 @@ def render_observatory(target: Path, minute: int, pose: str) -> dict[str, object
 
 
 def main() -> int:
+    from PySide6.QtWidgets import QApplication
+
+    app = QApplication.instance() or QApplication(sys.argv)
+    app.setApplicationName("awake-world-living-cast-review")
+
     parser = argparse.ArgumentParser()
     parser.add_argument("--output", default=str(ROOT / "living_cast_output"))
     args = parser.parse_args()

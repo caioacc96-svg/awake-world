@@ -581,8 +581,8 @@
     },
     {
       "path": "tools/render_living_cast.py",
-      "size": 5630,
-      "sha256": "36034754f02e31167f4d00c58d683b0177c3193239e3cf75d424ae37da33ad7c"
+      "size": 5800,
+      "sha256": "288d641de5abc571754a399ce720ae186a12200caad4123ba648509c31efdfde"
     },
     {
       "path": "tools/smoke_test.py",
