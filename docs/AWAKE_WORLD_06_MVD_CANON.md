@@ -8,6 +8,8 @@
 
 This document extends, and does not replace, the canonical Interaction + Experience Bible v1.
 
+**Execution extension:** `docs/AWAKE_WORLD_06_MVD_3_TO_9_EXECUTION_CANON.md` is the authoritative phase-by-phase contract for MVD-3 through MVD-9. The extension preserves this document's permanent laws and resolves the post-MVD-5 sequence through the 0.6 release candidate.
+
 ## 1. Decision
 
 Awake World 0.6 is not a room-by-room beautification pass.
@@ -109,6 +111,35 @@ Across all environments simultaneously:
 
 **Acceptance:** any random screenshot belongs unmistakably to Awake World while major spaces remain distinguishable.
 
+### MVD-2.1 — Visual foundation acceptance pass
+
+MVD-2 is not considered human-accepted merely because palette/light automation passes. Before MVD-3, the authored world must also clear a visual foundation pass across every space:
+
+- continuous architectural ground instead of debug-like tile checkerboarding;
+- layered architectural assemblies instead of raw cuboids;
+- contact shadow and facade depth;
+- glass framed as architecture, not transparent color fill;
+- restrained large-format joints and perimeter detailing;
+- vegetation integrated as architectural landscape clusters;
+- tighter composition so the authored environment dominates the frame;
+- MVD-1 footprints, collisions, circulation and landmarks remain unchanged.
+
+**Acceptance:** a static screenshot must read as an authored premium diorama before NPC motion, ambient animation or MVD-3 life is used to create interest.
+
+### MVD-2.2 — Spatial depth acceptance pass
+
+MVD-2.1 establishes the authored visual foundation. MVD-2.2 adds architectural depth before life/animation:
+
+- stairs are stepped geometry tied to a real raised plane;
+- civic platforms, decks and terraces introduce multiple visible elevations;
+- tall structures gain lower/upper mass separation and setback while staying inside the MVD-1 footprint;
+- floor reveals, parapets, roof layers and support piers create readable vertical hierarchy;
+- elevated elements cast their own isometric overlap/shadow relationships;
+- every space receives a distinct vertical composition rather than the same extrusion recipe;
+- navigation remains on the canonical MVD-1 plane until a later explicit traversal phase; MVD-2.2 must not silently change collision or pathfinding.
+
+**Acceptance:** static renders must communicate at least three depth cues — elevation change, overlap/setback and structural support — before MVD-3 ambient life is allowed to carry the scene.
+
 ### MVD-3 — Subtle life
 
 Across all environments simultaneously:
@@ -138,7 +169,7 @@ Across all environments simultaneously:
 
 **Acceptance:** removing conventional HUD does not make the world unintelligible.
 
-### MVD-5 — Human acceptance + golden freeze
+### MVD-5 — Human acceptance + foundation golden freeze
 
 - deterministic golden set across representative spaces, times and weather;
 - screenshot review against canon;
@@ -147,7 +178,18 @@ Across all environments simultaneously:
 - performance check;
 - final visual consistency pass.
 
+MVD-5 freezes the accepted **foundation grammar** from MVD-1 through MVD-4. It is not the final 0.6 release freeze.
+
 **Acceptance:** the world passes both automated gates and the human question: **does this feel like a place?**
+
+### MVD-6 → MVD-9 — 0.6 completion sequence
+
+The detailed contracts live in `docs/AWAKE_WORLD_06_MVD_3_TO_9_EXECUTION_CANON.md`.
+
+- **MVD-6 — Multi-Level Traversal:** converts selected visual elevation into real authored traversal.
+- **MVD-7 — Social + Work Surfaces:** makes the space itself the work/social interface.
+- **MVD-8 — World Coherence + Production Hardening:** performance, reliability, soak and UX hardening.
+- **MVD-9 — 0.6 Release Candidate + Final Golden Freeze:** full product acceptance and final 0.6 candidate freeze.
 
 ## 5. Shared visual DNA
 

@@ -6,6 +6,11 @@ from awake_world.design.material_light import (
     SPACE_MATERIAL_LIGHT_PROFILES,
     resolve_space_appearance,
 )
+from awake_world.design.visual_foundation import (
+    SPACE_VISUAL_FOUNDATION_PROFILES,
+    framed_scene_rect,
+)
+from awake_world.design.spatial_depth import SPACE_SPATIAL_DEPTH_PROFILES
 from awake_world.design.world_visuals import SPACE_VISUAL_PROFILES
 from awake_world.world.systems.spaces import SPACE_CATALOG
 
@@ -170,3 +175,85 @@ def test_mvd2_phase_and_weather_response_is_coherent() -> None:
         assert dusk.phase_wash_alpha > day.phase_wash_alpha, space_id
         assert night.phase_wash_alpha > dusk.phase_wash_alpha, space_id
         assert rain.weather_wash_alpha > day.weather_wash_alpha, space_id
+
+
+# MVD-2.1 — Visual Foundation Pass
+
+def test_mvd21_visual_foundation_profiles_cover_every_registered_space() -> None:
+    assert set(SPACE_VISUAL_FOUNDATION_PROFILES) == set(SPACE_CATALOG)
+
+
+def test_mvd21_foundation_profiles_are_bounded_and_authored() -> None:
+    signatures: set[tuple[object, ...]] = set()
+    for space_id, profile in SPACE_VISUAL_FOUNDATION_PROFILES.items():
+        assert 0.72 <= profile.frame_scale <= 0.84, space_id
+        assert -8.0 <= profile.frame_y_bias <= 24.0, space_id
+        assert 0.40 <= profile.ground_border <= 0.80, space_id
+        assert 3 <= profile.joint_spacing <= 5, space_id
+        assert 0.04 <= profile.body_inset <= 0.15, space_id
+        assert 0.08 <= profile.plinth_height <= 0.22, space_id
+        assert 0.06 <= profile.cap_height <= 0.14, space_id
+        assert 0.04 <= profile.cap_overhang <= 0.16, space_id
+        assert 4 <= profile.facade_bays <= 7, space_id
+        assert 0.18 <= profile.glazing_ratio <= 0.82, space_id
+        assert 0.10 <= profile.shadow_offset <= 0.20, space_id
+        assert 0.10 <= profile.shadow_opacity <= 0.24, space_id
+        assert 1 <= profile.landscape_layers <= 3, space_id
+        signature = (
+            profile.frame_scale,
+            profile.joint_spacing,
+            profile.facade_bays,
+            profile.glazing_ratio,
+            profile.landscape_layers,
+            profile.accent_inlay,
+        )
+        assert signature not in signatures, space_id
+        signatures.add(signature)
+
+
+def test_mvd21_framing_tightens_presentation_without_changing_massing() -> None:
+    for space_id, massing in SPACE_MASSING_PROFILES.items():
+        profile = SPACE_VISUAL_FOUNDATION_PROFILES[space_id]
+        framed = framed_scene_rect(massing.scene_rect, profile)
+        assert framed[2] < massing.scene_rect[2], space_id
+        assert framed[3] < massing.scene_rect[3], space_id
+        assert framed[2] >= massing.scene_rect[2] * .72, space_id
+        assert framed[3] >= massing.scene_rect[3] * .72, space_id
+
+
+# MVD-2.2 — Spatial Depth Pass
+
+def test_mvd22_spatial_depth_profiles_cover_every_registered_space() -> None:
+    assert set(SPACE_SPATIAL_DEPTH_PROFILES) == set(SPACE_CATALOG)
+
+
+def test_mvd22_spatial_depth_is_structured_and_inside_bounds() -> None:
+    for space_id, depth in SPACE_SPATIAL_DEPTH_PROFILES.items():
+        massing = SPACE_MASSING_PROFILES[space_id]
+        assert 0.04 <= depth.upper_setback <= 0.16, space_id
+        assert 0.48 <= depth.split_ratio <= 0.64, space_id
+        assert 0.035 <= depth.floor_reveal <= 0.07, space_id
+        assert depth.planes, space_id
+        assert depth.stairs, space_id
+
+        for plane in depth.planes:
+            assert plane.w > .4 and plane.d > .4 and plane.h > 0, space_id
+            assert 0 <= plane.x <= massing.width_tiles, space_id
+            assert 0 <= plane.y <= massing.depth_tiles, space_id
+            assert plane.x + plane.w <= massing.width_tiles + .01, space_id
+            assert plane.y + plane.d <= massing.depth_tiles + .01, space_id
+            assert plane.h <= .35, space_id
+
+        for stair in depth.stairs:
+            assert stair.axis in {"x", "y"}, space_id
+            assert stair.direction in {-1, 1}, space_id
+            assert 3 <= stair.steps <= 6, space_id
+            assert stair.width >= 1.4, space_id
+            assert .4 <= stair.run <= 1.0, space_id
+            assert .10 <= stair.rise <= .32, space_id
+            assert 0 <= stair.x <= massing.width_tiles, space_id
+            assert 0 <= stair.y <= massing.depth_tiles, space_id
+
+        for line in depth.piers:
+            assert 2 <= line.count <= 6, space_id
+            assert line.w > 0 and line.d > 0 and line.h > .8, space_id

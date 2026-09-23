@@ -114,6 +114,11 @@
       "sha256": "b2597f5893d813663541b36042b05457eeeeb82375042afcf054b8b7fe5521e8"
     },
     {
+      "path": "awake_world/design/spatial_depth.py",
+      "size": 5817,
+      "sha256": "5294da96db25eb8dfa6f43829a72fcf1e562abf9b0510399964977e139fcfcc8"
+    },
+    {
       "path": "awake_world/design/theme/__init__.py",
       "size": 0,
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -164,6 +169,11 @@
       "sha256": "b43d0a9c9ef6fbaaae694831163d1b2e5932b05ae99673e874dac57540e6cab2"
     },
     {
+      "path": "awake_world/design/visual_foundation.py",
+      "size": 2443,
+      "sha256": "03e663f1ec7ce1eb52af353a91de885b6eb54f00778674bb6419b266d9bf1d53"
+    },
+    {
       "path": "awake_world/design/world_visuals.py",
       "size": 2187,
       "sha256": "cffc07678542e047bd06fb539e06b0f91cd598c3dd84b36bb316c68c47da2185"
@@ -176,7 +186,7 @@
     {
       "path": "awake_world/presentation/camera_controller.py",
       "size": 2728,
-      "sha256": "b64981ca780a833fb1b085c3294d061b5e8c84a788d7ae95baa742158228f3c9"
+      "sha256": "bd2d34ae2645d885406cd768e320e959e387ed03a53f764fa84c194455225ea1"
     },
     {
       "path": "awake_world/presentation/transition_orchestrator.py",
@@ -230,8 +240,8 @@
     },
     {
       "path": "awake_world/world/district.py",
-      "size": 12685,
-      "sha256": "dddb66839d32496241d9bc5992bc21918221a051bece6923439255a68f63f729"
+      "size": 31298,
+      "sha256": "704de52463695c786f4b593574d45e664d80b9e4baad498a0058e910c3440ede"
     },
     {
       "path": "awake_world/world/environment.py",
@@ -245,8 +255,8 @@
     },
     {
       "path": "awake_world/world/items.py",
-      "size": 24659,
-      "sha256": "0085f7a8c934c2cf4acf79d954627bf15919d569758bd811c5087b5b2363e06b"
+      "size": 29352,
+      "sha256": "bdfb76f66a32b42d6b346660dc6b1a6750f583ae791250d12e51bdfa5fa32630"
     },
     {
       "path": "awake_world/world/lighting.py",
@@ -374,9 +384,14 @@
       "sha256": "ab3f80217e838fd115d935374fcce93753cbb7c337817cc8c45fc8609e89dcc2"
     },
     {
+      "path": "docs/AWAKE_WORLD_06_MVD_3_TO_9_EXECUTION_CANON.md",
+      "size": 22461,
+      "sha256": "9c4287fcfb58fb950886662bec635b32d46121a0f5490010a76eff5d2dfe5426"
+    },
+    {
       "path": "docs/AWAKE_WORLD_06_MVD_CANON.md",
-      "size": 5926,
-      "sha256": "658558cd44ea37d3c8efeace823115078b276bfb4c1293d422a052582d8ffed3"
+      "size": 8775,
+      "sha256": "832fe1e1b38b8856692fb7c67e89722d30015c3df91785d5473911e47bb4a8b6"
     },
     {
       "path": "docs/AWAKE_WORLD_INTERACTION_EXPERIENCE_BIBLE_v1.md",
@@ -455,8 +470,8 @@
     },
     {
       "path": "tests/test_visual_system.py",
-      "size": 6905,
-      "sha256": "ed6d297542ebe4f16a1e2fbddbb2ac2c5d239710035c7c46d021e769c462935d"
+      "size": 10818,
+      "sha256": "f172c2e5c9e3db84e552930d4ef3c0193b7ff7728bf53704141adcc63bee243f"
     },
     {
       "path": "tools/build_manifest.py",
@@ -490,8 +505,8 @@
     },
     {
       "path": "tools/render_golden_scenes.py",
-      "size": 9681,
-      "sha256": "3af4472064db7e1590edfe63966398050e9319ab134a5348ca42788da2d2e30d"
+      "size": 13153,
+      "sha256": "c56d7ca4f07326613b277b50b7864a2d5c3677641e7755a90558974b7a3b0559"
     },
     {
       "path": "tools/smoke_test.py",
